@@ -1,0 +1,89 @@
+/*
+Theme Name: New Magazine X Child
+Description: Child theme per New Magazine X con integrazione meteo@uniparthenope plugin
+Template: news-magazine-x
+Version: 1.0
+*/
+
+/* Importa gli stili del tema padre */
+@import url("../new-magazine-x/style.css");
+
+/* Stili personalizzati per il child theme */
+.meteo-plot-container {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.meteo-plot-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Stili per i risultati di ricerca dei place */
+.search-results .meteo-preview {
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin: 15px 0;
+    border-left: 4px solid #007cba;
+    border-radius: 5px;
+}
+
+.search-results .meteo-preview h4 {
+    margin: 0 0 10px 0;
+    color: #007cba;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.meteo-icon {
+    width: 100%;
+    height: auto;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Badge per tipo di post */
+.post-type-badge {
+    background-color: #007cba;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Dettagli del place */
+.place-details {
+    background-color: #f8f9fa;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.place-details p {
+    margin: 5px 0;
+}
+
+/* Personalizzazioni per mantenere la coerenza con il tema */
+.newsx-post-item .meteo-preview {
+    margin-top: 15px;
+}
+
+.newsx-post-item .place-details {
+    margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .meteo-preview {
+        padding: 10px;
+    }
+    
+    .place-details {
+        padding: 8px;
+        font-size: 13px;
+    }
+}

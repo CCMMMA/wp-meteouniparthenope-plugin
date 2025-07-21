@@ -1,0 +1,364 @@
+{
+  "outputs": {
+    "gen": {
+      "plot": {
+        "layers": [
+          {
+            "a": 1.94384,
+            "colormap": "rms3.cur.lamma",
+            "label_size": 5,
+            "level": 0,
+            "pad": "13%",
+            "position": "left",
+            "text": {
+              "en-US": "Surface current [kn]",
+              "it-IT": "Corrente marina superficiale [kn]"
+            },
+            "ticks_position": "left",
+            "time": 0,
+            "type": "shaded",
+            "var1": "u",
+            "var2": "v"
+          },
+          {
+            "a": 1.94384,
+            "level": 0,
+            "time": 0,
+            "type": "versor",
+            "var1": "u",
+            "var2": "v"
+          },
+          {
+            "shapefiles": [
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/europe"
+              },
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/Africa"
+              }
+            ],
+            "type": "shapefiles"
+          }
+        ]
+      },
+      "title": {
+        "en-US": "Generic",
+        "it-IT": "Generico"
+      },
+      "wms": {
+        "layers": [
+          {
+            "ABOVEMAXCOLOR": "extend",
+            "BELOWMINCOLOR": "extend",
+            "BGCOLOR": "extend",
+            "COLORSCALERANGE": "0.1,0.7",
+            "ELEVATION": "0",
+            "LAYERS": "u:v-mag",
+            "LEGEND": "right",
+            "LOGSCALE": "false",
+            "NODATAACOLOR": "transparent",
+            "NUMCOLORBANDS": "8",
+            "STYLES": "raster/curBars"
+          },
+          {
+            "ABOVEMAXCOLOR": "extend",
+            "BELOWMINCOLOR": "extend",
+            "BGCOLOR": "extend",
+            "COLORSCALERANGE": "0,100",
+            "ELEVATION": "0",
+            "LAYERS": "u:v-dir",
+            "LOGSCALE": "false",
+            "NUMCOLORBANDS": "250",
+            "STYLES": "default-arrows/default"
+          }
+        ]
+      }
+    },
+    "genW": {
+      "plot": {
+        "layers": [
+          {
+            "a": 1.94384,
+            "colormap": "rms3.cur.lamma",
+            "label_size": 5,
+            "level": 0,
+            "pad": "13%",
+            "position": "left",
+            "text": {
+              "en-US": "Surface current [kn]",
+              "it-IT": "Corrente marina superficiale [kn]"
+            },
+            "ticks_position": "left",
+            "time": 0,
+            "type": "shaded",
+            "var1": "u",
+            "var2": "v"
+          },
+          {
+            "a": 1.94384,
+            "level": 0,
+            "time": 0,
+            "type": "versor",
+            "var1": "u",
+            "var2": "v"
+          },
+          {
+            "shapefiles": [
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/europe"
+              },
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/Africa"
+              }
+            ],
+            "type": "shapefiles"
+          },
+          {
+            "type": "watermarks",
+            "watermarks": [
+              {
+                "dim": 0.3,
+                "opacity": 0.2,
+                "path": "/project/data/watermark/logo_parthenope.png",
+                "position": "top-right"
+              }
+            ]
+          }
+        ]
+      },
+      "title": {
+        "en-US": "Generic",
+        "it-IT": "Generico"
+      },
+      "wms": {
+        "layers": [
+          {
+            "ABOVEMAXCOLOR": "extend",
+            "BELOWMINCOLOR": "extend",
+            "BGCOLOR": "extend",
+            "COLORSCALERANGE": "0.1,0.7",
+            "ELEVATION": "0",
+            "LAYERS": "u:v-mag",
+            "LEGEND": "right",
+            "LOGSCALE": "false",
+            "NODATAACOLOR": "transparent",
+            "NUMCOLORBANDS": "8",
+            "STYLES": "raster/curBars"
+          },
+          {
+            "ABOVEMAXCOLOR": "extend",
+            "BELOWMINCOLOR": "extend",
+            "BGCOLOR": "extend",
+            "COLORSCALERANGE": "0,100",
+            "ELEVATION": "0",
+            "LAYERS": "u:v-dir",
+            "LOGSCALE": "false",
+            "NUMCOLORBANDS": "250",
+            "STYLES": "default-arrows/default"
+          }
+        ]
+      }
+    },
+    "scu": {
+      "plot": {
+        "layers": [
+          {
+            "a": 1.94384,
+            "colormap": "rms3.cur.lamma",
+            "label_size": 5,
+            "level": 0,
+            "pad": "13%",
+            "position": "left",
+            "text": {
+              "en-US": "Surface current [kt]",
+              "it-IT": "Corrente marina superficiale [kn]"
+            },
+            "ticks_position": "left",
+            "time": 0,
+            "type": "shaded",
+            "var1": "u",
+            "var2": "v"
+          },
+          {
+            "a": 1.94384,
+            "level": 0,
+            "time": 0,
+            "type": "versor",
+            "var1": "u",
+            "var2": "v"
+          },
+          {
+            "shapefiles": [
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/europe"
+              },
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/Africa"
+              }
+            ],
+            "type": "shapefiles"
+          }
+        ]
+      },
+      "title": {
+        "en-US": "Surface current [kn]",
+        "it-IT": "Corrente marina superficiale [kn]"
+      },
+      "wms": {
+        "layers": [
+          {
+            "ABOVEMAXCOLOR": "extend",
+            "BELOWMINCOLOR": "extend",
+            "BGCOLOR": "extend",
+            "COLORSCALERANGE": "0.1,0.7",
+            "ELEVATION": "0",
+            "LAYERS": "u:v-mag",
+            "LEGEND": "right",
+            "LOGSCALE": "false",
+            "NODATAACOLOR": "transparent",
+            "NUMCOLORBANDS": "8",
+            "STYLES": "raster/curBars"
+          },
+          {
+            "ABOVEMAXCOLOR": "extend",
+            "BELOWMINCOLOR": "extend",
+            "BGCOLOR": "extend",
+            "COLORSCALERANGE": "0,100",
+            "ELEVATION": "0",
+            "LAYERS": "u:v-dir",
+            "LOGSCALE": "false",
+            "NUMCOLORBANDS": "250",
+            "STYLES": "default-arrows/default"
+          }
+        ]
+      }
+    },
+    "sss": {
+      "plot": {
+        "layers": [
+          {
+            "colormap": "rms3.sss",
+            "label_size": 5,
+            "level": 0,
+            "pad": "13%",
+            "position": "left",
+            "text": {
+              "en-US": "Sea Surface Salinity [PSU]",
+              "it-IT": "Salinità Superficiale [PSU]"
+            },
+            "ticks_position": "left",
+            "time": 0,
+            "type": "shaded",
+            "var1": "salt"
+          },
+          {
+            "shapefiles": [
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/europe"
+              },
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/Africa"
+              }
+            ],
+            "type": "shapefiles"
+          }
+        ]
+      },
+      "title": {
+        "en-US": "Sea Surface Salinity [PSU]",
+        "it-IT": "Salinità Superficiale [PSU]"
+      },
+      "wms": {
+        "layers": [
+          {
+            "ABOVEMAXCOLOR": "extend",
+            "BELOWMINCOLOR": "extend",
+            "BGCOLOR": "extend",
+            "COLORSCALERANGE": "37.5,39",
+            "ELEVATION": "0",
+            "LAYERS": "salt",
+            "LEGEND": "right",
+            "LOGSCALE": "false",
+            "NODATAACOLOR": "transparent",
+            "NUMCOLORBANDS": "8",
+            "STYLES": "raster/saltBars"
+          }
+        ]
+      }
+    },
+    "sst": {
+      "plot": {
+        "layers": [
+          {
+            "colormap": "rms3.tem.lamma",
+            "label_size": 5,
+            "level": 0,
+            "pad": "13%",
+            "position": "left",
+            "text": {
+              "en-US": "Surface temperature [°C]",
+              "it-IT": "Temperatura Superficiale [°C]"
+            },
+            "ticks_position": "left",
+            "time": 0,
+            "type": "shaded",
+            "var1": "temp"
+          },
+          {
+            "shapefiles": [
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/europe"
+              },
+              {
+                "color": "black",
+                "fillcolor": "lightyellow",
+                "path": "/project/data/shapefiles/Africa"
+              }
+            ],
+            "type": "shapefiles"
+          }
+        ]
+      },
+      "title": {
+        "en-US": "Sea Surface Temperature",
+        "it-IT": "Temperatura Superficiale"
+      },
+      "wms": {
+        "layers": [
+          {
+            "ABOVEMAXCOLOR": "extend",
+            "BELOWMINCOLOR": "extend",
+            "BGCOLOR": "extend",
+            "COLORSCALERANGE": "10,30",
+            "ELEVATION": "0",
+            "LAYERS": "temp",
+            "LEGEND": "right",
+            "LOGSCALE": "false",
+            "NODATAACOLOR": "transparent",
+            "NUMCOLORBANDS": "22",
+            "STYLES": "raster/tempBars"
+          }
+        ]
+      }
+    }
+  }
+}
+

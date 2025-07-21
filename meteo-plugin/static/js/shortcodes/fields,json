@@ -1,0 +1,240 @@
+{
+  "fields": {
+    "dateTime": {
+      "label": {
+        "en-US": "Current date and time",
+        "it-IT": "Data e ora correnti"
+      },
+      "title": {
+        "en-US": "Date",
+        "it-IT": "Data"
+      },
+      "unit": "date",
+      "var": "__dateTime__"
+    },
+    "iDate": {
+      "label": {
+        "en-US": "Simulation initialization time",
+        "it-IT": "Data di inizio simulazione"
+      },
+      "title": {
+        "en-US": "Initialization",
+        "it-IT": "Inizializzazione"
+      },
+      "unit": "date",
+      "var": "__iDate__"
+    },
+    "link": {
+      "label": {
+        "en-US": "Link to the forecast page",
+        "it-IT": "Collegamento a pagina delle previsioni"
+      },
+      "title": {
+        "en-US": "Link",
+        "it-IT": "Collegamento"
+      },
+      "var": "__link__"
+    },
+    "scd": {
+      "aggregate": [
+        "min",
+        "max"
+      ],
+      "func": "northDirection",
+      "label": {
+        "en-US": "Surface current direction",
+        "it-IT": "Direzione corrente superficiale"
+      },
+      "level": 0,
+      "round": 1,
+      "time": 0,
+      "title": {
+        "en-US": "Current",
+        "it-IT": "Current"
+      },
+      "unit": "°N",
+      "var": [
+        "u",
+        "v"
+      ]
+    },
+    "scd-max": {
+      "label": {
+        "en-US": "Maximum surface current direction",
+        "it-IT": "Direzione corrente superficiale Massima"
+      },
+      "round": 1,
+      "title": {
+        "en-US": "Current max",
+        "it-IT": "Current max"
+      },
+      "unit": "°N"
+    },
+    "scd-min": {
+      "label": {
+        "en-US": "Minimum surface current direction",
+        "it-IT": "Direction corrente superficiale Minima"
+      },
+      "round": 1,
+      "title": {
+        "en-US": "Current min",
+        "it-IT": "Current min"
+      },
+      "unit": "°N"
+    },
+    "scm": {
+      "a": 1.94384,
+      "aggregate": [
+        "min",
+        "max"
+      ],
+      "func": "modulus",
+      "label": {
+        "en-US": "Surface current speed",
+        "it-IT": "Velocità corrente superficiale"
+      },
+      "level": 0,
+      "round": 3,
+      "time": 0,
+      "title": {
+        "en-US": "Current",
+        "it-IT": "Current"
+      },
+      "unit": "ms-1",
+      "var": [
+        "u",
+        "v"
+      ]
+    },
+    "scm-max": {
+      "label": {
+        "en-US": "Maximum surface current speed",
+        "it-IT": "Velocità corrente superficiale Massima"
+      },
+      "round": 1,
+      "title": {
+        "en-US": "Current max",
+        "it-IT": "Current max"
+      },
+      "unit": "m s-1"
+    },
+    "scm-min": {
+      "label": {
+        "en-US": "Minimum surface current speed",
+        "it-IT": "Velocità corrente superficiale Minima"
+      },
+      "round": 1,
+      "title": {
+        "en-US": "Current min",
+        "it-IT": "Current min"
+      },
+      "unit": "m s-1"
+    },
+    "scs": {
+      "func": "currS",
+      "label": {
+        "en-US": "Surface current direction",
+        "it-IT": "Direzione corrente superficiale"
+      },
+      "level": 0,
+      "round": 1,
+      "time": 0,
+      "title": {
+        "en-US": "Current",
+        "it-IT": "Current"
+      },
+      "var": [
+        "u",
+        "v"
+      ]
+    },
+    "sss": {
+      "aggregate": [
+        "min",
+        "max",
+        "ave"
+      ],
+      "label": {
+        "en-US": "Sea Surface Salinity",
+        "it-IT": "Salinità Superficiale"
+      },
+      "level": 0,
+      "round": 4,
+      "time": 0,
+      "title": {
+        "en-US": "SSS",
+        "it-IT": "SSS"
+      },
+      "unit": "%.",
+      "var": "salt"
+    },
+    "sss-max": {
+      "label": {
+        "en-US": "Maximum Sea Surface Salinity",
+        "it-IT": "Salinità Superficiale Massima"
+      },
+      "round": 1,
+      "title": {
+        "en-US": "SSS max",
+        "it-IT": "SSS max"
+      },
+      "unit": "%."
+    },
+    "sss-min": {
+      "label": {
+        "en-US": "Minimum Sea Surface Salinity",
+        "it-IT": "Salinità Superficiale Minima"
+      },
+      "round": 1,
+      "title": {
+        "en-US": "SSS min",
+        "it-IT": "SSS min"
+      },
+      "unit": "%."
+    },
+    "sst": {
+      "aggregate": [
+        "min",
+        "max",
+        "ave"
+      ],
+      "label": {
+        "en-US": "Sea Surface Temperature",
+        "it-IT": "Temperatura Superficiale"
+      },
+      "level": 0,
+      "round": 1,
+      "time": 0,
+      "title": {
+        "en-US": "SST",
+        "it-IT": "SST"
+      },
+      "unit": "°C",
+      "var": "temp"
+    },
+    "sst-max": {
+      "label": {
+        "en-US": "Maximum Sea Surface Temperature",
+        "it-IT": "Temperatura Superficiale Massima"
+      },
+      "round": 1,
+      "title": {
+        "en-US": "SST max",
+        "it-IT": "SST max"
+      },
+      "unit": "°C"
+    },
+    "sst-min": {
+      "label": {
+        "en-US": "Minimum Sea Surface Temperature",
+        "it-IT": "Temperatura Superficiale Minima"
+      },
+      "round": 1,
+      "title": {
+        "en-US": "SST min",
+        "it-IT": "SST min"
+      },
+      "unit": "°C"
+    }
+  }
+}
