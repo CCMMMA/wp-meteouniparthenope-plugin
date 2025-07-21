@@ -4,7 +4,7 @@
 # Installation
 Create the directory in which you will download the repository.
 
-Download the repository and run the `docker-compose` file with `docker-compose up`, it will create a WordPress container. At the end it will create a `wp_data` directory.
+Download the repository and run the `docker-compose` file with `docker-compose up`, it will create a WordPress container. At the end it will create a `wp_data` directory (NOTE: make sure to change the values inside the `.env` files with your own)
 
 When the container is ready, open your browser and search `localhost:8000`, then follow the steps for configure the WordPress site.
 
