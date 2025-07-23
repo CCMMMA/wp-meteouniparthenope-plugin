@@ -2,10 +2,14 @@
 
 namespace includes\executors;
 
-use Card;
+
 use includes\API\PlacesAPI;
 use includes\cpts\Place;
-use includes\datauseuse includes\JSONParser\ProductParser;use WP_Query; includes\JSONParser\ProductParser;class WPPlaceExecutor
+use WP_Query;
+
+use includes\JSONParser\ProductParser;
+
+class WPPlaceExecutor
 {
 
     public function executePostCreation(Place $place): int
