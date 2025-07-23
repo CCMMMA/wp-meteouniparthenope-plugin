@@ -1,11 +1,17 @@
 <?php
 
-class CardParser implements JSONParser{
+namespace includes\JSONParser;
+
+use Card;
+use Cards;
+use includes\datause includes\JSONParser\JSONParser;class CardParser implements JSONParser
+{
     /**
      * @param string|array $json
      * @return Cards[]
      */
-    public function parseFromJSON($json): array{
+    public function parseFromJSON($json): array
+    {
         if (is_string($json)) {
             $data = json_decode($json, true);
         } elseif (is_array($json)) {
@@ -16,9 +22,9 @@ class CardParser implements JSONParser{
 
         $newData = array_slice($data['cards'], 1);
         $newData = array_slice($newData, 0, -3);
-        
 
-        foreach ($newData as $item){
+
+        foreach ($newData as $item) {
             $card = new Card(
                 imageUrl: $item['i18n']['it-IT']['image']['src'],
                 summaryText: $item['i18n']['it-IT']['text'],
@@ -26,7 +32,7 @@ class CardParser implements JSONParser{
             );
             $cards[] = $card;
         }
-        
+
         return $cards;
     }
 }
