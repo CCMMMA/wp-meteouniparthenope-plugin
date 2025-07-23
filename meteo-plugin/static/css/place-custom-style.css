@@ -21,7 +21,9 @@
     color: #666;
     margin-top: 10px;
 }
-
+#plot-image-container.card {
+  border: 0px;
+}
 
 /* Loading gif style */
 #plot-container{

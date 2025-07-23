@@ -30,7 +30,7 @@ let hourlyForecastData = {};
         $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/" + gif);
         $loadingDiv.append($loadingGif);
 
-        let $forecastContainerDiv = $('#forecast');
+        let $forecastContainerDiv = $('#forecast-box');
         $forecastContainerDiv.append($loadingDiv).show();
 
         function createForecast(place = defaultPlace, name = defaultName ,prod = defaultProd, hours = defaultHours, step = defaultStep){

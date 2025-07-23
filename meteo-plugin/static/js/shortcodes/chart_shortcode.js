@@ -12,13 +12,11 @@ let loadedChart = {};
         let $loadingGif = $('<img>').attr('id','loading-gif');
         let hour = new Date().getHours();
         let gif = hour >=7 && hour < 19 ? "day_loading.gif" : "night_loading.gif";
-        $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/" + gif);
+        $loadingGif.attr('src', METEOUNIP_PLUGIN_LOADING_DIR + "/" + gif);
         $loadingDiv.append($loadingGif);
 
-        let $chartDiv = $('#chart');
-        $chartDiv.append($loadingDiv);
-
         let $chartBoxCanvaJS = $('#chart-container-canvasDiv');
+        $chartBoxCanvaJS.append($loadingDiv);
         let product;
         let output;
         let ncepDate;

@@ -36,14 +36,14 @@ get_header();
                 
                 <!-- Forecast table -->
                 <div id="forecast">
-                    <div class="forecast-container" class="container-fluid" style="display: block">
+                    <div class="forecast-container container-fluid" style="display: block">
                         <?php echo do_shortcode('[forecast_shortcode]'); ?>
                         <div class="row">
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
                                         <div id="forecast-box-title"></div>
-                                        <div id="forecast-box"></div>
+                                        <div id="forecast-box" class="container-fluid d-flex justify-content-center"></div>
                                     </div>
                                 </div>
                             </div>
@@ -97,87 +97,22 @@ get_header();
                 </div>
 
                 <!-- Plot -->
-                <div id="plot-container" class="container-fluid" style="display: visible">
+                <div id="plot-container" class="container-fluid d-flex justify-content-center" style="display: visible">
                     <?php echo do_shortcode('[plot_shortcode control_forms="FULL"]'); ?>
-                    <div class="row d-flex justify-content-center">
-                        <div class="col>">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div id="plot-image-container" class="container-fluid">
-                                        <!--
-                                        <table class="table" style="table-layout: auto;">
-                                            <tbody id="plot-table-tbody">
-                                                <tr>
-                                                    <td colspan="3" class="text-center p-2">
-                                                        <img id="topBarImage" class="img-fluid">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-center align-middle p-2" style="width: auto;">
-                                                        <img id="leftBarImage" class="img-fluid">
-                                                    </td>
-                                                    <td class="text-center align-middle p-2">
-                                                        <div id="table-image-container">
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-center align-middle p-2" style="width: auto;">
-                                                        <img id="rightBarImage" class="img-fluid">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td class="text-center align-middle p-2">
-                                                        <img id="bottomBarImage" class="img-fluid mx-auto d-block" style="max-width: 758px; height: auto;">
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        -->
-                                    </div>
-
-
-                                    <!--
-                                    <table id="plot-table">
-                                        <tbody id="plot-table-tbody">
-                                            <tr>
-                                                <td colspan="3">
-                                                    <img id="topBarImage" height="64px"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><img id="leftBarImage" width="64px" /></td>
-                                                <td>
-                                                    <div id="plot">
-                                                        <div id="plot-loading"></div>
-                                                        <div id="plotMap">
-                                                            <img id="plotMap-image" src="" style="width: 100%; height: 100%;"/>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td><img id="rightBarImage" width="64px" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3">
-                                                    <img id="bottomBarImage" height="64px" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    -->
-                                    <h5 id="card_title" class="card-title"></h5>
-                                    <p id="card_text" class="card-text"></p>
-                                </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="plot-image-container" class="container-fluid">
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Chart -->
                 <p>
                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#chart-collapse" aria-expanded="false" aria-controls="chart-collapse">
                         Show chart
                     </button>
                 </p>
-                <!-- Chart -->
                 <div class="collapse" id="chart-collapse">
                     <div class="chart-container container-fluid">
                         <?php echo do_shortcode('[chart_shortcode]'); ?>
@@ -188,11 +123,6 @@ get_header();
                                         <div id="chart" style="height: 50vh">
                                             <div id="chart-box" class="box">
                                                 <div id="chart-container-canvasDiv" style="height: 50vh; width: inherit">
-                                                    <!--
-                                                    <div id="chart-container-canvasjs" class="canvasjs-chart-container">
-                                                        
-                                                    </div>
-                                                    -->
                                                 </div>
                                             </div>
                                         </div>
@@ -204,8 +134,9 @@ get_header();
                 </div>
 
                 <!-- Real-time chart -->
+                <!--
                 <div id="real-time-chart-container" class="container-fluid">
-                    <?php echo do_shortcode('[live_chart_shortcode]'); ?>
+                    <?php //echo do_shortcode('[live_chart_shortcode]'); ?>
                     <div class="real-time-chart-container">
                         <div id="controls">
                             <label for="real-time-chart-select">
@@ -230,6 +161,7 @@ get_header();
                         </div>
                     </div>
                 </div>
+                -->
             </div>
         </article>
     </main>
