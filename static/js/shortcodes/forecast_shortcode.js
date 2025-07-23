@@ -186,10 +186,10 @@ let hourlyForecastData = {};
                         row += '  <td class="forecast-td-data ">'
                         row += '    <a class="forecast-link" href="' + val['link'] + '" target="_blank" class="day" title="Meteo ' + forecastData['long_name_it'] + ' - ' + weekDayLabel + ' ' + monthDay + '" >';
                         row += weekDayLabel + ", " + monthDay;
-                        row += '    </a><br/><br/>';
+                        row += '    </a><br/>';
 
-                        row += '<button id="'+val['dateTime']+'-button" class="btn btn-sm btn-primary ml-2" data-toggle="collapse" data-target="#'+val['dateTime']+'-collapse">Show hourly forecast</button>';
-
+                        row += '<button id="'+val['dateTime']+'-button" class="btn btn-sm btn-primary ml-2" data-toggle="collapse" data-target="#'+val['dateTime']+'-collapse">+</button>';
+                        
                         row += '  <br/></td>';
                         row += '  <td class="forecast-td-data ">';
                         row += '  <img class="forecast-image" src="' + wIconUrl + '" class="weathericon" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
@@ -222,7 +222,7 @@ let hourlyForecastData = {};
                 subtable += '<td colspan="7">'; // 7 colonne per daybox
                 subtable += '<table class="table table-sm table-bordered">';
                 subtable += '<thead>' + 
-                        '<tr><th>Hour</th><th>Forecast</th><th>T °C</th><th>Wind (kn)</th><th>Rain (mm)</th></tr>' +
+                        '<tr><th>Hour</th><th>Forecast</th><th>T °C</th><th colspan=2>Wind (kn)</th><th>Rain (mm)</th></tr>' +
                         '</thead>' +
                         '<tbody>';
 
@@ -236,8 +236,9 @@ let hourlyForecastData = {};
                         subtable += '<td class="forecast-td-data">';
                         subtable += '<img class="forecast-image" src="' + wIconUrl + '" class="weathericon" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
                         subtable += '</td>';
-                        subtable += '<td class="forecast-td-data">'+value['t2c']+'</td>';
+                        subtable += '<td class="forecast-td-data">'+ value['t2c'] +'</td>';
                         subtable += '<td class="forecast-td-data">' + value['winds'] + '</td>';
+                        subtable += '<td class="forecast-td-data ">' + val['ws10n'] + '</td>';
                         subtable += '<td class="forecast-td-data">' + value['crh'] + '</td>';
                         subtable += '</tr>';
                     });
@@ -260,12 +261,20 @@ let hourlyForecastData = {};
 
                 $('#'+val['dateTime']+'-button').on('click', function () {
                     let $this = $(this);
+                    if( $this.text() === "+"){
+                        $this.text('-');
+                    }
+                    else{
+                        $this.text('+');
+                    }
+                    /*
                     if( $this.text() === "Show hourly forecast"){
                         $this.text('Hide');
                     }
                     else{
                         $this.text('Show hourly forecast');
                     }
+                    */
                 });
 
             });

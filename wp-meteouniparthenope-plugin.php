@@ -158,9 +158,9 @@ class MeteoUniParthenopePluginMain{
 
         //IMPORT places
         if (isset($_POST['meteounipplugin_import_places']) && check_admin_referer('meteounipplugin_import_nonce')) {
-            $api_url="https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06"; //594 places
+            //$api_url="https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06"; //594 places
             //$api_url = "https://api.meteo.uniparthenope.it/places/search/bycoords/40.83/14.24"; //Pochi per prova
-            //$api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
+            $api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
             //2,3) Richiesta recupero dati e recupero JSON
             $api = new PlacesAPI;
             $jsonString = $api->getData($api_url);

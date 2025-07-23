@@ -21,7 +21,8 @@ class WPPlaceExecutor
             return 1; // L'oggetto non ha i metodi richiesti
         }
 
-        $title = sanitize_text_field($place->getName());
+        $title = sanitize_text_field($place->getLongName());
+        $shortName = sanitize_text_field($place->getName());
         $longName = sanitize_text_field($place->getLongName());
         $idPlace = sanitize_text_field($place->getID());
         $pos = method_exists($place, 'getPos') ? $place->getPos() : [];
@@ -60,6 +61,7 @@ class WPPlaceExecutor
 
         // Salvataggio dei meta fields
         update_post_meta($wp_post_id, 'place_id', $idPlace);
+        update_post_meta($wp_post_id, 'short_name', $shortName);
         update_post_meta($wp_post_id, 'long_name_it', $longName);
         update_post_meta($wp_post_id, 'domain', $domain);
 
@@ -107,15 +109,6 @@ class WPPlaceExecutor
         }
 
         return 0; // Tutto ok
-    }
-
-    function card_to_array(Card $card): array
-    {
-        return [
-            'imageUrl' => $card->getImageUrl(),
-            'summaryText' => $card->getSummaryText(),
-            'buttonText' => $card->getButtonText(),
-        ];
     }
 }
 
