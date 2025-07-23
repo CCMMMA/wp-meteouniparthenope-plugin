@@ -15,14 +15,25 @@ class ControlFormDate{
         this.$inputDate = jQuery('<input type="date" id="'+this.dateInputID+'">');
         this.$inputTimeSelect = jQuery('<select id="'+this.timeInputID+'"></select>');
         this.populateTimeSelect();
+        this.setCurrentDateTime();
         this.$divContainer.append(this.$inputDate);
         this.$divContainer.append(this.$inputTimeSelect);
-
-        console.log(this.$divContainer);
     }
 
     getContainer(){
         return this.$divContainer;
+    }
+
+    getDateInput(){
+        return this.$inputDate;
+    }
+
+    getTimeInput(){
+        return this.$inputTimeSelect;
+    }
+
+    getCombinedInputs(){
+        return this.$inputDate.add(this.$inputTimeSelect);
     }
 
     populateTimeSelect(){
@@ -36,7 +47,25 @@ class ControlFormDate{
         }
     }
 
-    setContainerAttrAttribute(attribute, value){
+    setCurrentDateTime() {
+        const now = new Date();
+        
+        // Imposta la data corrente nel campo date
+        const year = now.getFullYear();
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const day = now.getDate().toString().padStart(2, '0');
+        const currentDate = `${year}-${month}-${day}`;  
+        
+        this.$inputDate.val(currentDate);
+        
+        // Imposta l'ora corrente nella select
+        const currentHour = now.getHours().toString().padStart(2, '0');
+        const currentTime = currentHour + ':00';
+        
+        this.$inputTimeSelect.val(currentTime);
+    }
+
+    setContainerAttribute(attribute, value){
         this.$divContainer.attr(attribute, value);
     }
 

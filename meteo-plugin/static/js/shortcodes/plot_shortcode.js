@@ -106,11 +106,11 @@ function initializeShortcode(plotData, shortcode_id){
                             //$('#plot-table-tbody').show();
                         }
                     });
-                    
-                    $('#try-it-out-button').on('click', function(){
-                        let selectedDate = $('#'+controlSelectDate).val();
-                        let selectedTime = $('#'+controlSelectTime).val();
-
+                    $dateSelect = $('#'+controlSelectDate);
+                    $timeSelect = $('#'+controlSelectTime);
+                    $dateSelect.add($timeSelect).change(function(){
+                        selectedDate = $dateSelect.val();
+                        selectedTime = $timeSelect.val();
                         let plotObj = new MeteoPlot({
                             apiBaseURL: apiBaseUrl,
                             place: plotData['place_id'],
@@ -118,7 +118,6 @@ function initializeShortcode(plotData, shortcode_id){
                             output: plotData['output'],
                             dateTime: DateFormatter.formatFromDateToAPI(selectedDate,selectedTime)
                         });
-                        
                         $divPlotContainer.empty();
                         $divPlotContainer.append($loadingDiv);
                         
@@ -140,9 +139,8 @@ function initializeShortcode(plotData, shortcode_id){
                                 //$('#plot-loading').hide();
                                 //$('#plot-table-tbody').show();
                             }
-                        }); 
+                        });
                     });
-
                     break;
                 }
                 case "FULL":{

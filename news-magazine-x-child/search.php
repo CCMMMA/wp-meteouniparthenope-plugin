@@ -78,7 +78,7 @@ get_header();
                                     <div class="meteo-preview">
                                         <h4><?php echo esc_html__('Previsioni Meteo', 'news-magazine-x-child'); ?></h4>
                                         <?php 
-                                        $shortcode = '[plot_shortcode shortcode_id="' . get_the_ID() . '" control_form="STANDALONE" place="'.$place_id.'" product="wrf5" output="gen"]';
+                                        $shortcode = '[plot_shortcode shortcode_id="' . get_the_ID() . '" control_forms="STANDALONE" place="'.$place_id.'" product="wrf5" output="gen"]';
                                         echo do_shortcode($shortcode);
                                         ?>
                                     </div>
