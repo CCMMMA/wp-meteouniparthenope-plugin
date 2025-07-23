@@ -1,6 +1,6 @@
 (function($){
-    let controlFormDateInput ={containerID: 'id-prova', dateInputID: 'control-select-date-prova', timeInputID: 'control-select-time-prova'};
-    let prova = new ControlFormDate(controlFormDateInput);
+    let controlFormDateInput ={containerID: 'id', dateInputID: 'control-select-date', timeInputID: 'control-select-time'};
+    let controlFormDateObj = new ControlFormDate(controlFormDateInput);
     $divShortcodeRoot = $('#date_control_shortcode-root');
     $divDateControl = $('<div>').attr('id','date-control-form-container');
     $divDateControl.append('<div id="datetime-control-container" class="container-fluid" style="display: visible">'+
@@ -22,13 +22,13 @@
 
     $divShortcodeRoot.append($divDateControl);
     
-    prova.appendInputDateClass("form-control");
+    controlFormDateObj.appendInputDateClass("form-control");
     let $divDateContainer = $('<div>').attr('class','input-group mb-3');
-    $divDateContainer.append(prova.getDateInput());
+    $divDateContainer.append(controlFormDateObj.getDateInput());
     $('#datetime-control-form').append($divDateContainer);
     
-    prova.appendInputTimeClass("form-control");
+    controlFormDateObj.appendInputTimeClass("form-control");
     let $divTimeContainer = $('<div>').attr('class','input-group mb-3');
-    $divTimeContainer.append(prova.getTimeInput());
+    $divTimeContainer.append(controlFormDateObj.getTimeInput());
     $('#datetime-control-form').append($divTimeContainer);
 })(jQuery)
