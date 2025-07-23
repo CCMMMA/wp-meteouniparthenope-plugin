@@ -22,6 +22,13 @@
 
     $divShortcodeRoot.append($divDateControl);
     
+    let nowDate = new Date();
+    let maxDate = new Date(nowDate);
+    maxDate.setDate(maxDate.getDate() + 4);
+    let maxMonth = ((maxDate.getMonth() + 1) < 10 ? '0' + (maxDate.getMonth() + 1) : (maxDate.getMonth() + 1));
+    let maxDay = (maxDate.getDate() < 10 ? '0' + maxDate.getDate() : maxDate.getDate());
+    controlFormDateObj.setInputDateAttribute('max',maxDate.getFullYear() + '-' + maxMonth + '-' + maxDay);
+    
     controlFormDateObj.appendInputDateClass("form-control");
     let $divDateContainer = $('<div>').attr('class','input-group mb-3');
     $divDateContainer.append(controlFormDateObj.getDateInput());
@@ -31,4 +38,5 @@
     let $divTimeContainer = $('<div>').attr('class','input-group mb-3');
     $divTimeContainer.append(controlFormDateObj.getTimeInput());
     $('#datetime-control-form').append($divTimeContainer);
+
 })(jQuery)

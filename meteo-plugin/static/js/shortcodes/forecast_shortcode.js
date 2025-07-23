@@ -24,9 +24,9 @@ let hourlyForecastData = {};
         $loadingDiv.attr('id','loading-div');
         let $loadingGif = $('<img>').attr('id','loading-gif');
         let hour = new Date().getHours();
-        console.log(hour);
+        
         let gif = hour >=7 && hour < 19 ? "day_loading.gif" : "night_loading.gif";
-        console.log(gif);
+        
         $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/" + gif);
         $loadingDiv.append($loadingGif);
 
@@ -37,11 +37,7 @@ let hourlyForecastData = {};
             let forecastUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+place+"?hours="+hours+"&step="+step;
             
             console.log("forecastUrl: " + forecastUrl);
-            /*
-            if (currentForecastRequest && currentForecastRequest.readyState !== 4) {
-                currentForecastRequest.abort();
-            }
-            currentForecastRequest = */
+
             let timeseriesUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+forecastData['place_id']+"?hours=0&step=1";
             $.getJSON(timeseriesUrl, function(data){
                 let keyToAppend = null;
@@ -60,20 +56,17 @@ let hourlyForecastData = {};
                     type: 'GET',
                     dataType: 'json',
                     success: function(data){
-                        //console.log(data);
                         $loadingDiv.hide();
                         printForecast(data);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        //console.log("Error:"+textStatus);
+
                     },
                     complete: function(){
-                        //console.log("Completata")
+                        
                     }
                 });
             });
-            console.log(hourlyForecastData);
-            //console.log(forecastUrl);
         }
         function printForecast(data){
             let timeseriesData = data['timeseries'];
@@ -93,7 +86,7 @@ let hourlyForecastData = {};
             table.attr('cellspacing','0');
             table.attr('cellpadding','0');
             table.attr('border','0');
-            //table.attr( 'style','display:'+display);
+            
             let $forecastTitleDiv = $('#forecast-box-title');
             let $forecastDiv = $('#forecast-box');
             $forecastTitleDiv.append('<div class="forecast-title">'+forecastData['long_name_it']+'</div>');
@@ -224,9 +217,6 @@ let hourlyForecastData = {};
                 }
                 row+='</tr>';
                 table.append(row);
-
-                //Sub tabella
-                //let subtable = '<tr class="collapse" id="'+val['dateTime']+'-collapse"><td colspan="3"><table class="table table-sm table-bordered"><thead><tr><th>Sub A</th><th>Sub B</th></tr></thead><tbody><tr><td>1A</td><td>1B</td></tr></tbody></table></td></tr>';
                 
                 let subtable = '<tr class="collapse" id="'+val['dateTime']+'-collapse">';
                 subtable += '<td colspan="7">'; // 7 colonne per daybox
@@ -236,7 +226,6 @@ let hourlyForecastData = {};
                         '</thead>' +
                         '<tbody>';
 
-                // Controlla se esistono dati orari per questa data
                 if (hourlyForecastData[val['dateTime']] && hourlyForecastData[val['dateTime']].length > 0) {
                     $.each(hourlyForecastData[val['dateTime']], function(key, value){
                         let subTableHour = DateFormatter.formatFromAPIToDateObj(value['dateTime']).getHours().toString().padStart(2, '0');
@@ -271,7 +260,6 @@ let hourlyForecastData = {};
 
                 $('#'+val['dateTime']+'-button').on('click', function () {
                     let $this = $(this);
-                    console.log("$this.text(): "+$this.text());
                     if( $this.text() === "Show hourly forecast"){
                         $this.text('Hide');
                     }
@@ -285,7 +273,7 @@ let hourlyForecastData = {};
             $(document).on('click', '.forecast-link', function(e){
                 e.preventDefault();
                 let obj = fromLinkToObject($(this).attr('href'));
-                //console.log(obj);
+                
                 $('#control-select-date').val(obj.date);
                 $('#control-select-time').val('00:00');
                 $('#control-select-product').val(obj.product);
@@ -305,7 +293,7 @@ let hourlyForecastData = {};
         };
         function monthOfYear(date) {
             let month = parseInt(date.substring(4, 6)) - 1;
-            ////console.log(month);
+            
             return isNaN(month) ? null : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month];
         };
         function formatDate(date) {
@@ -343,19 +331,19 @@ let hourlyForecastData = {};
             let step = 24;
 
             let forecastUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+defaultPlace+"?hours="+hours+"&step="+step;
-            //console.log(forecastUrl);
+            
             $.ajax({
                 url: forecastUrl,
                 type: 'GET',
                 dataType: 'json',
                 success: function(data){
-                    //console.log(data);
+                    
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    //console.log("Error:"+textStatus);
+                    
                 },
                 complete: function(){
-                    ////console.log("Completata");
+                    
                 }
             });
         });

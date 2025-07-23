@@ -1,19 +1,17 @@
 let currentPlotRequest = null;
 
-//Input da wordpress
-//let shortcode_id = plotData['shortcode_id'];
+//Wordpress input
 let formButton = 'generate-button';
 let controlSelectProductID = 'control-select-product';
 let controlSelectOutputID = 'control-select-output';
 let controlSelectDate = 'control-select-date';
 let controlSelectTime = 'control-select-time';
 
-// Per ogni shortcode, inizializza separatamente
+//Inizialization of all shortcodes
 Object.keys(allPlotData).forEach(function(key) {
     let plotData = allPlotData[key];
     let shortcode_id = plotData['shortcode_id'];
     
-    // Il tuo codice di inizializzazione qui, usando plotData e shortcode_id
     initializeShortcode(plotData, shortcode_id);
 });
 
@@ -56,7 +54,7 @@ function initializeShortcode(plotData, shortcode_id){
                         type: 'GET',
                         dataType: 'html',
                         success: function(data){
-                            // Mostra l'immagine
+                            
                         },
                         complete: function() {
                             $loadingDiv.hide();
@@ -64,9 +62,6 @@ function initializeShortcode(plotData, shortcode_id){
                             $plotImg.attr('src', plotObj.getImageUrl());
                             $plotImg.attr('class', "meteo-icon");
                             $divPlotContainer.append($plotImg);
-                            // Nasconde sempre la GIF, sia in caso di successo che errore
-                            //$('#plot-loading').hide();
-                            //$('#plot-table-tbody').show();
                         }
                     });
                     break;
@@ -93,7 +88,7 @@ function initializeShortcode(plotData, shortcode_id){
                         type: 'GET',
                         dataType: 'html',
                         success: function(data){
-                            // Mostra l'immagine
+                            
                         },
                         complete: function() {
                             $loadingDiv.hide();
@@ -101,9 +96,6 @@ function initializeShortcode(plotData, shortcode_id){
                             $plotImg.attr('src', plotObj.getImageUrl());
                             $plotImg.attr('class', "meteo-icon");
                             $divPlotContainer.append($plotImg);
-                            // Nasconde sempre la GIF, sia in caso di successo che errore
-                            //$('#plot-loading').hide();
-                            //$('#plot-table-tbody').show();
                         }
                     });
                     $dateSelect = $('#'+controlSelectDate);
@@ -127,7 +119,7 @@ function initializeShortcode(plotData, shortcode_id){
                             type: 'GET',
                             dataType: 'html',
                             success: function(data){
-                                // Mostra l'immagine
+                                
                             },
                             complete: function() {
                                 $loadingDiv.hide();
@@ -135,9 +127,6 @@ function initializeShortcode(plotData, shortcode_id){
                                 $plotImg.attr('src', plotObj.getImageUrl());
                                 $plotImg.attr('class', "meteo-icon");
                                 $divPlotContainer.append($plotImg);
-                                // Nasconde sempre la GIF, sia in caso di successo che errore
-                                //$('#plot-loading').hide();
-                                //$('#plot-table-tbody').show();
                             }
                         });
                     });
@@ -178,10 +167,9 @@ function initializeShortcode(plotData, shortcode_id){
                             type: 'GET',
                             dataType: 'html',
                             success: function(data){
-                                // Mostra l'immagine
+                                
                             },
                             complete: function() {
-                                // Nasconde sempre la GIF, sia in caso di successo che errore
                                 $('#plot-image-container').append($plotDiv);
                                 $loadingDiv.hide();
                                 $('#plot-image-container').show();
