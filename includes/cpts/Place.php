@@ -1,6 +1,11 @@
 <?php
 
-class Place extends MeteoCustomPostType{
+namespace includes\cpts;
+
+use includes\cpts\MeteoCustomPostType;
+
+class Place extends MeteoCustomPostType
+{
     private string $name;
     private string $longName;
     private string $IDPlace;
@@ -21,17 +26,17 @@ class Place extends MeteoCustomPostType{
     }
     */
 
-    
-    
+
     public function __construct(
         string $name,
         string $longName,
         string $IDPlace,
-        array $pos,
-        array $boundingBox,
+        array  $pos,
+        array  $boundingBox,
         string $domain,
-        array $availableProducts
-    ) {
+        array  $availableProducts
+    )
+    {
         $this->name = $name;
         $this->longName = $longName;
         $this->IDPlace = $IDPlace;
@@ -40,61 +45,75 @@ class Place extends MeteoCustomPostType{
         $this->domain = $domain;
         $this->availableProducts = $availableProducts;
     }
-    
 
-    function getName(): string{
+
+    function getName(): string
+    {
         return $this->name;
     }
 
-    function setName($name){
+    function setName($name)
+    {
         $this->name = $name;
     }
 
-    function getLongName(): string{
+    function getLongName(): string
+    {
         return $this->longName;
     }
 
-    function setLongName($longName){
+    function setLongName($longName)
+    {
         $this->longName = $longName;
     }
 
-    function getID(): string{
+    function getID(): string
+    {
         return $this->IDPlace;
     }
 
-    function setID($IDPlace){
+    function setID($IDPlace)
+    {
         $this->IDPlace = $IDPlace;
     }
 
-    function getPos(): array{
+    function getPos(): array
+    {
         return $this->pos;
     }
 
-    function setPos($pos){
+    function setPos($pos)
+    {
         $this->pos = $pos;
     }
 
-    function getBoundingBox(): array{
+    function getBoundingBox(): array
+    {
         return $this->boundingBox;
     }
 
-    function setBoundingBox($boundingBox){
+    function setBoundingBox($boundingBox)
+    {
         $this->boundingBox = $boundingBox;
     }
 
-    function getDomain(): string{
+    function getDomain(): string
+    {
         return $this->domain;
     }
 
-    function setDomain($domain){
+    function setDomain($domain)
+    {
         $this->domain = $domain;
     }
 
-    function getAvailableProducts(): array{
+    function getAvailableProducts(): array
+    {
         return $this->availableProducts;
     }
 
-    function setAvailableProducts($availableProducts){
+    function setAvailableProducts($availableProducts)
+    {
         $this->availableProducts = $availableProducts;
     }
 

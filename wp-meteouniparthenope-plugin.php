@@ -11,7 +11,11 @@
 //use Kirki\Section_Types\Expanded;
 
  //Security system
- if (!defined( 'ABSPATH' )) {
+use includes\API\PlacesAPI;
+use includes\executors\WPPlaceExecutor;
+use includes\JSONParser\PlaceParser;
+
+if (!defined( 'ABSPATH' )) {
     exit; // Exit if accessed directly
 }
 

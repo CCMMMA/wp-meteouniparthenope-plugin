@@ -1,7 +1,13 @@
 <?php
 
-class ProductParser implements JSONParser{
-    public function parseFromJSON($json): array{
+namespace includes\JSONParser;
+
+use includes\JSONParser\JSONParser;
+
+class ProductParser implements JSONParser
+{
+    public function parseFromJSON($json): array
+    {
         if (is_string($json)) {
             $data = json_decode($json, true);
         } elseif (is_array($json)) {

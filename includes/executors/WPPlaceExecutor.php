@@ -1,12 +1,19 @@
 <?php
 
-class WPPlaceExecutor{
-    
-    public function executePostCreation(Place $place): int{
+namespace includes\executors;
+
+use Card;
+use includes\API\PlacesAPI;
+use includes\cpts\Place;
+use includes\datauseuse includes\JSONParser\ProductParser;use WP_Query; includes\JSONParser\ProductParser;class WPPlaceExecutor
+{
+
+    public function executePostCreation(Place $place): int
+    {
         if (
             !method_exists($place, 'getName') ||
             !method_exists($place, 'getLongName') ||
-            !method_exists($place, 'getID')    ) {
+            !method_exists($place, 'getID')) {
             return 1; // L'oggetto non ha i metodi richiesti
         }
 
@@ -22,11 +29,11 @@ class WPPlaceExecutor{
 
         // Controllo se esiste già
         $args = [
-            'post_type'      => 'place',
-            'title'          => $title,
-            'post_status'    => 'any',
+            'post_type' => 'place',
+            'title' => $title,
+            'post_status' => 'any',
             'posts_per_page' => 1,
-            'fields'         => 'ids',
+            'fields' => 'ids',
         ];
 
         $query = new WP_Query($args);
@@ -37,10 +44,10 @@ class WPPlaceExecutor{
 
         // Inserimento post con contenuto minimo
         $wp_post_id = wp_insert_post([
-            'post_title'   => $title,
+            'post_title' => $title,
             'post_content' => '', // Contenuto vuoto, useremo i meta fields
-            'post_status'  => 'publish',
-            'post_type'    => 'place',
+            'post_status' => 'publish',
+            'post_type' => 'place',
         ]);
 
         if (is_wp_error($wp_post_id) || !$wp_post_id) {
@@ -51,7 +58,7 @@ class WPPlaceExecutor{
         update_post_meta($wp_post_id, 'place_id', $idPlace);
         update_post_meta($wp_post_id, 'long_name_it', $longName);
         update_post_meta($wp_post_id, 'domain', $domain);
-        
+
         // Salvo le coordinate come JSON
         if (!empty($pos)) {
             update_post_meta($wp_post_id, 'coordinates', json_encode($pos));
@@ -64,8 +71,8 @@ class WPPlaceExecutor{
 
         // Salvo i modelli consentiti come JSON
         $api = new PlacesAPI;
-        $api_url = "https://api.meteo.uniparthenope.it/places/". $idPlace;
-        $apiProducts =  $api->getData($api_url);
+        $api_url = "https://api.meteo.uniparthenope.it/places/" . $idPlace;
+        $apiProducts = $api->getData($api_url);
         console_log($apiProducts);
         $parser = new ProductParser;
         $availableProducts = $parser->parseFromJSON($apiProducts);
@@ -75,14 +82,15 @@ class WPPlaceExecutor{
         if (!empty($availableProducts)) {
             update_post_meta($wp_post_id, 'available_products', json_encode($availableProducts));
         }
-        
+
         return (is_wp_error($wp_post_id) || !$wp_post_id) ? 1 : 0;
     }
 
     /**
      * @param Place[] $placesList
      */
-    public function executePostsCreation(array $placesList): int{
+    public function executePostsCreation(array $placesList): int
+    {
         if (!is_array($placesList)) {
             return 1; // Input non valido
         }
@@ -93,17 +101,18 @@ class WPPlaceExecutor{
                 return 1; // Almeno un errore nella creazione
             }
         }
-        
+
         return 0; // Tutto ok
     }
 
-    function card_to_array(Card $card): array {
-    return [
-        'imageUrl' => $card->getImageUrl(),
-        'summaryText' => $card->getSummaryText(),
-        'buttonText' => $card->getButtonText(),
-    ];
-}
+    function card_to_array(Card $card): array
+    {
+        return [
+            'imageUrl' => $card->getImageUrl(),
+            'summaryText' => $card->getSummaryText(),
+            'buttonText' => $card->getButtonText(),
+        ];
+    }
 }
 
 ?>

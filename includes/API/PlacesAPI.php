@@ -1,10 +1,16 @@
 <?php
 
-class PlacesAPI implements MeteoAPI{
+namespace includes\API;
 
-    function getData(string $url): string{
+use includes\API\MeteoAPI;
+
+class PlacesAPI implements MeteoAPI
+{
+
+    function getData(string $url): string
+    {
         //console_log($url);
-        $response = wp_remote_get($url,array('sslverify' => FALSE));
+        $response = wp_remote_get($url, array('sslverify' => FALSE));
 
         if (is_wp_error($response)) {
             throw new Exception('Errore nella richiesta: ' . $response->get_error_message());
