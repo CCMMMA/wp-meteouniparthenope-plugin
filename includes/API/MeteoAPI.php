@@ -1,6 +1,8 @@
 <?php
 
-interface MeteoAPI{
+namespace includes\API;
+interface MeteoAPI
+{
     function getData(string $url): string;
 }
 
