@@ -102,7 +102,7 @@ let controlDefaultOutput = "gen";
 
         let nowDate = new Date();
         let maxDate = new Date(nowDate);
-        maxDate.setDate(maxDate.getDate() + 5);
+        maxDate.setDate(maxDate.getDate() + 6);
         let maxMonth = ((maxDate.getMonth() + 1) < 10 ? '0' + (maxDate.getMonth() + 1) : (maxDate.getMonth() + 1));
         let maxDay = (maxDate.getDate() < 10 ? '0' + maxDate.getDate() : maxDate.getDate());
         $('#'+controlSelectDate).attr('max', maxDate.getFullYear() + '-' + maxMonth + '-' + maxDay);

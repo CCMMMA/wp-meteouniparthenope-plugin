@@ -33,6 +33,8 @@ spl_autoload_register(function ($class_name) {
 });
 
 class MeteoUniParthenopePluginMain{
+    private $CPTPlaces = array();
+
     function __construct()
     {
         //Registrazione del CTP del place
@@ -59,6 +61,10 @@ class MeteoUniParthenopePluginMain{
         add_shortcode('chart_shortcode', [$this,'chart_shortcode_callback']);
         add_shortcode('map_shortcode', [$this,'map_shortcode_callback']);
         add_shortcode('live_chart_shortcode',[$this,'live_chart_shortcode_callback']);
+        add_shortcode('autocomplete_search_shortcode',[$this,'autocomplete_search_shortcode_callback']);
+
+        //Other plugins functionalities
+        add_filter('the_content', [$this,'meteounipplugin_autocomplete_search_injection']);
     }
 
     //1) "Place" CPT registration
@@ -543,6 +549,49 @@ class MeteoUniParthenopePluginMain{
         );
     }
 
+    function autocomplete_search_shortcode_callback($atts){
+        $CPTPlaces = array();    
+        // Query per recuperare tutti i post del custom post type "place"
+        $args = array(
+            'post_type' => 'place',
+            'post_status' => 'publish',
+            'posts_per_page' => -1, // -1 per recuperare tutti i post
+            'orderby' => 'title',
+            'order' => 'ASC'
+        );
+        
+        $places_query = new WP_Query($args);
+        
+        if ($places_query->have_posts()) {
+            while ($places_query->have_posts()) {
+                $places_query->the_post();
+                
+                // Crea l'array associativo con titolo => link
+                $CPTPlaces[get_the_title()] = get_permalink();
+            }
+            wp_reset_postdata();
+        }
+
+        wp_enqueue_script(
+            'autocomplete-search-shortcode-js',
+            plugin_dir_url(__FILE__) . 'static/js/shortcodes/autocomplete_search_shortcode.js',
+            [],
+            null,
+            true
+        );
+
+        wp_localize_script('autocomplete-search-shortcode-js','CPTPlaces', $CPTPlaces);
+
+        return '<div id="autocomplete_search_shortcode-root"></div>';
+    }
+
+    function meteounipplugin_autocomplete_search_injection($content){
+        if( is_search() || is_home() ){
+        }
+        $content = '[autocomplete_search_shortcode]' . $content;
+        return $content;
+    }
+
 
     function meteounipplugin_enqueue_frontend_tecnologies(){
         wp_enqueue_style(
@@ -575,6 +624,22 @@ class MeteoUniParthenopePluginMain{
             true
         );
         */
+
+        // jQueryUI
+        wp_enqueue_script(
+            'jQueryUI-js',
+            'https://code.jquery.com/ui/1.14.1/jquery-ui.js',
+            array(),
+            '1.14.1',
+            true
+        );
+        wp_enqueue_style(
+            'jQueryUI-css',
+            'https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css',
+            array(),
+            '1.14.1',
+            true
+        );
 
         if (is_singular('place')) {
 
