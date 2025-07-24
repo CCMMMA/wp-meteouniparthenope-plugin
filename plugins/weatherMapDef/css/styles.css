@@ -1,0 +1,361 @@
+/* GLOBAL SETTINGS */
+:root {
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --color-white-soft: rgba(255, 255, 255, 0.9);
+    --color-white-border: rgba(255, 255, 255, 0.2);
+    --color-white-border-hover: rgba(255, 255, 255, 0.3);
+    --gradient-main: linear-gradient(135deg, rgba(173, 216, 230, 1) 0%, rgba(69, 139, 177, 1) 50%, rgba(25, 84, 122, 1) 100%);
+    --gradient-active: linear-gradient(135deg, rgba(120, 180, 210, 1), rgba(69, 139, 177, 1));
+    --gradient-card: linear-gradient(135deg, rgba(173, 216, 230, 1) 0%, rgba(69, 139, 177, 1) 50%, rgba(25, 84, 122, 1) 100%);
+
+    --shadow-soft: 0 8px 32px rgba(102, 126, 234, 0.15);
+    --shadow-hover: 0 15px 35px rgba(102, 126, 234, 0.2);
+    --blur: blur(10px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+}
+
+.weatherContainer {
+    position: relative;
+    z-index: 1;
+}
+
+.weatherHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    margin: 1.25rem auto 0.625rem auto;
+    padding: 1.25rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.selectorWrapper {
+    background: var(--gradient-main);
+    padding: 1.875rem;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.selectorWrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.daySelectorRow,
+.hourSelectorRow {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.dayCard,
+.hourCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.25rem;
+    min-width: 5rem;
+    font-family: var(--font-main);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-white-soft);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--color-white-border);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.dayCard::before,
+.hourCard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dayCard:hover::before,
+.hourCard:hover::before {
+    opacity: 1;
+}
+
+.dayCard:hover,
+.hourCard:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border-color: var(--color-white-border-hover);
+}
+
+.dayCard:focus-visible,
+.hourCard:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 4px;
+}
+
+.dayCard.active,
+.hourCard.active {
+    background: var(--gradient-active);
+    color: white;
+    border-color: var(--color-white-border-hover);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    animation: pulse 2s infinite;
+}
+
+.dayCard .label,
+.dayCard .weekday {
+    font-weight: 600;
+}
+
+.dayCard .weekday {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.weatherCorpus {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 1.25rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.25rem;
+    animation: fadeIn 1s ease-out 0.3s both;
+}
+
+.weatherHeader h1 {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    gap: 8px; /* spazio tra icona e testo */
+}
+
+.weatherIcon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.mainMap { grid-column: 1 / 3; grid-row: 1 / 3; }
+.precipitationMap { grid-column: 1 / 2; grid-row: 3 / 4; }
+.airQualityMap { grid-column: 2 / 3; grid-row: 3 / 4; }
+.wavesMap { grid-column: 3 / 4; grid-row: 1 / 2; }
+.currentsMap { grid-column: 3 / 4; grid-row: 2 / 3; }
+
+.weatherCorpus > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    background: var(--gradient-card);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+    box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.weatherCorpus > div::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.weatherCorpus > div:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.weatherCorpus > div:hover::before {
+    opacity: 1;
+}
+
+.weatherCorpus h1 {
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.weatherCorpus img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.weatherCorpus img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.weatherCorpus img.loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: loading 1.5s infinite;
+}
+
+.selectorWrapper h1 {
+    color: white;
+    justify-content: center;
+    text-align: center;
+}
+
+
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@media (max-width: 768px) {
+    .weatherCorpus {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5, auto);
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .selectorWrapper {
+        padding: 1.25rem;
+        margin-bottom: 0.625rem;
+    }
+
+    .daySelectorRow,
+    .hourSelectorRow {
+        gap: 0.75rem;
+    }
+
+    .dayCard,
+    .hourCard {
+        min-width: 4.375rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.8125rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .weatherHeader {
+        margin: 0.9375rem auto 0.3125rem auto;
+        padding: 1rem;
+    }
+
+    .selectorWrapper {
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .daySelectorRow,
+    .hourSelectorRow {
+        gap: 0.5rem;
+    }
+
+    .dayCard,
+    .hourCard {
+        min-width: 3.75rem;
+        padding: 0.625rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .weatherCorpus {
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .weatherCorpus > div {
+        padding: 1rem;
+    }
+
+    .weatherCorpus h1 {
+        font-size: 1rem;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
