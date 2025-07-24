@@ -61,10 +61,10 @@ get_header();
                                     <div class="card-body">
                                         <label for="input-group mb-3">Date and time:</label>
                                         <div class="input-group mb-3">
-                                            <input class="form-control" type="date" id="control-select-date">
+                                            <input class="form-control plot-control-forms" type="date" id="control-select-date">
                                         </div>
                                         <div class="input-group mb-3">
-                                            <select class="form-control" id="control-select-time"></select>
+                                            <select class="form-control plot-control-forms" id="control-select-time"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@ get_header();
                                     <div class="card-body">
                                         <label for="control-select-product">Products:</label>
                                         <div class="input-group mb-3">
-                                            <select class="form-control" id="control-select-product">
+                                            <select class="form-control plot-control-forms" id="control-select-product">
                                             </select>
                                         </div>
                                     </div>
@@ -85,14 +85,16 @@ get_header();
                                     <div class="card-body">
                                         <label for="control-select-product">Outputs:</label>
                                         <div class="input-group mb-3">
-                                            <select class="form-control" id="control-select-output">
+                                            <select class="form-control plot-control-forms" id="control-select-output">
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!--
                         <button type="button" class="btn btn-outline-primary" id="generate-button">Generate plot</button>
+                        -->
                     </div>
                 </div>
 

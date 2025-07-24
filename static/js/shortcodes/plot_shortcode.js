@@ -133,7 +133,9 @@ function initializeShortcode(plotData, shortcode_id){
                     break;
                 }
                 case "FULL":{
-                    $('#'+formButton).on('click',function(){
+                    let $controlForms = $('.plot-control-forms');
+
+                    $controlForms.change(function(){
                         let plotPlaceID = plotData['place_id'];
                         let plotProduct = $('#'+controlSelectProductID).val();
                         let plotOutput = $('#'+controlSelectOutputID).val();
@@ -177,7 +179,14 @@ function initializeShortcode(plotData, shortcode_id){
                         });
                     });
 
-                    $('#'+formButton).click();
+                    $('#'+controlSelectOutputID).trigger('change');
+
+                    /*
+                    $('#'+formButton).on('click',function(){
+                    });
+                    */
+
+                    //$('#'+formButton).click();
                     break;
                 }
             }
