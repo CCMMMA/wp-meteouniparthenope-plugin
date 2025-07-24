@@ -25,7 +25,8 @@ let defaultCharOutput = "gen";
         let ncepDate = formatDateForMeteoAPI(null,null);
         drawChart(product,output,ncepDate);
         
-        $('#generate-button').on('click',function(){
+        //$('#generate-button').on('click',function(){
+        $('.plot-control-forms').on('change',function(){
             $chartBoxCanvaJS.empty();
             
             let $selectProduct = $('#control-select-product');
