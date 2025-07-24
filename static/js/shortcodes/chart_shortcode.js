@@ -5,6 +5,9 @@ let chartStep = 1;
 
 let loadedChart = {};
 
+let defaultChartProduct = "wrf5";
+let defaultCharOutput = "gen";
+
 (function($){
     $(document).ready(function() {
         let $loadingDiv = $('<div>').attr('class','loading-gif');
@@ -17,9 +20,10 @@ let loadedChart = {};
 
         let $chartBoxCanvaJS = $('#chart-container-canvasDiv');
         $chartBoxCanvaJS.append($loadingDiv);
-        let product;
-        let output;
-        let ncepDate;
+        let product = defaultChartProduct;
+        let output = defaultCharOutput;
+        let ncepDate = formatDateForMeteoAPI(null,null);
+        drawChart(product,output,ncepDate);
         
         $('#generate-button').on('click',function(){
             $chartBoxCanvaJS.empty();
