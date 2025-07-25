@@ -89,6 +89,8 @@ class WPPlaceExecutor
             update_post_meta($wp_post_id, 'available_products', json_encode($availableProducts));
         }
 
+        $place->setWordpressID($wp_post_id);
+
         return (is_wp_error($wp_post_id) || !$wp_post_id) ? 1 : 0;
     }
 

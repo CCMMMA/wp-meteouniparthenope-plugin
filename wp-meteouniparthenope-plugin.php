@@ -159,14 +159,17 @@ class MeteoUniParthenopePluginMain{
     }
 
     // 5. API import function in the "Utility" menu page
+    //$api_url="https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06"; //594 places
+    //$api_url = "https://api.meteo.uniparthenope.it/places/search/bycoords/40.83/14.24"; //Pochi per prova
+    //$api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
     function meteounipplugin_render_utility_page() {
         echo '<div class="wrap"><h1>Importa Places da API</h1>';
 
         //IMPORT places
         if (isset($_POST['meteounipplugin_import_places']) && check_admin_referer('meteounipplugin_import_nonce')) {
             //$api_url="https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06"; //594 places
-            //$api_url = "https://api.meteo.uniparthenope.it/places/search/bycoords/40.83/14.24"; //Pochi per prova
-            $api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
+            $api_url = "https://api.meteo.uniparthenope.it/places/search/bycoords/40.83/14.24"; //Pochi per prova
+            //$api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
             //2,3) Richiesta recupero dati e recupero JSON
             $api = new PlacesAPI;
             $jsonString = $api->getData($api_url);
@@ -325,8 +328,6 @@ class MeteoUniParthenopePluginMain{
         return $template;
     }
 
-    
-
     // Forecast shortcode
     function forecast_shortcode_callback($atts) {
         $post_id = get_the_ID();
@@ -353,7 +354,7 @@ class MeteoUniParthenopePluginMain{
         return '<div id="forecast_shortcode-root"></div>';
     }
 
-    // Plot shortcode
+    // Control shortcode
     function control_shortcode_callback($atts) {
         //Ottenimento dei metadati salvati
         $post_id = get_the_ID();
@@ -388,7 +389,7 @@ class MeteoUniParthenopePluginMain{
         return '<div id="control_shortcode-root"></div>';
     }
 
-    // Plot shortcode
+    // Date and time forms shortcode
     function date_control_shortcode_callback($atts) {
         wp_enqueue_script(
             'control-shortcode-js',
@@ -446,7 +447,7 @@ class MeteoUniParthenopePluginMain{
         return $returnString ? $returnString : '<div id="plot_shortcode-root"></div>';
     }
 
-    // chart shortcode
+    // Chart shortcode
     function chart_shortcode_callback($atts) {
         $post_id = get_the_ID();
         $placeID = get_post_meta($post_id, 'place_id', true);
@@ -470,6 +471,7 @@ class MeteoUniParthenopePluginMain{
         return '<div id="chart_shortcode-root"></div>';
     }
 
+    // Map shortcode
     function map_shortcode_callback($atts){
         $post_id = get_the_ID();
         $placeID = get_post_meta($post_id, 'place_id', true);
@@ -497,6 +499,7 @@ class MeteoUniParthenopePluginMain{
         return '<div id="map_shortcode-root"></div>';
     }
 
+    // Live chart shortcode
     function live_chart_shortcode_callback(){
         wp_enqueue_script(
             'live-chart-shortcode-js',
@@ -509,7 +512,32 @@ class MeteoUniParthenopePluginMain{
         return '<div id="live_chart_shortcode-root"></div>';
     }
 
+    // Open data shortcode
+    function open_data_shortcode_callback(){
+        $post_id = get_the_ID();
+        $placeID = get_post_meta($post_id, 'place_id', true);
+        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
+        $coordinates = get_post_meta($post_id, 'coordinates', true);
+        $bbox = get_post_meta($post_id, 'bbox', true);
 
+        $data = [
+            'place_id' => $placeID,
+        ];
+
+        wp_enqueue_script(
+            'open-data-shortcode-js',
+            plugin_dir_url(__FILE__) . 'static/js/shortcodes/open_data_shortcode.js',
+            [],
+            null,
+            true
+        );
+
+        wp_localize_script('open-data-shortcode-js', 'openDataData', $data);
+
+        return '<div id="open_data_shortcode-root"></div>';
+    }
+
+    // Global data
     function meteounipplugin_enqueue_global_data(){
         wp_enqueue_script(
             'global-data-js',
@@ -549,6 +577,7 @@ class MeteoUniParthenopePluginMain{
         );
     }
 
+    // Autocomplete shortcode
     function autocomplete_search_shortcode_callback($atts){
         $CPTPlaces = array();    
         // Query per recuperare tutti i post del custom post type "place"
@@ -585,6 +614,7 @@ class MeteoUniParthenopePluginMain{
         return '<div id="autocomplete_search_shortcode-root"></div>';
     }
 
+    // Autocomplete shortcode injection
     function meteounipplugin_autocomplete_search_injection($content){
         if( is_search() || is_home() ){
         }
@@ -592,7 +622,7 @@ class MeteoUniParthenopePluginMain{
         return $content;
     }
 
-
+    // Frontend files
     function meteounipplugin_enqueue_frontend_tecnologies(){
         wp_enqueue_style(
             'bootstrap-css',
@@ -716,6 +746,7 @@ class MeteoUniParthenopePluginMain{
         }
     }
 
+    // meteo@uniparthenope css syle
     function meteounipplugin_enqueue_custom_styles(){
         if (is_singular('place')) {
             wp_enqueue_style(

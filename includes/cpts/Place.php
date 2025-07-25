@@ -13,6 +13,7 @@ class Place extends MeteoCustomPostType
     private array $boundingBox;
     private string $domain;
     private array $availableProducts;
+    private $wordpressID;
 
     /*
     public function __construct()
@@ -44,6 +45,7 @@ class Place extends MeteoCustomPostType
         $this->boundingBox = $boundingBox;
         $this->domain = $domain;
         $this->availableProducts = $availableProducts;
+        $this->wordpressID = -1;
     }
 
 
@@ -115,6 +117,14 @@ class Place extends MeteoCustomPostType
     function setAvailableProducts($availableProducts)
     {
         $this->availableProducts = $availableProducts;
+    }
+
+    function getWordpressID(){
+        return $this->wordpressID;
+    }
+
+    function setWordpressID($wordpressID){
+        $this->wordpressID = $wordpressID;
     }
 
 }

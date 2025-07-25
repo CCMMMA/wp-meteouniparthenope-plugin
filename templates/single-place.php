@@ -164,6 +164,29 @@ get_header();
                     </div>
                 </div>
                 -->
+
+                <!-- Open Data -->
+                <div id="container_opendata" class="container-fluid" style="margin-bottom: 5%">
+                    <?php echo do_shortcode('[open_data_shortcode]'); ?>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title d-flex justify-content-center">Open Data</h3>
+                                        <a id="place_link" target="_blank" class="btn btn-primary">Place</a>
+                                        <a id="plot_link" target="_blank" class="btn btn-primary">Image</a>
+                                        <a id="json_link" target="_blank" class="btn btn-primary">JSON</a>
+                                        <a id="csv_link" target="_blank" class="btn btn-primary">csv</a>
+                                        <a id="opendap_history_link" target="_blank" class="btn btn-primary">OPeNDAP (History)</a>
+                                        <a id="opendap_archive_link" target="_blank" class="btn btn-primary">OPeNDAP (Archive)</a>
+                                        <a id="wms_history_link" target="_blank" class="btn btn-primary">WMS (History)</a>
+                                        <a id="wms_archive_link" target="_blank" class="btn btn-primary">WMS (Archive)</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </article>
     </main>
