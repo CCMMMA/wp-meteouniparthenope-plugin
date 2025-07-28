@@ -49,6 +49,7 @@ class MeteoUniParthenopePluginMain{
         add_filter('template_include', [$this, 'meteounipplugin_use_custom_place_template']);
         add_action('wp_enqueue_scripts', [$this,'meteounipplugin_enqueue_custom_styles']);   
         add_action('wp_enqueue_scripts', [$this,'meteounipplugin_enqueue_frontend_tecnologies']);
+        add_action('admin_enqueue_scripts', [$this,'meteounipplugin_enqueue_admin_assets']);
 
         //JS data structures
         add_action('wp_enqueue_scripts',[$this,'meteounipplugin_enqueue_global_data']);
@@ -164,6 +165,7 @@ class MeteoUniParthenopePluginMain{
     //$api_url="https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06"; //594 places
     //$api_url = "https://api.meteo.uniparthenope.it/places/search/bycoords/40.83/14.24"; //Pochi per prova
     //$api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
+    /*
     function meteounipplugin_render_utility_page() {
         echo '<div class="wrap"><h1>Importa Places da API</h1>';
         //IMPORT places
@@ -212,7 +214,32 @@ class MeteoUniParthenopePluginMain{
 
         echo '</div>';
     }
+    */
 
+    function meteounipplugin_render_utility_page(){
+        $template_data = array(
+            //'nonce_single_place' => wp_create_nonce('add_single_place_nonce'),
+            //'nonce_import_places' => wp_create_nonce('import_places_nonce'),
+            'place_count' => wp_count_posts('place')//,
+            //'ajaxurl' => admin_url('admin-ajax.php')
+        );
+
+        extract($template_data);
+
+        $template_path = plugin_dir_path(__FILE__) . 'templates/admin_utility_page.php';
+        // Verifica che il file esista
+        if (file_exists($template_path)) {
+            // Cattura l'output del template
+            ob_start();
+            include $template_path;
+            $content = ob_get_clean();
+            echo $content;
+        } else {
+            echo '<div class="notice notice-error"><p>Template non trovato: ' . $template_name . '</p></div>';
+        }
+    }
+
+    /*
     function meteounipplugin_delete_all_places(): int {
         $args = array(
             'post_type' => 'place',
@@ -230,6 +257,7 @@ class MeteoUniParthenopePluginMain{
 
         return $count;
     }
+    */
 
     /*
     function meteounipplugin_places_search_shortcode(){
@@ -755,6 +783,26 @@ class MeteoUniParthenopePluginMain{
                 plugin_dir_url(__FILE__) . 'static/css/place-custom-style.css',
                 array(), // Nessuna dipendenza
                 filemtime(plugin_dir_path(__FILE__) . 'static/css/place-custom-style.css') // Versione dinamica per cache busting
+            );
+        }
+    }
+
+    function meteounipplugin_enqueue_admin_assets($hook) {
+        console_log($hook);
+        if ($hook === 'meteouniparthenope-plugin_page_meteounipplugin_utility') {
+            wp_enqueue_style(
+                'admin-utility-page-style',
+                plugin_dir_url(__FILE__) . 'static/css/admin_utility_page.css',
+                array(),
+                filemtime(plugin_dir_path(__FILE__) . 'static/css/admin_utility_page.css')
+            );
+
+            wp_enqueue_script(
+                'admin-utility-page-js',
+                plugin_dir_url(__FILE__) . 'static/js/admin_utility_page.js',
+                array('jquery'), // Dipendenza da jQuery
+                filemtime(plugin_dir_path(__FILE__) . 'static/js/admin_utility_page.js'),
+                true // Carica nel footer
             );
         }
     }
