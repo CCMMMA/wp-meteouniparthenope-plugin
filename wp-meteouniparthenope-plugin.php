@@ -61,9 +61,11 @@ class MeteoUniParthenopePluginMain{
         add_shortcode('chart_shortcode', [$this,'chart_shortcode_callback']);
         add_shortcode('map_shortcode', [$this,'map_shortcode_callback']);
         add_shortcode('live_chart_shortcode',[$this,'live_chart_shortcode_callback']);
+        add_shortcode('open_data_shortcode',[$this,'open_data_shortcode_callback']);
         add_shortcode('autocomplete_search_shortcode',[$this,'autocomplete_search_shortcode_callback']);
 
         //Other plugins functionalities
+        add_action('wp_ajax_add_single_place', [$this, 'handle_add_single_place']);
         add_filter('the_content', [$this,'meteounipplugin_autocomplete_search_injection']);
     }
 
@@ -164,7 +166,6 @@ class MeteoUniParthenopePluginMain{
     //$api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
     function meteounipplugin_render_utility_page() {
         echo '<div class="wrap"><h1>Importa Places da API</h1>';
-
         //IMPORT places
         if (isset($_POST['meteounipplugin_import_places']) && check_admin_referer('meteounipplugin_import_nonce')) {
             //$api_url="https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06"; //594 places
