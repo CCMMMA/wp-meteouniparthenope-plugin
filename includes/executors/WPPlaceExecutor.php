@@ -79,9 +79,9 @@ class WPPlaceExecutor
         $api = new PlacesAPI;
         $api_url = "https://api.meteo.uniparthenope.it/places/" . $idPlace;
         $apiProducts = $api->getData($api_url);
-        console_log($apiProducts);
+        //console_log($apiProducts);
         $parser = new ProductParser;
-        $availableProducts = $parser->parseFromJSON($apiProducts);
+        $availableProducts = $parser->parseMultipleFromJSON($apiProducts);
         $place->setAvailableProducts($availableProducts);
 
 

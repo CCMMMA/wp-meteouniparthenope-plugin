@@ -2,6 +2,7 @@
 
 namespace includes\API;
 
+use Exception;
 use includes\API\MeteoAPI;
 
 class PlacesAPI implements MeteoAPI

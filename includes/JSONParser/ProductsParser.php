@@ -3,10 +3,11 @@
 namespace includes\JSONParser;
 
 use includes\JSONParser\JSONParser;
+use InvalidArgumentException;
 
 class ProductParser implements JSONParser
 {
-    public function parseFromJSON($json): array
+    public function parseMultipleFromJSON($json): array
     {
         if (is_string($json)) {
             $data = json_decode($json, true);
@@ -17,6 +18,11 @@ class ProductParser implements JSONParser
         }
         $products = $data['prods'];
         return $products;
+    }
+
+    public function parseSingleFromJSON($json)
+    {
+        
     }
 }
 

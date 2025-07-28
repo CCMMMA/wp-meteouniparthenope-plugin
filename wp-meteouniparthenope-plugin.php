@@ -11,9 +11,13 @@
 //use Kirki\Section_Types\Expanded;
 
  //Security system
+
+use includes\API\PlaceRESTController;
 use includes\API\PlacesAPI;
 use includes\executors\WPPlaceExecutor;
 use includes\JSONParser\PlaceParser;
+
+use includes\API\PlacesAPIController;
 
 if (!defined( 'ABSPATH' )) {
     exit; // Exit if accessed directly
@@ -34,12 +38,16 @@ spl_autoload_register(function ($class_name) {
 
 class MeteoUniParthenopePluginMain{
     private $CPTPlaces = array();
+    private $api_controller; // Nuova proprietà
 
     function __construct()
     {
         //Registrazione del CTP del place
         add_action('init', [$this,'meteounipplugin_register_cpt_place']);
         add_action('admin_menu', [$this,'meteounipplugin_add_admin_menu']);
+
+        // REST API registration
+        add_action('rest_api_init', [$this, 'meteounipplugin_init_rest_api']);
         
         //Per la ricerca nativa di wordpress
         add_action('pre_get_posts', [$this,'meteounipplugin_include_place_in_search'], 99);
@@ -97,6 +105,7 @@ class MeteoUniParthenopePluginMain{
             'exclude_from_search' => false,
             'show_ui'            => true,
             'show_in_menu'       => false,
+            'show_in_rest'       => true,
             'supports'           => array('title', 'editor', 'excerpt', 'custom-fields')
         );
 
@@ -140,6 +149,12 @@ class MeteoUniParthenopePluginMain{
             'meteounipplugin_utility',
             [$this,'meteounipplugin_render_utility_page']
         );
+    }
+
+    function meteounipplugin_init_rest_api(){
+        //$this->api_controller = new PlacesAPIController();
+        $this->api_controller = new PlaceRESTController();
+        $this->api_controller->register_routes();
     }
     
     // 4. Dashboard menu page
@@ -788,8 +803,11 @@ class MeteoUniParthenopePluginMain{
     }
 
     function meteounipplugin_enqueue_admin_assets($hook) {
-        console_log($hook);
-        if ($hook === 'meteouniparthenope-plugin_page_meteounipplugin_utility') {
+        // Controlla sia il nome completo che quello semplificato della pagina
+        if ($hook === 'meteouniparthenope-plugin_page_meteounipplugin_utility' || 
+            $hook === 'meteo@uniparthenope-plugin_page_meteounipplugin_utility' ||
+            strpos($hook, 'meteounipplugin_utility') !== false) {
+            
             wp_enqueue_style(
                 'admin-utility-page-style',
                 plugin_dir_url(__FILE__) . 'static/css/admin_utility_page.css',
@@ -804,6 +822,13 @@ class MeteoUniParthenopePluginMain{
                 filemtime(plugin_dir_path(__FILE__) . 'static/js/admin_utility_page.js'),
                 true // Carica nel footer
             );
+
+            // CORRETTO: Fornisce dati REST API al JavaScript
+            wp_localize_script('admin-utility-page-js', 'wpApiSettings', array(
+                'root' => esc_url_raw(rest_url()),
+                'nonce' => wp_create_nonce('wp_rest'),
+                'ajaxurl' => admin_url('admin-ajax.php') // Per compatibilità
+            ));
         }
     }
 }
@@ -820,12 +845,3 @@ $pluginMainInstance = new MeteoUniparthenopePluginMain;
 
 
 //https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06
-
-// Utility function
-function console_log($data) {
-    echo '<script>';
-    echo 'console.log(' . json_encode($data) . ')';
-    echo '</script>';
-}
-
-?>

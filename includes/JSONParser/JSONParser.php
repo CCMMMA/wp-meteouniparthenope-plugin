@@ -3,7 +3,8 @@
 namespace includes\JSONParser;
 interface JSONParser
 {
-    public function parseFromJSON($json): array;
+    public function parseMultipleFromJSON($json): array;
+    public function parseSingleFromJSON($json);
 }
 
 ?>
