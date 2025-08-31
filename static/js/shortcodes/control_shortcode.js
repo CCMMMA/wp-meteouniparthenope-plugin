@@ -5,12 +5,12 @@ let controlDefaultOutput = "gen";
 
 (function($){
     $(document).ready(function() {
-        // Funzione per popolare la select delle ore
+        //Function for populating the time select
         function populateTimeSelect() {
             const timeSelect = $('#control-select-time');
-            timeSelect.empty(); // Pulisce eventuali opzioni esistenti
+            timeSelect.empty();
             
-            // Crea le opzioni dalle 00:00 alle 23:00
+            //Create options from 00:00 to 23:00
             for (let hour = 0; hour < 24; hour++) {
                 const hourFormatted = hour.toString().padStart(2, '0');
                 const timeValue = hourFormatted + ':00';
@@ -21,11 +21,11 @@ let controlDefaultOutput = "gen";
             }
         }
         
-        // Funzione per impostare data e ora correnti
+        //Function for setting current date and time
         function setCurrentDateTime() {
             const now = new Date();
             
-            // Imposta la data corrente nel campo date
+            //Set the current date
             const year = now.getFullYear();
             const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const day = now.getDate().toString().padStart(2, '0');
@@ -33,18 +33,66 @@ let controlDefaultOutput = "gen";
             
             $('#control-select-date').val(currentDate);
             
-            // Imposta l'ora corrente nella select
+            //Set the current time
             const currentHour = now.getHours().toString().padStart(2, '0');
             const currentTime = currentHour + ':00';
             
             $('#control-select-time').val(currentTime);
         }
         
-        // Inizializza tutto
+        //Function to adjust the hours
+        function adjustTime(hourDelta) {
+            const currentDate = $('#control-select-date').val();
+            const currentTime = $('#control-select-time').val();
+            
+            if (!currentDate || !currentTime) {
+                return; //If values are missing, do nothing
+            }
+
+            const currentDateTime = new Date(currentDate + 'T' + currentTime + ':00');
+            
+            //Add/Subtract hours
+            currentDateTime.setHours(currentDateTime.getHours() + hourDelta);
+            
+            //Update fields to new values
+            const newYear = currentDateTime.getFullYear();
+            const newMonth = (currentDateTime.getMonth() + 1).toString().padStart(2, '0');
+            const newDay = currentDateTime.getDate().toString().padStart(2, '0');
+            const newDate = `${newYear}-${newMonth}-${newDay}`;
+            
+            const newHour = currentDateTime.getHours().toString().padStart(2, '0');
+            const newTime = newHour + ':00';
+            
+            $('#control-select-date').val(newDate);
+            $('#control-select-time').val(newTime);
+            $('#control-select-time').trigger('change');
+        }
+        
+        //Function for create and add hourly buttons
+        function setupTimeButtons() {
+            const $prevButton = $('<button type="button" id="control-prev-hour" class="btn btn-primary">- 1h</button>');
+            const $nextButton = $('<button type="button" id="control-next-hour" class="btn btn-primary">+ 1h</button>');
+
+            //Adding event handlers
+            $prevButton.on('click', function() {
+                adjustTime(-1);
+            });
+            
+            $nextButton.on('click', function() {
+                adjustTime(1);
+            });
+            
+            const $timeSelect = $('#control-select-time');
+            const $timeContainer = $timeSelect.parent();
+            $timeContainer.append($prevButton);
+            $timeContainer.append($nextButton);
+        }
+        
         populateTimeSelect();
         setCurrentDateTime();
+        setupTimeButtons();
         
-        //Carica i prdodtti per questo place
+        //Load the product for the current place
         function loadProducts(){
             let $selectProduct = $('#control-select-product');
             
@@ -56,10 +104,11 @@ let controlDefaultOutput = "gen";
                 }
             });
             
-            //Caricamento degli output del product di default
+            //Loading of outputs for default product
             let defaultProduct = $selectProduct.children(':first').val();
             loadOutputs(products[defaultProduct]);
         }
+        
         function getProducts(){
             $.ajax({
                 url: apiProdBaseUrl,
@@ -75,15 +124,14 @@ let controlDefaultOutput = "gen";
                     $('#control-select-output option[value='+controlDefaultOutput+']').prop('selected', true);
                     console.log("Valore di default output: "+$('#control-select-output').val());
                 },
-                error: function (  jqXHR,  textStatus,  errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     //console.log("Error:"+textStatus);
                 }
-
             })
         }
         getProducts();
 
-        //Funzione per ottenere gli output di un dato prodotto
+        //Function to obtain output of a given product
         function loadOutputs(product){
             let $selectOutput = $('#control-select-output');
             $selectOutput.empty();
@@ -105,6 +153,23 @@ let controlDefaultOutput = "gen";
         maxDate.setDate(maxDate.getDate() + 6);
         let maxMonth = ((maxDate.getMonth() + 1) < 10 ? '0' + (maxDate.getMonth() + 1) : (maxDate.getMonth() + 1));
         let maxDay = (maxDate.getDate() < 10 ? '0' + maxDate.getDate() : maxDate.getDate());
-        $('#'+controlSelectDate).attr('max', maxDate.getFullYear() + '-' + maxMonth + '-' + maxDay);
+        let maxDateString = maxDate.getFullYear() + '-' + maxMonth + '-' + maxDay;
+        $('#'+controlSelectDate).attr('max', maxDateString);
+
+        let $controlForms = $('.plot-control-forms');
+        $controlForms.change(function(){
+            const currentDate = $('#control-select-date').val();
+            if(currentDate >= maxDateString){
+                const currentTime = $('#control-select-time').val();
+                if(currentTime === "23:00"){
+                    //If the hour is 23:00 and is the last available day for forecasting
+                    //  the "next hour" button must be disabled
+                    $('#control-next-hour').prop("disabled",true);
+                }
+                else {
+                    $('#control-next-hour').prop("disabled",false);
+                }
+            }
+        });
     });
 })(jQuery);

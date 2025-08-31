@@ -792,6 +792,13 @@ class MeteoUniParthenopePluginMain{
 
     // meteo@uniparthenope css syle
     function meteounipplugin_enqueue_custom_styles(){
+        wp_enqueue_style(
+            'meteounipplugin-global-style',
+            plugin_dir_url(__FILE__) . 'static/css/global_style.css',
+            array(), // Nessuna dipendenza
+            filemtime(plugin_dir_path(__FILE__) . 'static/css/global_style.css') // Versione dinamica per cache busting
+        );
+        
         if (is_singular('place')) {
             wp_enqueue_style(
                 'place-custom-style',
@@ -800,6 +807,13 @@ class MeteoUniParthenopePluginMain{
                 filemtime(plugin_dir_path(__FILE__) . 'static/css/place-custom-style.css') // Versione dinamica per cache busting
             );
         }
+
+        wp_enqueue_style(
+            'loading-gif-style',
+            plugin_dir_url(__FILE__) . 'static/css/loading_animation.css',
+            array(), // Nessuna dipendenza
+            filemtime(plugin_dir_path(__FILE__) . 'static/css/loading_animation.css') // Versione dinamica per cache busting
+        );
     }
 
     function meteounipplugin_enqueue_admin_assets($hook) {

@@ -1,42 +1,63 @@
-class ControlFormDate{
+class ControlFormDate {
     static get defaults() {
         return {
             containerID: 'date-control-form-container',
             dateInputID: 'control-select-date',
-            timeInputID: 'control-select-time'
+            timeInputID: 'control-select-time',
+            prevButtonID: 'control-prev-hour',
+            nextButtonID: 'control-next-hour'
         };
     }
+
     constructor(inputs = {}) {
         this.containerID = inputs.containerID || ControlFormDate.defaults.containerID;
         this.dateInputID = inputs.dateInputID || ControlFormDate.defaults.dateInputID;
         this.timeInputID = inputs.timeInputID || ControlFormDate.defaults.timeInputID;
-
-        this.$divContainer = jQuery('<div>').attr('id',this.containerID);
-        this.$inputDate = jQuery('<input type="date" id="'+this.dateInputID+'">');
-        this.$inputTimeSelect = jQuery('<select id="'+this.timeInputID+'"></select>');
+        this.prevButtonID = inputs.prevButtonID || ControlFormDate.defaults.prevButtonID;
+        this.nextButtonID = inputs.nextButtonID || ControlFormDate.defaults.nextButtonID;
+        
+        this.$divContainer = jQuery('<div>').attr('id', this.containerID);
+        this.$inputDate = jQuery('<input type="date" id="' + this.dateInputID + '">');
+        this.$inputTimeSelect = jQuery('<select id="' + this.timeInputID + '"></select>');
+        
+        this.$prevButton = jQuery('<button type="button" id="' + this.prevButtonID + '" class="btn btn-primary">-1h</button>');
+        this.$nextButton = jQuery('<button type="button" id="' + this.nextButtonID + '" class="btn btn-primary">+1h</button>');
+        
         this.populateTimeSelect();
         this.setCurrentDateTime();
+        this.setupEventHandlers();
+        
         this.$divContainer.append(this.$inputDate);
         this.$divContainer.append(this.$inputTimeSelect);
+        this.$divContainer.append(this.$prevButton);
+        this.$divContainer.append(this.$nextButton);
     }
 
-    getContainer(){
+    getContainer() {
         return this.$divContainer;
     }
 
-    getDateInput(){
+    getDateInput() {
         return this.$inputDate;
     }
 
-    getTimeInput(){
+    getTimeInput() {
         return this.$inputTimeSelect;
     }
 
-    getCombinedInputs(){
+    getCombinedInputs() {
         return this.$inputDate.add(this.$inputTimeSelect);
     }
 
-    populateTimeSelect(){
+    getPrevButton() {
+        return this.$prevButton;
+    }
+
+    getNextButton() {
+        return this.$nextButton;
+    }
+
+    populateTimeSelect() {
         for (let hour = 0; hour < 24; hour++) {
             const hourFormatted = hour.toString().padStart(2, '0');
             const timeValue = hourFormatted + ':00';
@@ -49,55 +70,118 @@ class ControlFormDate{
 
     setCurrentDateTime() {
         const now = new Date();
-        
-        // Imposta la data corrente nel campo date
         const year = now.getFullYear();
         const month = (now.getMonth() + 1).toString().padStart(2, '0');
         const day = now.getDate().toString().padStart(2, '0');
-        const currentDate = `${year}-${month}-${day}`;  
-        
+        const currentDate = `${year}-${month}-${day}`;
         this.$inputDate.val(currentDate);
         
-        // Imposta l'ora corrente nella select
         const currentHour = now.getHours().toString().padStart(2, '0');
         const currentTime = currentHour + ':00';
-        
         this.$inputTimeSelect.val(currentTime);
     }
 
-    setContainerAttribute(attribute, value){
+    setupEventHandlers() {
+        this.$prevButton.on('click', () => {
+            this.adjustTime(-1);
+        });
+
+        this.$nextButton.on('click', () => {
+            this.adjustTime(1);
+        });
+    }
+
+    adjustTime(hourDelta) {
+        const currentDate = this.$inputDate.val();
+        const currentTime = this.$inputTimeSelect.val();
+        
+        if (!currentDate || !currentTime) {
+            return;
+        }
+
+        const currentDateTime = new Date(currentDate + 'T' + currentTime + ':00');
+        
+        currentDateTime.setHours(currentDateTime.getHours() + hourDelta);
+        
+        const newYear = currentDateTime.getFullYear();
+        const newMonth = (currentDateTime.getMonth() + 1).toString().padStart(2, '0');
+        const newDay = currentDateTime.getDate().toString().padStart(2, '0');
+        const newDate = `${newYear}-${newMonth}-${newDay}`;
+        
+        const newHour = currentDateTime.getHours().toString().padStart(2, '0');
+        const newTime = newHour + ':00';
+        
+        this.$inputDate.val(newDate);
+        this.$inputTimeSelect.val(newTime);
+
+        this.$inputTimeSelect.trigger('change');
+    }
+
+    setContainerAttribute(attribute, value) {
         this.$divContainer.attr(attribute, value);
     }
 
-    appendContainerClass(value){
+    appendContainerClass(value) {
         this.$divContainer.addClass(value);
     }
 
-    removeContainerClass(value){
+    removeContainerClass(value) {
         this.$divContainer.removeClass(value);
     }
-    
-    setInputDateAttribute(attribute, value){
-        this.$inputDate.attr(attribute,value);
+
+    setInputDateAttribute(attribute, value) {
+        this.$inputDate.attr(attribute, value);
     }
 
-    appendInputDateClass(value){
+    appendInputDateClass(value) {
         this.$inputDate.addClass(value);
     }
 
-    removeInputDateClass(value){
+    removeInputDateClass(value) {
         this.$inputDate.removeClass(value);
     }
 
-    setInputTimeAttribute(attribute, value){
-        this.$inputTimeSelect.attr(attribute,value);
+    setInputTimeAttribute(attribute, value) {
+        this.$inputTimeSelect.attr(attribute, value);
     }
 
-    appendInputTimeClass(value){
+    appendInputTimeClass(value) {
         this.$inputTimeSelect.addClass(value);
     }
 
-    removeInputTimeClass(value){
+    removeInputTimeClass(value) {
         this.$inputTimeSelect.removeClass(value);
+    }
+
+    setPrevButtonAttribute(attribute, value) {
+        this.$prevButton.attr(attribute, value);
+    }
+
+    appendPrevButtonClass(value) {
+        this.$prevButton.addClass(value);
+    }
+
+    removePrevButtonClass(value) {
+        this.$prevButton.removeClass(value);
+    }
+
+    setNextButtonAttribute(attribute, value) {
+        this.$nextButton.attr(attribute, value);
+    }
+
+    appendNextButtonClass(value) {
+        this.$nextButton.addClass(value);
+    }
+
+    removeNextButtonClass(value) {
+        this.$nextButton.removeClass(value);
+    }
+
+    setPrevButtonText(text) {
+        this.$prevButton.text(text);
+    }
+
+    setNextButtonText(text) {
+        this.$nextButton.text(text);
     }
 }

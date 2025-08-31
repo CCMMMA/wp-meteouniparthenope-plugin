@@ -2,6 +2,8 @@
     let controlFormDateInput ={containerID: 'id', dateInputID: 'control-select-date', timeInputID: 'control-select-time'};
     let controlFormDateObj = new ControlFormDate(controlFormDateInput);
     $divShortcodeRoot = $('#date_control_shortcode-root');
+    $divShortcodeRoot.append(controlFormDateObj.getContainer());
+    
     $divDateControl = $('<div>').attr('id','date-control-form-container');
     $divDateControl.append('<div id="datetime-control-container" class="container-fluid" style="display: visible">'+
                                 '<div class="row">'+
@@ -27,7 +29,9 @@
     maxDate.setDate(maxDate.getDate() + 4);
     let maxMonth = ((maxDate.getMonth() + 1) < 10 ? '0' + (maxDate.getMonth() + 1) : (maxDate.getMonth() + 1));
     let maxDay = (maxDate.getDate() < 10 ? '0' + maxDate.getDate() : maxDate.getDate());
-    controlFormDateObj.setInputDateAttribute('max',maxDate.getFullYear() + '-' + maxMonth + '-' + maxDay);
+    let maxDateString = maxDate.getFullYear() + '-' + maxMonth + '-' + maxDay;
+    controlFormDateObj.setInputDateAttribute('max', maxDateString);
+    
     
     controlFormDateObj.appendInputDateClass("form-control");
     let $divDateContainer = $('<div>').attr('class','input-group mb-3');
@@ -37,6 +41,22 @@
     controlFormDateObj.appendInputTimeClass("form-control");
     let $divTimeContainer = $('<div>').attr('class','input-group mb-3');
     $divTimeContainer.append(controlFormDateObj.getTimeInput());
+    $divTimeContainer.append(controlFormDateObj.getPrevButton());
+    $divTimeContainer.append(controlFormDateObj.getNextButton());
     $('#datetime-control-form').append($divTimeContainer);
+    
+    let $controlForms = controlFormDateObj.getCombinedInputs();
+    $controlForms.change(function(){
+        const currentDate = $('#'+controlFormDateInput.dateInputID).val();
+        if(currentDate >= maxDateString){
+            const currentTime = $('#'+controlFormDateInput.timeInputID).val();
+            if(currentTime === "23:00"){
+                controlFormDateObj.getNextButton().prop("disabled",true);
+            }
+            else {
+                controlFormDateObj.getNextButton().prop("disabled",false);
+            }
+        }
+    });
 
 })(jQuery)

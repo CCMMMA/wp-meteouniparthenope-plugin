@@ -29,11 +29,7 @@ function initializeShortcode(plotData, shortcode_id){
             let $loadingDiv = $('<div>').attr('class','loading-gif');
             $loadingDiv.attr('id','loading-div');
             let $loadingGif = $('<img>').attr('id','loading-gif');
-            let hour = new Date().getHours();
-            console.log(hour);
-            let gif = hour >=7 && hour < 19 ? "day_loading.gif" : "night_loading.gif";
-            console.log(gif);
-            $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/" + gif);
+            $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/loading_gif.gif");
             $loadingDiv.append($loadingGif);
 
             switch(plotData['control_forms']){
