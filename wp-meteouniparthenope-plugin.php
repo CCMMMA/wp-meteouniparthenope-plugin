@@ -623,28 +623,6 @@ class MeteoUniParthenopePluginMain{
 
     // Autocomplete shortcode
     function autocomplete_search_shortcode_callback($atts){
-        $CPTPlaces = array();    
-        // Query per recuperare tutti i post del custom post type "place"
-        $args = array(
-            'post_type' => 'place',
-            'post_status' => 'publish',
-            'posts_per_page' => -1, // -1 per recuperare tutti i post
-            'orderby' => 'title',
-            'order' => 'ASC'
-        );
-        
-        $places_query = new WP_Query($args);
-        
-        if ($places_query->have_posts()) {
-            while ($places_query->have_posts()) {
-                $places_query->the_post();
-                
-                // Crea l'array associativo con titolo => link
-                $CPTPlaces[get_the_title()] = get_permalink();
-            }
-            wp_reset_postdata();
-        }
-
         wp_enqueue_script(
             'autocomplete-search-shortcode-js',
             plugin_dir_url(__FILE__) . 'static/js/shortcodes/autocomplete_search_shortcode.js',
@@ -652,8 +630,6 @@ class MeteoUniParthenopePluginMain{
             null,
             true
         );
-
-        wp_localize_script('autocomplete-search-shortcode-js','CPTPlaces', $CPTPlaces);
 
         return '<div id="autocomplete_search_shortcode-root"></div>';
     }
