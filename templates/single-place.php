@@ -52,15 +52,16 @@ get_header();
                     </div>
                 </div>
 
-                <!-- Control (form di input) -->
+                <!-- Control (form di input) - Made responsive -->
                 <div id="control">
                     <div id="control-container" class="container-fluid" style="display: visible">
                         <?php echo do_shortcode('[control_shortcode]'); ?>
                         <div class="row">
-                            <div class="col">
-                                <div class="card">
+                            <!-- Date and Time Column -->
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card control-card">
                                     <div class="card-body">
-                                        <label for="input-group mb-3">Date and time:</label>
+                                        <label class="control-label" for="control-select-date">Date and time:</label>
                                         <div class="input-group mb-3">
                                             <input class="form-control plot-control-forms" type="date" id="control-select-date">
                                         </div>
@@ -70,10 +71,12 @@ get_header();
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card">
+                            
+                            <!-- Products Column -->
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card control-card">
                                     <div class="card-body">
-                                        <label for="control-select-product">Products:</label>
+                                        <label class="control-label" for="control-select-product">Products:</label>
                                         <div class="input-group mb-3">
                                             <select class="form-control plot-control-forms" id="control-select-product">
                                             </select>
@@ -81,10 +84,12 @@ get_header();
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card">
+                            
+                            <!-- Outputs Column -->
+                            <div class="col-12 col-md-12 col-lg-4">
+                                <div class="card control-card">
                                     <div class="card-body">
-                                        <label for="control-select-product">Outputs:</label>
+                                        <label class="control-label" for="control-select-output">Outputs:</label>
                                         <div class="input-group mb-3">
                                             <select class="form-control plot-control-forms" id="control-select-output">
                                             </select>
@@ -148,14 +153,14 @@ get_header();
                             <select id="real-time-chart-select">
                                 <option value="ws1">Centro Direzionale</option>
                                 <option value="ws2">Gaiola</option>
-                                <option value="ws3">Città della Scienza</option>
+                                <option value="ws3">CittÃ  della Scienza</option>
                                 <option value="ws4">Marina di Stabia</option>
                                 <option value="ws8">Sant'Agata</option>
                             </select>
                         </div>
                         <div id="controls">
-                            <button id="scrollLeft">← Scorri Indietro</button>
-                            <button id="scrollRight">Scorri Avanti →</button>
+                            <button id="scrollLeft">â† Scorri Indietro</button>
+                            <button id="scrollRight">Scorri Avanti â†'</button>
                             <button id="goToLatest">Vai agli Ultimi Dati</button>
                             <span id="info">Dati visualizzati: 0/0</span>
                         </div>
@@ -166,7 +171,7 @@ get_header();
                 </div>
                 -->
 
-                <!-- Open Data -->
+                <!-- Open Data - Made responsive -->
                 <div id="container_opendata" class="container-fluid" style="margin-bottom: 5%">
                     <?php echo do_shortcode('[open_data_shortcode]'); ?>
                     <div class="row">
@@ -174,6 +179,7 @@ get_header();
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="card-title d-flex justify-content-center">Open Data</h3>
+                                    <div class="d-flex flex-wrap justify-content-center gap-2">
                                         <a id="place_link" target="_blank" class="btn btn-primary">Place</a>
                                         <a id="plot_link" target="_blank" class="btn btn-primary">Image</a>
                                         <a id="json_link" target="_blank" class="btn btn-primary">JSON</a>

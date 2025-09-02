@@ -68,10 +68,10 @@ let controlDefaultOutput = "gen";
             $('#control-select-time').trigger('change');
         }
         
-        //Function for create and add hourly buttons
+        //Function for create and add hourly buttons - Updated for responsive
         function setupTimeButtons() {
-            const $prevButton = $('<button type="button" id="control-prev-hour" class="btn btn-primary">- 1h</button>');
-            const $nextButton = $('<button type="button" id="control-next-hour" class="btn btn-primary">+ 1h</button>');
+            const $prevButton = $('<button type="button" id="control-prev-hour" class="btn btn-primary btn-time-control">- 1h</button>');
+            const $nextButton = $('<button type="button" id="control-next-hour" class="btn btn-primary btn-time-control">+ 1h</button>');
 
             //Adding event handlers
             $prevButton.on('click', function() {
@@ -84,8 +84,13 @@ let controlDefaultOutput = "gen";
             
             const $timeSelect = $('#control-select-time');
             const $timeContainer = $timeSelect.parent();
-            $timeContainer.append($prevButton);
-            $timeContainer.append($nextButton);
+            
+            // Create a button container for better responsive layout
+            const $buttonContainer = $('<div class="time-buttons-container mt-2"></div>');
+            $buttonContainer.append($prevButton);
+            $buttonContainer.append($nextButton);
+            
+            $timeContainer.append($buttonContainer);
         }
         
         populateTimeSelect();

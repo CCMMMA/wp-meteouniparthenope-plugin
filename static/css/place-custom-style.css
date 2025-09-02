@@ -30,6 +30,171 @@
     align-items: center !important;
 }
 
+/* RESPONSIVE CONTROLS - Form responsiveness */
+#control-container {
+    padding: 15px;
+}
+
+/* Control cards responsive styling */
+.control-card {
+    margin-bottom: 15px;
+}
+
+/* Form controls responsive */
+.plot-control-forms {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 40px; /* Altezza fissa per evitare crescita eccessiva */
+    max-height: 45px; /* Altezza massima di sicurezza */
+}
+
+/* Time buttons container */
+.time-buttons-container {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-time-control {
+    flex: 1;
+    min-width: 70px; /* Aumentato da 60px per contenere "+ 1h" */
+    font-size: 12px;
+    padding: 6px 12px;
+    height: 36px; /* Altezza fissa per i pulsanti */
+    max-height: 40px; /* Altezza massima di sicurezza */
+    line-height: 1.2; /* Controllo della line-height */
+    white-space: nowrap; /* Evita che il testo vada a capo */
+}
+
+/* Labels responsive */
+.control-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 14px;
+}
+
+/* Responsive breakpoints for controls */
+@media (max-width: 1200px) {
+    #control-container .row {
+        margin: 0;
+    }
+    
+    #control-container .col {
+        padding: 5px;
+    }
+}
+
+@media (max-width: 992px) {
+    .control-card .card-body {
+        padding: 15px;
+    }
+    
+    .plot-control-forms {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+    
+    .control-label {
+        font-size: 13px;
+    }
+    
+    .btn-time-control {
+        font-size: 11px;
+        padding: 5px 10px;
+        min-width: 65px; /* Leggermente più largo per tablet */
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 768px) {
+    #control-container {
+        padding: 10px 5px;
+    }
+    
+    /* Stack controls vertically on mobile */
+    #control-container .row {
+        flex-direction: column;
+    }
+    
+    #control-container .col {
+        width: 100%;
+        max-width: 100%;
+        padding: 5px 0;
+    }
+    
+    .control-card {
+        margin-bottom: 10px;
+    }
+    
+    .control-card .card-body {
+        padding: 12px;
+    }
+    
+    .plot-control-forms {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 10px;
+        height: 44px; /* Altezza standard mobile */
+        max-height: 48px; /* Limite massimo */
+    }
+    
+    .control-label {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    .time-buttons-container {
+        justify-content: stretch;
+    }
+    
+    .btn-time-control {
+        font-size: 14px;
+        padding: 8px 16px;
+        height: 40px; /* Altezza fissa mobile */
+        max-height: 44px; /* Limite massimo mobile */
+        min-width: 75px; /* Più largo per mobile per contenere il testo */
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    #control-container {
+        padding: 8px 2px;
+    }
+    
+    .control-card .card-body {
+        padding: 10px;
+    }
+    
+    .plot-control-forms {
+        font-size: 16px;
+        padding: 12px 10px;
+        height: 46px; /* Altezza fissa per schermi molto piccoli */
+        max-height: 50px; /* Limite assoluto */
+    }
+    
+    .control-label {
+        font-size: 13px;
+    }
+    
+    .btn-time-control {
+        font-size: 13px;
+        padding: 6px 12px;
+        min-width: 65px; /* Abbastanza largo per schermi piccoli */
+        height: 38px; /* Altezza fissa per schermi piccoli */
+        max-height: 42px; /* Limite massimo */
+        line-height: 1.3;
+        white-space: nowrap;
+    }
+    
+    .time-buttons-container {
+        gap: 5px;
+    }
+}
 
 /*Forecast style*/
 .forecast-title{
@@ -90,6 +255,18 @@
     width: 100%;
 }
 
+/* Responsive chart */
+@media (max-width: 768px) {
+    #chart-container-canvasDiv {
+        height: 40vh;
+    }
+}
+
+@media (max-width: 480px) {
+    #chart-container-canvasDiv {
+        height: 35vh;
+    }
+}
 
 /*Map*/
 #map-container {
@@ -103,18 +280,61 @@
     position: relative;
 }
 
+/* Responsive map */
+@media (max-width: 768px) {
+    #map {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    #map {
+        height: 250px;
+    }
+}
+
 /* Live Chart */
 #chartContainer {
     position: relative;
     width: 100%;
     height: 500px;
 }
+
+/* Responsive live chart */
+@media (max-width: 768px) {
+    #chartContainer {
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    #chartContainer {
+        height: 300px;
+    }
+}
+
 #controls {
     margin-bottom: 20px;
     display: flex;
     gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
+
+/* Responsive controls */
+@media (max-width: 768px) {
+    #controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    #controls select,
+    #controls button {
+        width: 100%;
+    }
+}
+
 button {
     padding: 8px 16px;
     background-color: #4CAF50;
@@ -135,9 +355,19 @@ button:disabled {
     color: #666;
 }
 
-
-
-
+/* Responsive buttons */
+@media (max-width: 480px) {
+    button {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+    
+    #info {
+        font-size: 12px;
+        text-align: center;
+        margin-top: 5px;
+    }
+}
 
 /* Forecast Table Responsive */
 .forecast-table-container {
@@ -176,5 +406,27 @@ button:disabled {
     .forecast-table td {
         font-size: 0.85rem;
         padding: 5px;
+    }
+}
+
+/* Open Data responsive */
+@media (max-width: 768px) {
+    #container_opendata .btn {
+        margin: 2px;
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #container_opendata .btn {
+        display: block;
+        width: 100%;
+        margin: 3px 0;
+        text-align: center;
+    }
+    
+    #container_opendata .card-body {
+        padding: 15px 10px;
     }
 }
