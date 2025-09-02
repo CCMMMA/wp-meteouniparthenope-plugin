@@ -44,14 +44,38 @@
 .forecast-link{
     color: black;
 }
+
 .forecast-image{
-    max-height: 80px;
-    min-height: 80px;
-    max-width: 80px;
-    min-width: 80px;
+    max-height: 50px;
+    min-height: 50px;
+    max-width: 50px;
+    min-width: 50px;
     display: block;
     margin: 0 auto; /* Centra orizzontalmente */
 }
+
+/* Le icone si riducono progressivamente con lo schermo */
+@media (max-width: 1024px) {
+    .forecast-image {
+        max-width: 65px;
+        max-height: 65px;
+    }
+}
+
+@media (max-width: 768px) {
+    .forecast-image {
+        max-width: 50px;
+        max-height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .forecast-image {
+        max-width: 40px;
+        max-height: 40px;
+    }
+}
+
 .forecast-td-data{
     background-color:#F0F0F0;
     font-size:1rem;
@@ -111,65 +135,46 @@ button:disabled {
     color: #666;
 }
 
-/*
-.custom-card {
-    width: 18rem !important; 
-    height: 34rem !important;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    margin-top: 6rem;
+
+
+
+
+/* Forecast Table Responsive */
+.forecast-table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-.custom-card .card-img-top {
-    align-content: center;
-    max-width: 205px;
-    flex-shrink: 0;
+.forecast-table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.custom-card .card-body {
-    flex: 1; 
-    overflow-y: auto;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
+.forecast-table th,
+.forecast-table td {
+    padding: 8px;
+    text-align: center;
+    white-space: nowrap; /* evita che il testo vada a capo */
 }
 
-.custom-card .card-title {
-    flex-shrink: 0; 
-    margin-bottom: 0.75rem;
+/* Mobile: riduco immagini e font */
+@media (max-width: 768px) {
+    .forecast-title {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .forecast-image {
+        max-width: 50px;
+        max-height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+    }
+
+    .forecast-table th,
+    .forecast-table td {
+        font-size: 0.85rem;
+        padding: 5px;
+    }
 }
-
-.custom-card .card-text {
-    flex: 1;
-    margin-bottom: 1rem;
-    overflow-y: auto; 
-}
-
-.custom-card .btn {
-    flex-shrink: 0; 
-    margin-top: auto; 
-    background-color: dimgray;
-    border-color: dimgray;
-}
-
-.btn:focus, .btn:active:focus, .btn-primary:focus {
-    outline: none;
-    box-shadow: none;
-}
-
-
-
-.avaible-model-title{
-    padding: 1rem;
-}
-
-.bottomBarImage-class{
-    width: 758px;
-    height: 123px;
-}
-
-.bottomBarImage-td-class{
-    text-align: center !important;
-}
-*/

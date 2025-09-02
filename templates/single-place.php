@@ -35,15 +35,16 @@ get_header();
                 </div>
                 
                 <!-- Forecast table -->
-                <div id="forecast">
+                <div id="forecast" class="container-fluid">
                     <div class="forecast-container container-fluid" style="display: block">
                         <?php echo do_shortcode('[forecast_shortcode]'); ?>
-                        <div class="row">
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div id="forecast-box-title"></div>
-                                        <div id="forecast-box" class="container-fluid d-flex justify-content-center"></div>
+                        <div class="row container-fluid">
+                            <div class="col container-fluid">
+                                <div class="card container-fluid">
+                                    <div class="card-body container-fluid">
+                                        <div id="forecast-box-title" class="container-fluid"></div>
+                                        <div id="loading-box" class="container-fluid d-flex justify-content-center"></div>
+                                        <div id="forecast-box" class="forecast-table-container"></div>
                                     </div>
                                 </div>
                             </div>

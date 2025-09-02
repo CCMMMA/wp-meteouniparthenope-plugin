@@ -26,8 +26,7 @@ let hourlyForecastData = {};
         $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/loading_gif.gif");
         $loadingDiv.append($loadingGif);
 
-        let $forecastContainerDiv = $('#forecast-box');
-        $forecastContainerDiv.append($loadingDiv).show();
+        $('#loading-box').append($loadingDiv).show();
 
         function createForecast(place = defaultPlace, name = defaultName ,prod = defaultProd, hours = defaultHours, step = defaultStep){
             let forecastUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+place+"?hours="+hours+"&step="+step;
@@ -76,7 +75,7 @@ let hourlyForecastData = {};
                 step=24;
             }
 
-            let table = $('<table>');
+            let table = $('<table class="forecast-table">');
             table.attr('id','forecast-table');
             table.attr('width',"100%");
             table.attr('cellspacing','0');
@@ -87,47 +86,19 @@ let hourlyForecastData = {};
             let $forecastDiv = $('#forecast-box');
             $forecastTitleDiv.append('<div class="forecast-title">'+forecastData['long_name_it']+'</div>');
             
-            /*
-            if (prod==="wrf5") {
-                if (type == "minibox") {
-                    table.append('<tr class="legenda">' +
-                        '<td width="60%" colspan="2" valign="top" align="left">Forecast</td>' +
-                        '<td width="20%" valign="top" align="center">Wind</td>' +
-                        '<td width="20%" valign="top" align="center">Sea</td>' +
-                        '</tr>');
-                } else if (type == "compactbox") {
-                    table.append('<tr class="legenda">' +
-                        '<td width="40%" colspan="2">Forecast AAAAA</td>' +
-                        '<td width="20%" colspan="2">Temp</td>' +
-                        '<td width="20%">Wind</td>' +
-                        '<td width="20%">Sea</td>' +
-                        '</tr>');
-                } else if (type == "daybox") {
-                    table.append('<tr class="legenda">' +
-                        '<td width="32%" colspan="2">Forecast BBBBB</td>' +
-                        '<td width="9%" class="tMin">T&nbsp;min &deg;C</td>' +
-                        '<td width="9%" class="tMax">T&nbsp;max &deg;C</td>' +
-                        '<td width="21%" colspan="2">Wind (kn)</td>' +
-                        '<td width="28%">Rain (mm)</td>' +
-                        '</tr>');
-                } else {
-                    table.append('<tr class="legenda">' +
-                        '<td width="32%" colspan="2">Forecast CCCCC</td>' +
-                        '<td width="9%" class="press">Press (hPa)</td>' +
-                        '<td width="9%" class="temp">Temp &deg;C</td>' +
-                        '<td width="21%" colspan="2">Wind (kn)</td>' +
-                        '<td width="28%">Rain (mm)</td>' +
-                        '</tr>')
-                }
-            }
-            */
-           table.append('<tr class="legenda">' +
-                        '<td width="32%" colspan="2">Forecast</td>' +
-                        '<td width="9%" class="temperature" colspan="2">T &deg;C</td>' +
-                        '<td width="21%" colspan="2">Wind (kn)</td>' +
-                        '<td width="14%">Rain (mm)</td>' +
-                        '<td width="7%">Pressure (hPa)</>'+
-                        '<td width="7%">Humidity (%)</>'+
+            table.append('<tr class="legenda">' +
+                        //'<td width="5%" colspan="2">Forecast</td>' +
+                        //'<td width="21%" class="temperature" colspan="2">T &deg;C</td>' +
+                        //'<td width="14%" colspan="2">Wind (kn)</td>' +
+                        //'<td width="9%">Rain (mm)</td>' +
+                        //'<td width="7%">Pressure (hPa)</>'+
+                        //'<td width="7%">Humidity (%)</>'+
+                        '<td colspan="2">Forecast</td>' +
+                        '<td class="temperature" colspan="2">T &deg;C</td>' +
+                        '<td colspan="2">Wind (kn)</td>' +
+                        '<td>Rain (mm)</td>' +
+                        '<td>Pressure (hPa)</>'+
+                        '<td>Humidity (%)</>'+
                         '</tr>');
             $forecastDiv.append(table);
 
@@ -153,83 +124,15 @@ let hourlyForecastData = {};
                 let waveLabel="";
 
                 let row='<tr>';
-                /*
-                if (prod==="wrf5") {
-                    if (type == "minibox") {
-                        row += '  <td class="forecast-td-data " valign="top" align="center">';
-                        row += '    <a class="forecast-link" href="' + val['link'] + '" target="_blank" class="day" title="Meteo ' + forecastData['long_name_it'] + ' - ' + weekDayLabel + ' ' + monthDay + '" >';
-                        row += weekDayLabel + "<br/>" + monthDay;
-                        row += '    </a>';
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data " valign="top" align="center">';
-                        row += '      <img class="forecast-image" src="' + wIconUrl + '" width="16" height="16" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
-                        row += '    <br/>' + val['t2c-min'] + '/' + val['t2c-max'];
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data "  align="center">';
-                        row += '    <img class="forecast-image" src="' + windBarbUrl + '" alt="' + windLabel + '" title="' + windLabel + '" width="16" heigh="16" />';
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data "  align="center">';
-                        row += '    <img class="forecast-image" src="' + seaWaveUrl + '" alt="' + waveLabel + '" title="' + waveLabel + '" width="16" heigh="16" />';
-                        row += '  </td>';
-                    } else if (type == "compactbox") {
-                        row += '  <td class="forecast-td-data ">'
-                        row += '    <a class="forecast-link" href="' + val['link'] + '" target="_blank" class="day" title="Meteo ' + forecastData['long_name_it'] + ' - ' + weekDayLabel + ' ' + monthDay + '" >';
-                        row += weekDayLabel + " " + monthDay;
-                        row += '    </a>';
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data ">';
-                        row += '  <img class="forecast-image" src="' + wIconUrl + '" width="16" height="16" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data  tmin">' + val['t2c-min'] + '</td>';
-                        row += '  <td class="forecast-td-data  tmax">' + val['t2c-max'] + '</td>';
-                        row += '  <td class="forecast-td-data ">';
-                        row += '    <img class="forecast-image" src="' + windBarbUrl + '" alt="' + windLabel + '" title="' + windLabel + '" width="16" heigh="16" />';
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data ">';
-                        row += '    <img class="forecast-image" src="' + seaWaveUrl + '" alt="' + waveLabel + '" title="' + waveLabel + '" width="16" heigh="16" />';
-                        row += '  </td>';
-                    } else if (type == "daybox") {
-                        row += '  <td class="forecast-td-data ">'
-                        row += '    <a class="forecast-link" href="' + val['link'] + '" target="_blank" class="day" title="Meteo ' + forecastData['long_name_it'] + ' - ' + weekDayLabel + ' ' + monthDay + '" >';
-                        row += weekDayLabel + ", " + monthDay;
-                        row += '    </a><br/>';
-
-                        row += '<button id="'+val['dateTime']+'-button" class="btn btn-sm btn-primary ml-2" data-toggle="collapse" data-target="#'+val['dateTime']+'-collapse">+</button>';
-                        
-                        row += '  <br/></td>';
-                        row += '  <td class="forecast-td-data ">';
-                        row += '  <img class="forecast-image" src="' + wIconUrl + '" class="weathericon" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data  tmin">' + val['t2c-min'] + '</td>';
-                        row += '  <td class="forecast-td-data  tmax">' + val['t2c-max'] + '</td>';
-                        row += '  <td class="forecast-td-data ">' + val['winds'] + '</td>';
-                        row += '  <td class="forecast-td-data ">' + val['ws10n'] + '</td>';
-                        row += '  <td class="forecast-td-data ">' + val['crh'] + '</td>';
-                    } else {
-                        row += '  <td class="forecast-td-data ">'
-                        row += '    <a class="forecast-link" href="' + val['link'] + '" target="_blank" class="day" title="Meteo ' + forecastData['long_name_it'] + ' - ' + formatDate(dateTime) + '" >';
-                        row += formatDate(dateTime);
-                        row += '    </a>';
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data ">';
-                        row += '  <img class="forecast-image" src="' + wIconUrl + '" class="weathericon" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
-                        row += '  </td>';
-                        row += '  <td class="forecast-td-data  press">' + val['slp'] + '</td>';
-                        row += '  <td class="forecast-td-data  temp">' + val['t2c'] + '</td>';
-                        row += '  <td class="forecast-td-data ">' + val['winds'] + '</td>';
-                        row += '  <td class="forecast-td-data ">' + val['ws10n'] + '</td>';
-                        row += '  <td class="forecast-td-data ">' + val['crh'] + '</td>';
-                    }
-                }
-                */
+                
                 row += '  <td class="forecast-td-data ">'
                 row += '    <a class="forecast-link" href="' + val['link'] + '" target="_blank" class="day" title="Meteo ' + forecastData['long_name_it'] + ' - ' + weekDayLabel + ' ' + monthDay + '" >';
-                row += weekDayLabel + ", " + monthDay;
-                row += '    </a><br/>';
+                row += weekDayLabel + ',<br> ' + monthDay+'<br>';
+                row += '    </a>';
 
                 row += '<button id="'+val['dateTime']+'-button" class="btn btn-sm btn-primary ml-2" data-toggle="collapse" data-target="#'+val['dateTime']+'-collapse">+</button>';
                 
-                row += '  <br/></td>';
+                row += '  </td>';
                 row += '  <td class="forecast-td-data ">';
                 row += '  <img class="forecast-image" src="' + wIconUrl + '" class="weathericon" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
                 row += '  </td>';
@@ -238,16 +141,16 @@ let hourlyForecastData = {};
                 row += '  <td class="forecast-td-data ">' + val['winds'] + '</td>';
                 row += '  <td class="forecast-td-data ">' + val['ws10n'] + '</td>';
                 row += '  <td class="forecast-td-data ">' + val['crh'] + '</td>';
-                row += '  <td class="forecast-td-data ">' + val['rh2'] + '</td>';
                 row += '  <td class="forecast-td-data ">' + val['slp'] + '</td>';
+                row += '  <td class="forecast-td-data ">' + val['rh2'] + '</td>';
                 row+='</tr>';
                 table.append(row);
                 
                 let subtable = '<tr class="collapse" id="'+val['dateTime']+'-collapse">';
-                subtable += '<td colspan="7">'; // 7 colonne per daybox
-                subtable += '<table class="table table-sm table-bordered">';
+                subtable += '<td colspan="9">';
+                subtable += '<table class="table table-bordered table-striped table-responsive">';
                 subtable += '<thead>' + 
-                        '<tr><th>Hour</th><th>Forecast</th><th>T °C</th><th colspan=2>Wind (kn)</th><th>Rain (mm)</th></tr>' +
+                        '<tr><th>Hour</th><th>Forecast</th><th>T °C</th><th colspan=2>Wind (kn)</th><th>Rain (mm)</th><th>Pressure (hPa)</th><th>Humidity (%)</th></tr>' +
                         '</thead>' +
                         '<tbody>';
 
@@ -265,6 +168,8 @@ let hourlyForecastData = {};
                         subtable += '<td class="forecast-td-data">' + value['winds'] + '</td>';
                         subtable += '<td class="forecast-td-data ">' + val['ws10n'] + '</td>';
                         subtable += '<td class="forecast-td-data">' + value['crh'] + '</td>';
+                        subtable += '<td class="forecast-td-data">' + value['slp'] + '</td>';
+                        subtable += '<td class="forecast-td-data">' + value['rh2'] + '</td>';
                         subtable += '</tr>';
                     });
                 } else {
@@ -303,9 +208,7 @@ let hourlyForecastData = {};
                 $('#control-select-date').val(obj.date);
                 $('#control-select-time').val('00:00');
                 $('#control-select-product').val(obj.product);
-                $('#control-select-output').val('gen');
-
-                $('#generate-button').click();
+                $('#control-select-output').val('gen').trigger('change');
             });
         }
 
