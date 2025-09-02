@@ -86,7 +86,8 @@ let hourlyForecastData = {};
             let $forecastTitleDiv = $('#forecast-box-title');
             let $forecastDiv = $('#forecast-box');
             $forecastTitleDiv.append('<div class="forecast-title">'+forecastData['long_name_it']+'</div>');
-
+            
+            /*
             if (prod==="wrf5") {
                 if (type == "minibox") {
                     table.append('<tr class="legenda">' +
@@ -96,14 +97,14 @@ let hourlyForecastData = {};
                         '</tr>');
                 } else if (type == "compactbox") {
                     table.append('<tr class="legenda">' +
-                        '<td width="40%" colspan="2">Forecast</td>' +
+                        '<td width="40%" colspan="2">Forecast AAAAA</td>' +
                         '<td width="20%" colspan="2">Temp</td>' +
                         '<td width="20%">Wind</td>' +
                         '<td width="20%">Sea</td>' +
                         '</tr>');
                 } else if (type == "daybox") {
                     table.append('<tr class="legenda">' +
-                        '<td width="32%" colspan="2">Forecast</td>' +
+                        '<td width="32%" colspan="2">Forecast BBBBB</td>' +
                         '<td width="9%" class="tMin">T&nbsp;min &deg;C</td>' +
                         '<td width="9%" class="tMax">T&nbsp;max &deg;C</td>' +
                         '<td width="21%" colspan="2">Wind (kn)</td>' +
@@ -111,7 +112,7 @@ let hourlyForecastData = {};
                         '</tr>');
                 } else {
                     table.append('<tr class="legenda">' +
-                        '<td width="32%" colspan="2">Forecast</td>' +
+                        '<td width="32%" colspan="2">Forecast CCCCC</td>' +
                         '<td width="9%" class="press">Press (hPa)</td>' +
                         '<td width="9%" class="temp">Temp &deg;C</td>' +
                         '<td width="21%" colspan="2">Wind (kn)</td>' +
@@ -119,6 +120,15 @@ let hourlyForecastData = {};
                         '</tr>')
                 }
             }
+            */
+           table.append('<tr class="legenda">' +
+                        '<td width="32%" colspan="2">Forecast</td>' +
+                        '<td width="9%" class="temperature" colspan="2">T &deg;C</td>' +
+                        '<td width="21%" colspan="2">Wind (kn)</td>' +
+                        '<td width="14%">Rain (mm)</td>' +
+                        '<td width="7%">Pressure (hPa)</>'+
+                        '<td width="7%">Humidity (%)</>'+
+                        '</tr>');
             $forecastDiv.append(table);
 
             $.each( timeseriesData, function( key, val ) {
@@ -143,7 +153,7 @@ let hourlyForecastData = {};
                 let waveLabel="";
 
                 let row='<tr>';
-
+                /*
                 if (prod==="wrf5") {
                     if (type == "minibox") {
                         row += '  <td class="forecast-td-data " valign="top" align="center">';
@@ -211,6 +221,25 @@ let hourlyForecastData = {};
                         row += '  <td class="forecast-td-data ">' + val['crh'] + '</td>';
                     }
                 }
+                */
+                row += '  <td class="forecast-td-data ">'
+                row += '    <a class="forecast-link" href="' + val['link'] + '" target="_blank" class="day" title="Meteo ' + forecastData['long_name_it'] + ' - ' + weekDayLabel + ' ' + monthDay + '" >';
+                row += weekDayLabel + ", " + monthDay;
+                row += '    </a><br/>';
+
+                row += '<button id="'+val['dateTime']+'-button" class="btn btn-sm btn-primary ml-2" data-toggle="collapse" data-target="#'+val['dateTime']+'-collapse">+</button>';
+                
+                row += '  <br/></td>';
+                row += '  <td class="forecast-td-data ">';
+                row += '  <img class="forecast-image" src="' + wIconUrl + '" class="weathericon" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
+                row += '  </td>';
+                row += '  <td class="forecast-td-data  tmin">' + val['t2c-min'] + '</td>';
+                row += '  <td class="forecast-td-data  tmax">' + val['t2c-max'] + '</td>';
+                row += '  <td class="forecast-td-data ">' + val['winds'] + '</td>';
+                row += '  <td class="forecast-td-data ">' + val['ws10n'] + '</td>';
+                row += '  <td class="forecast-td-data ">' + val['crh'] + '</td>';
+                row += '  <td class="forecast-td-data ">' + val['rh2'] + '</td>';
+                row += '  <td class="forecast-td-data ">' + val['slp'] + '</td>';
                 row+='</tr>';
                 table.append(row);
                 
@@ -263,14 +292,6 @@ let hourlyForecastData = {};
                     else{
                         $this.text('+');
                     }
-                    /*
-                    if( $this.text() === "Show hourly forecast"){
-                        $this.text('Hide');
-                    }
-                    else{
-                        $this.text('Show hourly forecast');
-                    }
-                    */
                 });
 
             });
@@ -328,29 +349,5 @@ let hourlyForecastData = {};
         }
 
         createForecast();
-
-        $('#generate-button').on('click',function(){
-            let $selectProduct = $('#control-select-product');
-            let prod = $selectProduct.val();
-            let hours = 0;
-            let step = 24;
-
-            let forecastUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+defaultPlace+"?hours="+hours+"&step="+step;
-            
-            $.ajax({
-                url: forecastUrl,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data){
-                    
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    
-                },
-                complete: function(){
-                    
-                }
-            });
-        });
     });
 })(jQuery);

@@ -156,14 +156,16 @@ function initializeShortcode(plotData, shortcode_id){
                         $loadingDiv.show();
                         $('#plot-image-container').empty();
                         $('#plot-image-container').hide();
-                        if (currentPlotRequest && currentPlotRequest.readyState !== 4) {
-                            currentPlotRequest.abort();
-                        }
                         
                         currentPlotRequest = $.ajax({
                             url: plotObj.getImageUrl(),
                             type: 'GET',
                             dataType: 'html',
+                            beforeSend: function(){
+                                if(currentPlotRequest != null){
+                                    currentPlotRequest.abort();
+                                }
+                            },
                             success: function(data){
                                 
                             },
