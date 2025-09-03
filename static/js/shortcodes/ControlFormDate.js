@@ -5,7 +5,9 @@ class ControlFormDate {
             dateInputID: 'control-select-date',
             timeInputID: 'control-select-time',
             prevButtonID: 'control-prev-hour',
-            nextButtonID: 'control-next-hour'
+            nextButtonID: 'control-next-hour',
+            dateLabelID: 'control-date-label',
+            timeLabelID: 'control-time-label'
         };
     }
 
@@ -15,6 +17,8 @@ class ControlFormDate {
         this.timeInputID = inputs.timeInputID || ControlFormDate.defaults.timeInputID;
         this.prevButtonID = inputs.prevButtonID || ControlFormDate.defaults.prevButtonID;
         this.nextButtonID = inputs.nextButtonID || ControlFormDate.defaults.nextButtonID;
+        this.dateLabelID = inputs.dateLabelID || ControlFormDate.defaults.dateLabelID;
+        this.timeLabelID = inputs.timeLabelID || ControlFormDate.defaults.timeLabelID;
         
         this.$divContainer = jQuery('<div>').attr('id', this.containerID);
         this.$inputDate = jQuery('<input type="date" id="' + this.dateInputID + '">');
@@ -22,6 +26,10 @@ class ControlFormDate {
         
         this.$prevButton = jQuery('<button type="button" id="' + this.prevButtonID + '" class="btn btn-primary">-1h</button>');
         this.$nextButton = jQuery('<button type="button" id="' + this.nextButtonID + '" class="btn btn-primary">+1h</button>');
+        
+        // Creazione delle label
+        this.$dateLabel = jQuery('<label for="' + this.dateInputID + '" id="' + this.dateLabelID + '">Date: </label>');
+        this.$timeLabel = jQuery('<label for="' + this.timeInputID + '" id="' + this.timeLabelID + '">Time UTC: </label>');
         
         this.populateTimeSelect();
         this.setCurrentDateTime();
@@ -31,6 +39,8 @@ class ControlFormDate {
         this.$divContainer.append(this.$inputTimeSelect);
         this.$divContainer.append(this.$prevButton);
         this.$divContainer.append(this.$nextButton);
+        this.$divContainer.append(this.$dateLabel);
+        this.$divContainer.append(this.$timeLabel);
     }
 
     getContainer() {
@@ -55,6 +65,15 @@ class ControlFormDate {
 
     getNextButton() {
         return this.$nextButton;
+    }
+
+    // Nuovi metodi per accedere alle label
+    getDateLabel() {
+        return this.$dateLabel;
+    }
+
+    getTimeLabel() {
+        return this.$timeLabel;
     }
 
     populateTimeSelect() {
@@ -183,5 +202,38 @@ class ControlFormDate {
 
     setNextButtonText(text) {
         this.$nextButton.text(text);
+    }
+
+    // Nuovi metodi per gestire le label
+    setDateLabelAttribute(attribute, value) {
+        this.$dateLabel.attr(attribute, value);
+    }
+
+    appendDateLabelClass(value) {
+        this.$dateLabel.addClass(value);
+    }
+
+    removeDateLabelClass(value) {
+        this.$dateLabel.removeClass(value);
+    }
+
+    setTimeLabelAttribute(attribute, value) {
+        this.$timeLabel.attr(attribute, value);
+    }
+
+    appendTimeLabelClass(value) {
+        this.$timeLabel.addClass(value);
+    }
+
+    removeTimeLabelClass(value) {
+        this.$timeLabel.removeClass(value);
+    }
+
+    setDateLabelText(text) {
+        this.$dateLabel.text(text);
+    }
+
+    setTimeLabelText(text) {
+        this.$timeLabel.text(text);
     }
 }

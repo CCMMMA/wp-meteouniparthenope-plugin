@@ -144,7 +144,9 @@ let controlDefaultOutput = "gen";
             let outputs = product['outputs'];
             $.each(outputs, function(key,value){
                 let outputLanguage = value['title'].length < 2 ? 'en-US' : apiUsageLanguage;
-                $selectOutput.append(`<option value="${key}">${value['title'][outputLanguage]}</option>`);
+                if(key.length <= 3 || key === "mcape"){
+                    $selectOutput.append(`<option value="${key}">${value['title'][outputLanguage]}</option>`);
+                }
             });
         }
 

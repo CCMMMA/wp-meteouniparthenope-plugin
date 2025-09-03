@@ -2,3 +2,17 @@ button:disabled {
   cursor: not-allowed;
   pointer-events: all !important;
 }
+.image-container {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.hover-zoom-image {
+  transition: transform 0.3s ease;
+  width: 100%;
+  height: auto;
+}
+
+.hover-zoom-image:hover {
+  transform: scale(3);
+}

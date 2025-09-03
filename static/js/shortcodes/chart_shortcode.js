@@ -213,6 +213,34 @@ let defaultCharOutput = "gen";
                             dataPoints: dataPoints2
                         });
                         break;
+                    case "mcape":
+                        title="Hourly cumulated snow fall";
+                        axisY= {
+                            title: "Hourly cumulated snow fall (cm)",
+                            includeZero: false,
+                            suffix: "cm"
+                        };
+                        axisY2 = {
+                            title: "Wind Direction at 10m (°N)",
+                            maximum: 360,
+                            interval: 45,
+                            includeZero: true,
+                            suffix: " °"
+                        };
+                        data.push({
+                            name: "rh2",
+                            type: "column",
+                            yValueFormatString: "#0.## %",
+                            dataPoints: dataPoints
+                        });
+                        data.push({
+                            name: "wd",
+                            type: "line",
+                            axisYType: "secondary",
+                            yValueFormatString: "#0.## °",
+                            dataPoints: dataPoints2
+                        });
+                        break;
                 }
                 break;
             case "wcm3":

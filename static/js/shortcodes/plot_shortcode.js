@@ -90,7 +90,8 @@ function initializeShortcode(plotData, shortcode_id){
                             $loadingDiv.hide();
                             let $plotImg = $('<img>');
                             $plotImg.attr('src', plotObj.getImageUrl());
-                            $plotImg.attr('class', "meteo-icon");
+                            $plotImg.addClass('meteo-icon');
+                            $plotImg.addClass('hover-zoom-image');
                             $divPlotContainer.append($plotImg);
                         }
                     });
@@ -121,7 +122,8 @@ function initializeShortcode(plotData, shortcode_id){
                                 $loadingDiv.hide();
                                 let $plotImg = $('<img>');
                                 $plotImg.attr('src', plotObj.getImageUrl());
-                                $plotImg.attr('class', "meteo-icon");
+                                $plotImg.addClass('meteo-icon');
+                                $plotImg.addClass('hover-zoom-image');
                                 $divPlotContainer.append($plotImg);
                             }
                         });
