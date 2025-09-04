@@ -374,6 +374,16 @@ button:disabled {
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+
+    position: relative;
+}
+
+.forecast-table-container::after {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 1.2rem;
+    color: #999;
 }
 
 .forecast-table {

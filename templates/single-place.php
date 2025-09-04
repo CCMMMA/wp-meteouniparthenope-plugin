@@ -35,9 +35,21 @@ get_header();
                 </div>
                 
                 <!-- Forecast table -->
-                <div id="forecast" class="container-fluid">
+                <div id="forecast" class="forecast-container container-fluid" style="display:block;padding-left: 6px;padding-right: 6px;">
+                    <?php echo do_shortcode('[forecast_shortcode]'); ?>
+                    <div class="card container-fluid" style="padding-left: 6px;padding-right: 6px;">
+                        <div class="card-body container-fluid" style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
+                            <div id="forecast-box-title" class="container-fluid"></div>
+                            <div id="loading-box" class="container-fluid d-flex justify-content-center"></div>
+                            <div id="forecast-box" class="forecast-table-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!--
+                <div id="forecast" class=" container-fluid">
                     <div class="forecast-container container-fluid" style="display: block">
-                        <?php echo do_shortcode('[forecast_shortcode]'); ?>
+                        <?php //echo do_shortcode('[forecast_shortcode]'); ?>
                         <div class="row container-fluid">
                             <div class="col container-fluid">
                                 <div class="card container-fluid">
@@ -51,6 +63,7 @@ get_header();
                         </div>
                     </div>
                 </div>
+                -->
 
                 <!-- Control (form di input) - Made responsive -->
                 <div id="control">
