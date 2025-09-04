@@ -2,6 +2,7 @@ let productsDataFromAPI= null;
 
 let controlDefaultProduct = "wrf5";
 let controlDefaultOutput = "gen";
+let deltaUTC = -2;
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 if(urlParams.size !== 0){
@@ -14,6 +15,9 @@ if(urlParams.size !== 0){
         //Output input
         var output = urlParams.get('output');
         controlDefaultOutput = output
+    }
+    if(urlParams.has('date')){
+        deltaUTC = 0;
     }
 }
 
@@ -37,6 +41,7 @@ if(urlParams.size !== 0){
         
         //Function for setting current date and time
         function setCurrentDateTime() {
+
             const now = new Date();
             
             //Set the current date
@@ -49,9 +54,11 @@ if(urlParams.size !== 0){
             
             //Set the current time
             const currentHour = now.getHours().toString().padStart(2, '0');
-            const currentTime = (currentHour-2) + ':00';
+            const currentTime = (currentHour) + ':00';
             
             $('#control-select-time').val(currentTime);
+            
+            adjustTime(deltaUTC);
         }
         
         //Function to adjust the hours

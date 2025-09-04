@@ -96,8 +96,10 @@ class ControlFormDate {
         this.$inputDate.val(currentDate);
         
         const currentHour = now.getHours().toString().padStart(2, '0');
-        const currentTime = currentHour + ':00';
+        const currentTime = (currentHour) + ':00';
         this.$inputTimeSelect.val(currentTime);
+
+        this.adjustTime(-2);
     }
 
     setupEventHandlers() {
