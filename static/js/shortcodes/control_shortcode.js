@@ -2,6 +2,20 @@ let productsDataFromAPI= null;
 
 let controlDefaultProduct = "wrf5";
 let controlDefaultOutput = "gen";
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+if(urlParams.size !== 0){
+    if(urlParams.has('prod')){
+        //Product input
+        var product = urlParams.get('prod');
+        controlDefaultProduct = product;
+    }
+    if(urlParams.has('output')){
+        //Output input
+        var output = urlParams.get('output');
+        controlDefaultOutput = output
+    }
+}
 
 (function($){
     $(document).ready(function() {
@@ -35,7 +49,7 @@ let controlDefaultOutput = "gen";
             
             //Set the current time
             const currentHour = now.getHours().toString().padStart(2, '0');
-            const currentTime = currentHour + ':00';
+            const currentTime = (currentHour-2) + ':00';
             
             $('#control-select-time').val(currentTime);
         }
@@ -61,7 +75,7 @@ let controlDefaultOutput = "gen";
             const newDate = `${newYear}-${newMonth}-${newDay}`;
             
             const newHour = currentDateTime.getHours().toString().padStart(2, '0');
-            const newTime = newHour + ':00';
+            const newTime = (newHour) + ':00';
             
             $('#control-select-date').val(newDate);
             $('#control-select-time').val(newTime);
@@ -110,8 +124,8 @@ let controlDefaultOutput = "gen";
             });
             
             //Loading of outputs for default product
-            let defaultProduct = $selectProduct.children(':first').val();
-            loadOutputs(products[defaultProduct]);
+            //let defaultProduct = $selectProduct.children(':first').val();
+            loadOutputs(products[controlDefaultProduct]);
         }
         
         function getProducts(){

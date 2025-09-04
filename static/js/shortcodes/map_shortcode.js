@@ -17,7 +17,7 @@ let extras = {attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USD
                 placeMinZoom = data['zoom']['min'];
                 console.log(placeMinZoom);
                 placeMaxZoom = data['zoom']['max'];
-                var map = L.map('map').setView(placeCoordinates, 8);
+                var map = L.map('map').setView(placeCoordinates, placeMinZoom);
                 $('#map-collapse').on('shown.bs.collapse', function () {
                     map.invalidateSize();
                 });

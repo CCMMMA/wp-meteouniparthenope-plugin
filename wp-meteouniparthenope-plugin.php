@@ -71,7 +71,9 @@ class MeteoUniParthenopePluginMain{
         add_shortcode('map_shortcode', [$this,'map_shortcode_callback']);
         add_shortcode('live_chart_shortcode',[$this,'live_chart_shortcode_callback']);
         add_shortcode('open_data_shortcode',[$this,'open_data_shortcode_callback']);
+        add_shortcode('image_link_shortcode', [$this,'image_link_shortcode_callback']);
         add_shortcode('autocomplete_search_shortcode',[$this,'autocomplete_search_shortcode_callback']);
+        add_shortcode('url_rewriting_shortcode',[$this,'url_rewriting_shortcode_callback']);
 
         //Other plugins functionalities
         add_action('wp_ajax_add_single_place', [$this, 'handle_add_single_place']);
@@ -100,17 +102,18 @@ class MeteoUniParthenopePluginMain{
         $args = array(
             'labels'             => $labels,
             'public'             => true,
+            'publicly_queryable' => true,
             'has_archive'        => true,
             'show_in_search'     => true,
-            'exclude_from_search' => false,
+            'exclude_from_search'=> false,
             'show_ui'            => true,
             'show_in_menu'       => false,
             'show_in_rest'       => true,
+            'rewrite'            => array('slug' => 'place', 'with_front' => false),
             'supports'           => array('title', 'editor', 'excerpt', 'custom-fields')
         );
 
         register_post_type('place', $args);
-        flush_rewrite_rules();
     }
 
     // 3. Adding custom plugin menu + submenu
@@ -447,7 +450,7 @@ class MeteoUniParthenopePluginMain{
 
     // Plot shortcode
     function plot_shortcode_callback($atts) {
-        static $shortcode_instances = [];
+        static $plot_shortcode_instances = [];
         
         $post_id = get_the_ID();
         $placeID = get_post_meta($post_id, 'place_id', true);
@@ -469,10 +472,10 @@ class MeteoUniParthenopePluginMain{
                 $returnString = '<div id="plot_shortcode-root-'.$atts['shortcode_id'].'"></div>';
                 
                 // Aggiungi all'array statico
-                $shortcode_instances[$atts['shortcode_id']] = $data;
+                $plot_shortcode_instances[$atts['shortcode_id']] = $data;
             }
             else{
-                $shortcode_instances['default'] = $data;
+                $plot_shortcode_instances['default'] = $data;
             }
         }
 
@@ -486,7 +489,7 @@ class MeteoUniParthenopePluginMain{
         );
         
         // Passa tutti gli shortcode instances
-        wp_localize_script('plot-shortcode-js', 'allPlotData', $shortcode_instances);
+        wp_localize_script('plot-shortcode-js', 'allPlotData', $plot_shortcode_instances);
         
         return $returnString ? $returnString : '<div id="plot_shortcode-root"></div>';
     }
@@ -579,6 +582,46 @@ class MeteoUniParthenopePluginMain{
         wp_localize_script('open-data-shortcode-js', 'openDataData', $data);
 
         return '<div id="open_data_shortcode-root"></div>';
+    }
+
+    // Image link shortcode
+    function image_link_shortcode_callback($atts){
+        static $image_link_shortcode_instances = [];
+        $data['plot_id'] = $atts['plot_id'];
+        if(isset($atts['shortcode_id'])){
+            $data['shortcode_id'] = $atts['shortcode_id'];
+            $returnString = '<div id="image_link_shortcode-root-'.$atts['shortcode_id'].'"></div>';
+            
+            // Aggiungi all'array statico
+            $image_link_shortcode_instances[$atts['shortcode_id']] = $data;
+        }
+        else{
+            $image_link_shortcode_instances['default'] = $data;
+        }
+
+        wp_enqueue_script(
+            'image-link-shortcode-js',
+            plugin_dir_url(__FILE__) . 'static/js/shortcodes/image_link_shortcode.js',
+            [],
+            null,
+            true
+        );
+        
+        wp_localize_script('image-link-shortcode-js', 'allImageLinkShortcodeData', $image_link_shortcode_instances);
+
+        return $returnString ? $returnString : '<div id="image_link_shortcode-root"></div>';
+    }
+
+    function url_rewriting_shortcode_callback($atts){
+        wp_enqueue_script(
+            'url-rewriting-shortcode',
+            plugin_dir_url(__FILE__) . 'static/js/shortcodes/url_rewriting_shortcode.js',
+            [],
+            null,
+            true
+        );
+        
+        return '<div id="url_rewriting_shortcode-root"></div>';
     }
 
     // Global data
@@ -821,12 +864,39 @@ class MeteoUniParthenopePluginMain{
             ));
         }
     }
+
+    function meteounipplugin_query_vars($vars){
+        $vars[] = 'id';
+        $vars[] = 'date';
+        $vars[] = 'prod';
+        $vars[] = 'output';
+        return $vars;
+    }
+
+    function meteounipplugin_disable_place_redirect_canonical($redirect_url) {
+        if ( is_singular( 'place' ) ) {
+            return false; // blocca il redirect canonico per i CPT place
+        }
+        return $redirect_url;
+    }
+
+    public static function activate() {
+        // Registriamo il CPT prima del flush
+        $plugin = new self();
+        $plugin->meteounipplugin_register_cpt_place();
+        flush_rewrite_rules();
+    }
+
+    public static function deactivate() {
+        flush_rewrite_rules();
+    }
 }
 
 
-$pluginMainInstance = new MeteoUniparthenopePluginMain;
+$pluginMainInstance = new MeteoUniParthenopePluginMain();
 
-
+register_activation_hook(__FILE__, ['MeteoUniParthenopePluginMain', 'activate']);
+register_deactivation_hook(__FILE__, ['MeteoUniParthenopePluginMain', 'deactivate']);
 
 
 

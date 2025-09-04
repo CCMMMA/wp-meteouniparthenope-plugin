@@ -62,6 +62,24 @@ class PlaceRESTController extends WP_REST_Controller{
                 'schema' => array( $this, 'get_public_item_schema' ),
             )
         );
+
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<place_id>[^/]+)/link', array(
+            array(
+                'methods'             => WP_REST_Server::READABLE, // GET
+                'callback'            => array($this, 'get_place_link'),
+                'permission_callback' => array($this, 'get_items_permissions_check'),
+                'args'                => array(
+                    'place_id' => array(
+                        'required' => true,
+                        'type' => 'string',
+                        'description' => 'ID univoco del place',
+                        'validate_callback' => function($param, $request, $key) {
+                            return !empty($param);
+                        }
+                    ),
+                ),
+            ),
+        ));
     }
 
     /**
@@ -317,22 +335,102 @@ class PlaceRESTController extends WP_REST_Controller{
     /**
      * Utility: trova place per place_id
      */
-    private function get_place_by_place_id($place_id) {
-        $args = array(
+    /**
+     * Ottiene il link del post WordPress tramite place_id (versione ottimizzata)
+     * 
+     * @param string $place_id L'ID del place
+     * @return string|false Il permalink del post o false se non trovato
+     */
+    public function getPlacePostLinkByID($place_id) {
+        $posts = get_posts([
             'post_type' => 'place',
-            'meta_query' => array(
-                array(
-                    'key' => 'place_id',
-                    'value' => $place_id,
-                    'compare' => '='
-                )
-            ),
-            'posts_per_page' => 1
-        );
+            'post_status' => 'publish',
+            'numberposts' => 1,
+            'fields' => 'ids', // Ottieni solo gli ID per massima efficienza
+            'meta_key' => 'place_id',
+            'meta_value' => sanitize_text_field($place_id)
+        ]);
+        
+        if (!empty($posts)) {
+            return get_permalink($posts[0]);
+        }
+        
+        return false;
+    }
 
-        $posts = get_posts($args);
+    /**
+     * Ottiene l'ID del post WordPress tramite place_id (versione ottimizzata della tua funzione esistente)
+     * 
+     * @param string $place_id L'ID del place
+     * @return int|false L'ID del post WordPress o false se non trovato
+     */
+    public function getPlacePostIDByPlaceID($place_id) {
+        $posts = get_posts([
+            'post_type' => 'place',
+            'post_status' => 'publish',
+            'numberposts' => 1,
+            'fields' => 'ids',
+            'meta_key' => 'place_id',
+            'meta_value' => sanitize_text_field($place_id)
+        ]);
+        
+        return !empty($posts) ? $posts[0] : false;
+    }
+
+    /**
+     * Ottiene il post object completo tramite place_id (aggiornamento della tua funzione esistente)
+     * Ora più efficiente e con lo stesso nome della tua funzione attuale
+     * 
+     * @param string $place_id L'ID del place
+     * @return WP_Post|null Il post object o null se non trovato
+     */
+    private function get_place_by_place_id($place_id) {
+        $posts = get_posts([
+            'post_type' => 'place',
+            'post_status' => 'publish',
+            'numberposts' => 1,
+            'meta_key' => 'place_id',
+            'meta_value' => sanitize_text_field($place_id)
+        ]);
+        
         return !empty($posts) ? $posts[0] : null;
     }
+
+    /**
+     * Callback per l'endpoint che restituisce il link del place
+     * 
+     * @param WP_REST_Request $request Request object
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure
+     */
+    public function get_place_link($request) {
+        $place_id = $request->get_param('place_id');
+        
+        if (empty($place_id)) {
+            return new WP_Error(
+                'missing_place_id',
+                'Place ID è richiesto',
+                array('status' => 400)
+            );
+        }
+        
+        $link = $this->getPlacePostLinkByID($place_id);
+        
+        if ($link === false) {
+            return new WP_Error(
+                'place_not_found',
+                'Nessun place trovato con ID: ' . $place_id,
+                array('status' => 404)
+            );
+        }
+        
+        return new WP_REST_Response(array(
+            'place_id' => $place_id,
+            'link' => $link,
+            'success' => true
+        ), 200);
+    }
+
+    
 }
 
 ?>
