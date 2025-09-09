@@ -31,23 +31,25 @@ function initializeShortcode(plotData, shortcode_id){
             let $loadingGif = $('<img>').attr('id','loading-gif');
             $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/loading_gif.gif");
             $loadingDiv.append($loadingGif);
-
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            if(urlParams.size !== 0){
-                if(urlParams.get('id') !== plotData['place_id']){
-                    $.ajax({
-                        url: `/wp-json/meteounip/v1/places/${urlParams.get('id')}/link`,
-                        success: function(data){
-                            var wpLink = data['link'];
-                            var newLink = wpLink + `?id=${urlParams.get('id')}&date=${urlParams.get('date')}&prod=${urlParams.get('prod')}&output=${urlParams.get('output')}`;
-                            window.location = newLink;
-                        }
-                    });
+            
+            if (plotData['control_forms'] !== "STANDALONE"){
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                if(urlParams.size !== 0){
+                    if(urlParams.get('id') !== plotData['place_id']){
+                        $.ajax({
+                            url: `/wp-json/meteounip/v1/places/${urlParams.get('id')}/link`,
+                            success: function(data){
+                                var wpLink = data['link'];
+                                var newLink = wpLink + `?id=${urlParams.get('id')}&date=${urlParams.get('date')}&prod=${urlParams.get('prod')}&output=${urlParams.get('output')}`;
+                                window.location = newLink;
+                            }
+                        });
+                    }
+                    plotData['date'] = urlParams.get('date');
+                    plotData['product'] = urlParams.get('prod');
+                    plotData['output'] = urlParams.get('output');
                 }
-                plotData['date'] = urlParams.get('date');
-                plotData['product'] = urlParams.get('prod');
-                plotData['output'] = urlParams.get('output');
             }
 
             switch(plotData['control_forms']){

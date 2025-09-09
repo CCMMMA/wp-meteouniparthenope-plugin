@@ -136,6 +136,7 @@ get_header();
                 </p>
                 <div class="collapse show" id="chart-collapse">
                     <div class="chart-container container-fluid">
+                        <?php //echo do_shortcode('[old_chart_shortcode]'); ?>
                         <?php echo do_shortcode('[chart_shortcode]'); ?>
                         <div class="row">
                             <div class="col">
@@ -183,7 +184,8 @@ get_header();
                     </div>
                 </div>
                 -->
-
+                <br>
+                <br>
                 <!-- Open Data - Made responsive -->
                 <div id="container_opendata" class="container-fluid" style="margin-bottom: 5%">
                     <?php echo do_shortcode('[open_data_shortcode]'); ?>
@@ -207,6 +209,7 @@ get_header();
                         </div>
                     </div>
                 </div>
+                <?php do_shortcode('[url_rewriting_shortcode]');?>
             </div>
         </article>
     </main>

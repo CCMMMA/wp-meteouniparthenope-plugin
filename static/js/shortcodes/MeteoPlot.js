@@ -20,10 +20,10 @@ class MeteoPlot {
         }
         else{
             let now = new Date();
-            console.log(now);
+            //console.log(now);
             now.setHours(now.getHours() - 2);
             this.dateTime = DateFormatter.formatFromDateObjToAPI(now);
-            console.log(this.dateTime);
+            //console.log(this.dateTime);
         }
     }
 
