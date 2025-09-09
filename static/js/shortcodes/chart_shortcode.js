@@ -14,10 +14,13 @@ let NEW_CHART_defaultCharOutput = "gen";
         $loadingDiv.attr('id','loading-div');
         let $loadingGif = $('<img>').attr('id','loading-gif');
         $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/loading_gif.gif");
+        $loadingDiv.addClass('d-flex justify-content-center align-items-center');
+        $loadingDiv.css('height', '400px');
         $loadingDiv.append($loadingGif);
 
+        let $chartBox = $('#chart-box');
+        $chartBox.append($loadingDiv);
         let $chartBoxCanvaJS = $('#chart-container-canvasDiv');
-        $chartBoxCanvaJS.append($loadingDiv);
         let product = NEW_CHART_defaultChartProduct;
         let output = NEW_CHART_defaultCharOutput;
         let ncepDate = formatDateForMeteoAPI(null,null);
@@ -29,12 +32,18 @@ let NEW_CHART_defaultCharOutput = "gen";
             success: function(data){
                 drawChart(data,product,output,ncepDate);
                 $loadingDiv.hide();
-                $('#chart-box').show();
+                $loadingDiv.attr('class','loading-gif');
+                $chartBoxCanvaJS.show();
             }
         });
 
         $('.plot-control-forms').on('change',function(){
+            // Prima nasconde il canvas e svuota il contenuto
+            $chartBoxCanvaJS.hide();
             $chartBoxCanvaJS.empty();
+            $loadingDiv.addClass('d-flex justify-content-center align-items-center');
+            $loadingDiv.css('height', '400px');
+            $loadingDiv.show();
             
             let $selectProduct = $('#control-select-product');
             product = $selectProduct.val();
@@ -44,26 +53,42 @@ let NEW_CHART_defaultCharOutput = "gen";
             
             ncepDate = formatDateForMeteoAPI(null,null);
             
-            $loadingDiv.show();
-            var key =  product + "-" + output + "-" + ncepDate;
-            if( !(key in NEW_CHART_loadedChart)){
+            var key = product + "-" + output + "-" + ncepDate;
+            
+            if(!(key in NEW_CHART_loadedChart)){
                 let chartAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?output=${output}`;
                 console.log(chartAPIUrl);
                 $.ajax({
                     url: chartAPIUrl,
                     success: function(data){
                         drawChart(data,product,output,ncepDate);
+                    },
+                    complete: function(){
                         $loadingDiv.hide();
-                        $('#chart-box').show();
+                        $loadingDiv.attr('class','loading-gif');
+                        // Assicurati che il container sia visibile prima di mostrare il chart
+                        $chartBoxCanvaJS.show();
+                        
+                        // Forza il ridimensionamento del chart dopo un breve delay
+                        setTimeout(function(){
+                            var currentChart = NEW_CHART_loadedChart[key];
+                            if(currentChart){
+                                currentChart.render();
+                            }
+                        }, 100);
                     }
                 });
+            } else {
+                // Se il chart è già in cache, lo ri-renderizza
+                $loadingDiv.hide();
+                $chartBoxCanvaJS.show();
+                
+                // Assicura che il container abbia le dimensioni corrette
+                setTimeout(function(){
+                    NEW_CHART_loadedChart[key].render();
+                }, 100);
             }
-            else{
-                NEW_CHART_loadedChart[key].render();
-            }
-
         });
-        
     });
 
     function drawChart(timeSeriesDataAndMetadata,product,output,ncepDate){
@@ -116,11 +141,19 @@ let NEW_CHART_defaultCharOutput = "gen";
             },
             axisY: axisY,
             axisY2: axisY2,
-
+            // Aggiungi opzioni per il ridimensionamento
+            //height: 400, // Altezza fissa
+            // Oppure usa responsive
+            responsive: true,
             data: data
         };
 
+        // Assicurati che il container sia visibile e abbia dimensioni
+        let $container = $('#chart-container-canvasDiv');
+        $container.show();
+        
         let chart = new CanvasJS.Chart("chart-container-canvasDiv", options);
+        
         $.each( timeSeriesDataAndMetadata['timeseries'], function(key, val){
             let date = val.dateTime;
             let year = date.substring(0, 4);
@@ -144,10 +177,14 @@ let NEW_CHART_defaultCharOutput = "gen";
                     y: val[ chartMetadata['var_line'] ]
                 })
             }
-
         });
-        chart.render();
-        var key =  product + "-" + output + "-" + ncepDate;
+        
+        // Renderizza il chart dopo un piccolo delay per assicurarsi che il DOM sia pronto
+        setTimeout(function(){
+            chart.render();
+        }, 50);
+        
+        var key = product + "-" + output + "-" + ncepDate;
         NEW_CHART_loadedChart[key] = chart;
     }
 

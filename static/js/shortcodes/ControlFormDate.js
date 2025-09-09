@@ -79,7 +79,6 @@ class ControlFormDate {
     populateTimeSelect() {
         for (let hour = 0; hour < 24; hour++) {
             const hourFormatted = hour.toString().padStart(2, '0');
-            console.log(hourFormatted);
             const timeValue = hourFormatted + ':00';
             const option = jQuery('<option></option>')
                 .attr('value', timeValue)

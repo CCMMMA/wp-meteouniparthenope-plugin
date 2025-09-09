@@ -15,7 +15,6 @@ let extras = {attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USD
             url: 'https://api.meteo.uniparthenope.it/places/'+mapData['place_id'],
             success: function(data){
                 placeMinZoom = data['zoom']['min'];
-                console.log(placeMinZoom);
                 placeMaxZoom = data['zoom']['max'];
                 var map = L.map('map').setView(placeCoordinates, placeMinZoom);
                 $('#map-collapse').on('shown.bs.collapse', function () {

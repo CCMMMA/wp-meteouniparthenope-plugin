@@ -135,7 +135,7 @@ get_header();
                     </button>
                 </p>
                 <div class="collapse show" id="chart-collapse">
-                    <div class="chart-container container-fluid">
+                    <div id="chart-container" class="chart-container container-fluid">
                         <?php echo do_shortcode('[chart_shortcode]'); ?>
                         <div class="row">
                             <div class="col">
