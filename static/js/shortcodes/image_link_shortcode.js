@@ -101,7 +101,7 @@ function initializeShortcode(imageLinkData, shortcode_id){
                     console.log(newLink);
                     
                     $plotDiv.css('cursor', 'pointer').click(function(){
-                        window.open(newLink,'_blank');
+                        window.location.replace(newLink);
                     })
                 }
             });
