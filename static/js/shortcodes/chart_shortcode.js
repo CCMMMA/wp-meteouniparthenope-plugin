@@ -8,40 +8,6 @@ let NEW_CHART_loadedChart = {};
 let NEW_CHART_defaultChartProduct = "wrf5";
 let NEW_CHART_defaultCharOutput = "gen";
 
-const mappingProductOutput = {
-    wrf5: {
-        gen: ["clf"],
-        tsp: ["slp","t2c"], // [0] => left, for bars, [1] => right, for line
-        wn1: ["u10m","v10m"],
-        crh: [""],
-        rh2: [""],
-        swe: [""],
-        mcape: [""]
-    },
-    wcm3: {
-        gen: [""],
-        con: [""]
-    },
-    rms3: {
-        gen: [""],
-        scu: [""],
-        sst: [""],
-        sss: [""],
-        sts: [""]
-    },
-    ww33: {
-        gen: [""],
-        hsd: [""],
-        lmd: [""],
-        fpd: [""],
-        ppd: [""]
-    },
-    aiq3: {
-        gen: [""],
-        mci: [""],
-    }
-};
-
 (function($){
     $(document).ready(function() {
         let $loadingDiv = $('<div>').attr('class','loading-gif');

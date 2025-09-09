@@ -70,7 +70,6 @@ class MeteoUniParthenopePluginMain{
         add_shortcode('control_shortcode',[$this, 'control_shortcode_callback']);
         add_shortcode('date_control_shortcode',[$this, 'date_control_shortcode_callback']);
         add_shortcode('plot_shortcode', [$this,'plot_shortcode_callback']);
-        add_shortcode('old_chart_shortcode', [$this,'old_chart_shortcode_callback']);
         add_shortcode('chart_shortcode', [$this,'chart_shortcode_callback']);
         add_shortcode('map_shortcode', [$this,'map_shortcode_callback']);
         add_shortcode('live_chart_shortcode',[$this,'live_chart_shortcode_callback']);
@@ -550,30 +549,6 @@ class MeteoUniParthenopePluginMain{
         wp_localize_script('plot-shortcode-js', 'allPlotData', $plot_shortcode_instances);
         
         return $returnString ? $returnString : '<div id="plot_shortcode-root"></div>';
-    }
-
-    // Chart shortcode (old)
-    function old_chart_shortcode_callback($atts) {
-        $post_id = get_the_ID();
-        $placeID = get_post_meta($post_id, 'place_id', true);
-        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
-
-        $data = [
-            'place_id' => $placeID,
-            'long_name_it' => $longNameIT,
-        ];
-
-        wp_enqueue_script(
-            'old-chart-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/old_chart_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        wp_localize_script('old-chart-shortcode-js', 'chartData', $data);
-
-        return '<div id="old_chart_shortcode-root"></div>';
     }
 
     // Chart shortcode

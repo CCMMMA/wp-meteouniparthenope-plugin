@@ -34,7 +34,7 @@ if(urlParams.size !== 0){
                 const timeValue = hourFormatted + ':00';
                 const option = $('<option></option>')
                     .attr('value', timeValue)
-                    .text(timeValue);
+                    .text(hourFormatted);
                 timeSelect.append(option);
             }
         }
