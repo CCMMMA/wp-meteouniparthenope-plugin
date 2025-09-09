@@ -62,8 +62,62 @@
     margin-right: 15px;
 }
 
-.forecast-preview-table, .forecast-preview-th, .forecast-preview-tr, .forecast-preview-td{
+/* Tabelle forecast preview - Stile e scroll orizzontale */
+.forecast-preview-table, 
+.forecast-preview-th, 
+.forecast-preview-tr, 
+.forecast-preview-td {
     border: 1px solid #1976D2 !important;
+}
+
+.forecast-preview-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.forecast-preview-table th,
+.forecast-preview-table td {
+    padding: 8px;
+    text-align: center;
+    white-space: nowrap; /* evita che il testo vada a capo */
+}
+
+/* Container con scroll orizzontale per le tabelle forecast preview */
+.forecast-preview-container,
+.weather-preview .forecast-table-container,
+.weather-preview .forecast-preview-container {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    position: relative !important;
+    margin-top: 10px;
+    border: 1px solid #ddd; /* Bordo di debug per vedere se il container viene creato */
+}
+
+/* Forza lo scroll anche sulla classe generale */
+.place-result .forecast-table-container {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    position: relative !important;
+}
+
+/* Assicura che la tabella non si comprima */
+.forecast-preview-table,
+.weather-preview .forecast-table {
+    min-width: 600px !important; /* Forza una larghezza minima per attivare lo scroll */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Stile per le immagini nelle tabelle preview */
+.weather-preview .forecast-image {
+    max-height: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    min-width: 40px;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Responsive */
@@ -75,5 +129,36 @@
     .weather-preview {
         margin-left: 0;
         margin-top: 15px;
+    }
+
+    /* Riduco le dimensioni delle immagini forecast su mobile */
+    .weather-preview .forecast-image {
+        max-width: 35px;
+        max-height: 35px;
+        min-width: 35px;
+        min-height: 35px;
+    }
+
+    /* Riduco font size nelle tabelle preview su mobile */
+    .weather-preview .forecast-preview-table th,
+    .weather-preview .forecast-preview-table td {
+        font-size: 0.8rem;
+        padding: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Ulteriore riduzione per schermi molto piccoli */
+    .weather-preview .forecast-image {
+        max-width: 45px;
+        max-height: 45px;
+        min-width: 45px;
+        min-height: 45px;
+    }
+
+    .weather-preview .forecast-preview-table th,
+    .weather-preview .forecast-preview-table td {
+        font-size: 0.75rem;
+        padding: 3px;
     }
 }

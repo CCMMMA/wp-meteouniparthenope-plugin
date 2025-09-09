@@ -53,8 +53,14 @@ function initializeShortcode(forecastData, shortcode_id){
                 //console.log(todayForecast);
                 
                 let $forecastPreviewContainer = $('#forecast_preview_shortcode-root-'+shortcode_id);
-                let table = $('<table class="forecast-preview-table">');
-                table.attr('id','forecast-table');
+                
+                // Creo il wrapper con scroll orizzontale come nel forecast_shortcode
+                let $tableContainer = $('<div>');
+                $tableContainer.addClass('forecast-table-container');
+                $tableContainer.addClass('forecast-preview-container');
+                
+                let table = $('<table class="forecast-preview-table forecast-table">');
+                table.attr('id','forecast-preview-table-'+shortcode_id);
                 table.attr('width',"100%");
                 table.attr('cellspacing','0');
                 table.attr('cellpadding','0');
@@ -76,7 +82,11 @@ function initializeShortcode(forecastData, shortcode_id){
                             '<td class="forecast-preview-td">Pressure (hPa)</>'+
                             '<td class="forecast-preview-td">Humidity (%)</>'+
                             '</tr>');
-                $forecastPreviewContainer.append(table);
+                
+                // Aggiungo la tabella al container con scroll e poi al container principale
+                $tableContainer.append(table);
+                $forecastPreviewContainer.append($tableContainer);
+                
                 let year = todayForecast['dateTime'].substring(0, 4);
                 let month = todayForecast['dateTime'].substring(4, 6);
                 let day = todayForecast['dateTime'].substring(6, 8);
@@ -100,7 +110,7 @@ function initializeShortcode(forecastData, shortcode_id){
                 
                 row += '  </td>';
                 row += '  <td class="forecast-td-data forecast-preview-td">';
-                row += '  <img class="forecast-image" src="' + wIconUrl + '" class="weathericon" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
+                row += '  <img class="forecast-image weathericon" src="' + wIconUrl + '" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
                 row += '  </td>';
                 row += '  <td class="forecast-td-data forecast-preview-td tmin">' + todayForecast['t2c-min'] + '</td>';
                 row += '  <td class="forecast-td-data forecast-preview-td tmax">' + todayForecast['t2c-max'] + '</td>';
