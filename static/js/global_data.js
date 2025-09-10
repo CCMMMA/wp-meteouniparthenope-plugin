@@ -10,7 +10,7 @@ let apiUsageLanguage = language === 'it' ? apiAviableLanguage['it'] : apiAviable
 let METEOUNIP_PLUGING_DIR = globalData['PLUGIN_DIR'];
 let METEOUNIP_PLUGIN_LOADING_DIR = globalData['LOADING_DIR'];
 
-let conColors = [
+const conColors = [
     "#FFFFFF",
     "#CCFFFF",
     "#3366FF",
@@ -20,7 +20,7 @@ let conColors = [
     "#660033"
 ];
 
-let mciColors = [
+const mciColors = [
     "#FFFFFF",
     "#3366FF",
     "#00CC00",
@@ -29,7 +29,7 @@ let mciColors = [
     "#660033"
 ];
 
-let scmColors = [
+const scmColors = [
     "#F8F0FD",
     "#E1CAFF",
     "#60F3F0",
@@ -41,7 +41,7 @@ let scmColors = [
 
 ];
 
-let sssColors = [
+const sssColors = [
     "#1001F3",
     "#0076FF",
     "#04B6FF",
@@ -52,7 +52,7 @@ let sssColors = [
     "#DBADAC"
 ];
 
-let sstColors = [
+const sstColors = [
     "#140756",
     "#4141C7",
     "#206EEB",
@@ -78,7 +78,7 @@ let sstColors = [
 
 ];
 
-let tempColors = [
+const tempColors = [
     "#2400d8",
     "#181cf7",
     "#2857ff",
@@ -99,7 +99,7 @@ let tempColors = [
     "#a50021"
 ];
 
-let windColors = [
+const windColors = [
     "#000033",
     "#0117BA",
     "#011FF3",
@@ -123,7 +123,7 @@ let windColors = [
     "#641610"
 ];
 
-let hsColors = [
+const hsColors = [
     "#01FF84",
     "#00FFFF",
     "#00DDDD",
@@ -142,7 +142,7 @@ let hsColors = [
     "#5A5A5A"
 ];
 
-let lmColors = [
+const lmColors = [
     "#00CE7B",
     "#00AA00",
     "#7BCE00",
@@ -159,7 +159,7 @@ let lmColors = [
     "#464646"
 ];
 
-let fpColors = [
+const fpColors = [
     "#70be77",
     "#589a25",
     "#90c233",
@@ -176,7 +176,7 @@ let fpColors = [
     "#3a3a39"
 ];
 
-let periodColors = [
+const periodColors = [
     "#00CE7B",
     "#00AA00",
     "#7BCE00",
@@ -193,7 +193,7 @@ let periodColors = [
     "#464646"
 ];
 
-let rhColors = [
+const rhColors = [
     "#FF0000",
     "#FFFF00",
     "#00FF00",
@@ -203,7 +203,7 @@ let rhColors = [
 ];
 
 /*
-let sweColors = [
+const sweColors = [
     "#000000",
     "#DDA0DD",
     "#DA70D6",
@@ -214,7 +214,7 @@ let sweColors = [
 */
 
 //new
-let wn4Colors = [
+const wn4Colors = [
     "#FFFFFF",
     "#F0FFFF",
     "#A7DCE7",
@@ -232,7 +232,7 @@ let wn4Colors = [
 ]
 
 //new 
-let gpColors = [
+const gpColors = [
     "#351B2F",
     "#411C3E",
     "#79217B",
@@ -267,7 +267,7 @@ let gpColors = [
 ]
 
 //new 
-let wn2Colors = [
+const wn2Colors = [
     "#02018a",
     "#303893",
     "#497cb5",
@@ -286,7 +286,7 @@ let wn2Colors = [
 ]
 
 // new 
-let tspColors = [
+const tspColors = [
     "#02017e",
     "#0400c0",
     "#1564d0",
@@ -321,7 +321,7 @@ let tspColors = [
 ]
 
 // new 
-let precipitationColors = [
+const precipitationColors = [
     "#e3d5ca",
     "#9fffff",
     "#65ffff",
@@ -350,7 +350,7 @@ let precipitationColors = [
 ]
 
 // new
-let uhColors = [
+const uhColors = [
     "#dadada",
     "#2ffffe",
     "#30ffc3",
@@ -367,7 +367,7 @@ let uhColors = [
 ]
 
 // new 
-let s3Colors = [
+const s3Colors = [
     "#1630f6",
     "#2754f6",
     "#3571f6",
@@ -402,7 +402,7 @@ let s3Colors = [
 ]
 
 // new 
-let sst_Colors = [
+const sst_Colors = [
     "#cbcbcb",
     "#0e0076",
     "#2d22bb",
@@ -427,7 +427,7 @@ let sst_Colors = [
 ]
 
 // new 
-let cloudColors = [
+const cloudColors = [
     "#a8a8a8",
     "#dcdcdc",
     "#cdcdcd",
@@ -440,32 +440,51 @@ let cloudColors = [
     
 ]
 
+const mcapeColors = [
+    "#FFFFFF",
+    "#2fffff",
+    "#30FFC3",
+    "#31FF55",
+    "#7BFF55",
+    "#A1FF56",
+    "#BEFF56",
+    "#FFFF57",
+    "#FFE052",
+    "#FFA04A",
+    "#FF6144",
+    "#FF2341",
+    "#FF61BD",
+    "#FFA0FC",
+    "#FFE0FB"
+];
+
 const chartColorFunctions = {
-    clf: cloudcolor,
-    t2c: tspCcolor,
-    ws10n: windKnt2color,
-    crh: precipitationcolor,
-    rh2: rh2color,
-    gph500: gp5color,
-    gph850: gp8color,
-    delta_wspd10: wn2color,
-    ws10k: wn4color,
-    crd: precipitationcolor,
-    uh: uhcolor,
-    con: con2color,
-    mci: mci2color,
-    scm: scm2color,
-    sst: sstcolor,
-    sss: s3color,
-    sst: sst2color,
-    hs: hs2color,
-    lm: lm2color,
-    fp: fp2color,
-    period: period2color,
+    clf: cloud2Color,
+    t2c: tsp2Color,
+    ws10n: windKnt2Color,
+    crh: precipitation2Color,
+    rh2: rh22Color,
+    gph500: gp52Color,
+    gph850: gp82Color,
+    delta_wspd10: wn2Color,
+    ws10k: wn42Color,
+    crd: precipitation2Color,
+    uh: uh2Color,
+    con: con2Color,
+    mci: mci2Color,
+    scm: scm2Color,
+    sst: sst2Color,
+    sss: s32Color,
+    sst: sst2Color,
+    hs: hs2Color,
+    lm: lm2Color,
+    fp: fp2Color,
+    period: period2Color,
+    mcape: mcape2Color
 }
 
 /*
-function swe2color(rh) {
+function swe2Color(rh) {
     let index=0;
 
     // .5 2.5 5.5 8.5 11.5 15.5
@@ -489,7 +508,7 @@ function swe2color(rh) {
 */
 
 // new 
-function cloudcolor(gen) {
+function cloud2Color(gen) {
     let index = 0;
 
     // 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0
@@ -521,7 +540,7 @@ function cloudcolor(gen) {
 }
 
 // new 
-function sstcolor(sst) {
+function sst2Color(sst) {
     let index = 0;
 
     // 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
@@ -575,7 +594,7 @@ function sstcolor(sst) {
 } 
 
 // new 
-function s3color(sss) {
+function s32Color(sss) {
     let index = 0;
 
     //37.55, 37.60, 37.65, 37.70, 37.75, 37.80, 37.85, 37.90, 37.95, 38.00, 38.05, 38.10, 38.15, 38.20, 38.25, 38.30, 38.35, 38.40, 38.45, 38.50, 38.55, 38.60, 38.65, 38.70, 38.75, 38.80, 38.85, 38.90, 38.95, 39.00
@@ -648,7 +667,7 @@ function s3color(sss) {
 }
 
 // new
-function uhcolor(uh) {
+function uh2Color(uh) {
     let index = 0;
 
     //15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195
@@ -689,7 +708,7 @@ function uhcolor(uh) {
 }
 
 // new
-function precipitationcolor(var_precipitation) {
+function precipitation2Color(var_precipitation) {
     let index = 0
     // 0.4 0.6 1 3 5 7 10 15 20 25 30 40 50 60 70 80 90 100 125 150 175 200 250 300 350 
 
@@ -752,7 +771,7 @@ function precipitationcolor(var_precipitation) {
 }
 
 //new 
-function tspCcolor(tsp) {
+function tsp2Color(tsp) {
     let index = 0;
     // -14, -12, -10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44
 
@@ -826,7 +845,7 @@ function tspCcolor(tsp) {
 }
 
 //new
-function wn2color(wn2) {
+function wn2Color(wn2) {
     let index = 0;
     // -10 -8 -6 -4 -3 -2 -1 0 1 2 3 4 6 8 10
 
@@ -869,7 +888,7 @@ function wn2color(wn2) {
 }
 
 // new 
-function gp8color(gp8) {
+function gp82Color(gp8) {
     let index = 0;
 
     if (gp8 < 104) {
@@ -940,7 +959,7 @@ function gp8color(gp8) {
 }
 
 // new 
-function gp5color(gp5) {
+function gp52Color(gp5) {
     let index = 0;
     // 496, 500, 504, 508, 512, 516, 520, 524, 528, 532, 536, 540, 544, 548, 552, 556, 560, 564, 568, 572, 576, 580, 584, 588, 592, 596, 600, 604, 608, 612.
 
@@ -1013,7 +1032,7 @@ function gp5color(gp5) {
 }
 
 // new 
-function wn4color(wn4) {
+function wn42Color(wn4) {
     let index = 0;
 
     // 1 3 6 10 16 21 27 33 40 47 55 63 
@@ -1071,7 +1090,7 @@ function swe2color(rh) {
     return sweColors[index];
 }
 
-function rh2color(rh) {
+function rh22Color(rh) {
     let index=0;
 
     // set clevs  20 40 60 80 99
@@ -1093,7 +1112,7 @@ function rh2color(rh) {
     return rhColors[index];
 }
 
-function hs2color(hs) {
+function hs2Color(hs) {
     let index=0;
 
 
@@ -1134,7 +1153,7 @@ function hs2color(hs) {
     return hsColors[index];
 }
 
-function lm2color(lm) {
+function lm2Color(lm) {
     let index=0;
 
 
@@ -1171,7 +1190,7 @@ function lm2color(lm) {
     return lmColors[index];
 }
 
-function fp2color(fp) {
+function fp2Color(fp) {
     let index = 0;
 
     // 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
@@ -1209,7 +1228,7 @@ function fp2color(fp) {
     return fpColors[index];
 }
 
-function period2color(period) {
+function period2Color(period) {
     let index=0;
 
     // 0 2 3 4 5 6 7 8 9 10 11 12 13 14
@@ -1246,85 +1265,7 @@ function period2color(period) {
     return periodColors[index];
 }
 
-function sss2color(sss) {
-    let index=0;
-
-    // 37.5 37.75 38 38.25 38.5 38.75 39
-    if (sss<37.5) {
-        index=0;
-    } else if (sss>=37.5 && sss<37.5) {
-        index=1;
-    } else if (sss>=37.75 && sss<38) {
-        index=2;
-    } else if (sss>=38 && sss<38.25) {
-        index=3;
-    } else if (sss>=38.25 && sss<38.5) {
-        index=4;
-    } else if (sss>=38.5 && sss<38.75) {
-        index=5;
-    } else if (sss>=38.75 && sss<39) {
-        index=6;
-    } else if (sss>=39 ) {
-        index=7 ;
-    }
-
-    return sssColors[index];
-}
-
-function sst2color(sst) {
-    let index=0;
-
-    // 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
-    if (sst<10) {
-        index=0;
-    } else if (sst>=10 && sst<11) {
-        index=1;
-    } else if (sst>=11 && sst<12) {
-        index=2;
-    } else if (sst>=12 && sst<13) {
-        index=3;
-    } else if (sst>=13 && sst<14) {
-        index=4;
-    } else if (sst>=14 && sst<15) {
-        index=5;
-    } else if (sst>=15 && sst<16) {
-        index=6;
-    } else if (sst>=16 && sst<17) {
-        index=6;
-    } else if (sst>=17 && sst<18) {
-        index=6;
-    } else if (sst>=18 && sst<19) {
-        index=6;
-    } else if (sst>=19 && sst<20) {
-        index=6;
-    } else if (sst>=20 && sst<21) {
-        index=6;
-    } else if (sst>=21 && sst<22) {
-        index=6;
-    } else if (sst>=22 && sst<23) {
-        index=6;
-    } else if (sst>=23 && sst<24) {
-        index=6;
-    } else if (sst>=24 && sst<25) {
-        index=6;
-    } else if (sst>=25 && sst<26) {
-        index=6;
-    } else if (sst>=26 && sst<27) {
-        index=6;
-    } else if (sst>=27 && sst<28) {
-        index=6;
-    } else if (sst>=28 && sst<29) {
-        index=6;
-    } else if (sst>=29 && sst<30) {
-        index=6;
-    } else if (sst>=30 ) {
-        index=7 ;
-    }
-
-    return sstColors[index];
-}
-
-function con2color(conc) {
+function con2Color(conc) {
     let index=0;
 
     // 1 18 230 700 4600 46000
@@ -1345,11 +1286,11 @@ function con2color(conc) {
     return conColors[index];
 }
 
-function mci2color(mci) {
+function mci2Color(mci) {
     return mciColors[mci];
 }
 
-function scm2color(scm) {
+function scm2Color(scm) {
     let index=0;
 
     // 0.1 0.2 0.3 0.4 0.5 0.6 0.7
@@ -1419,7 +1360,7 @@ function temp2color(temp) {
     return tempColors[index];
 }
 
-function windKnt2color(ws) {
+function windKnt2Color(ws) {
     let index=0;
 
     if (ws>=0 && ws<1) {
@@ -1465,4 +1406,42 @@ function windKnt2color(ws) {
     // 0 1 3 5 7 9 11 13 15 17 19 21 23 25 27 30 35 40 45 50
 
     return windColors[index+1];
+}
+
+function mcape2Color(mcape) {
+    let index = 0;
+    
+    if (mcape < 400) {
+        index = 0;
+    } else if (mcape >= 400 && mcape < 600) {
+        index = 1;
+    } else if (mcape >= 600 && mcape < 800) {
+        index = 2;
+    } else if (mcape >= 800 && mcape < 1000) {
+        index = 3;
+    } else if (mcape >= 1000 && mcape < 1200) {
+        index = 4;
+    } else if (mcape >= 1200 && mcape < 1400) {
+        index = 5;
+    } else if (mcape >= 1400 && mcape < 1600) {
+        index = 6;
+    } else if (mcape >= 1600 && mcape < 1800) {
+        index = 7;
+    } else if (mcape >= 1800 && mcape < 2000) {
+        index = 8;
+    } else if (mcape >= 2000 && mcape < 2200) {
+        index = 9;
+    } else if (mcape >= 2200 && mcape < 2400) {
+        index = 10;
+    } else if (mcape >= 2400 && mcape < 2600) {
+        index = 11;
+    } else if (mcape >= 2600 && mcape < 2800) {
+        index = 12;
+    } else if (mcape >= 2800 && mcape < 3000) {
+        index = 13;
+    } else if (mcape >= 3000) {
+        index = 14;
+    }
+    
+    return mcapeColors[index];
 }

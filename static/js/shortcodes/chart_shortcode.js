@@ -21,21 +21,14 @@ let NEW_CHART_defaultCharOutput = "gen";
         let $chartBox = $('#chart-box');
         $chartBox.append($loadingDiv);
         let $chartBoxCanvaJS = $('#chart-container-canvasDiv');
-        let product = NEW_CHART_defaultChartProduct;
-        let output = NEW_CHART_defaultCharOutput;
-        let ncepDate = formatDateForMeteoAPI(null,null);
-
-        let chartAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?output=${output}`;
-        console.log(chartAPIUrl);
-        $.ajax({
-            url: chartAPIUrl,
-            success: function(data){
-                drawChart(data,product,output,ncepDate);
-                $loadingDiv.hide();
-                $loadingDiv.attr('class','loading-gif');
-                $chartBoxCanvaJS.show();
-            }
-        });
+        
+        //url parameters check
+        let urlParams = new URLSearchParams(window.location.search);
+        let ncepDate = urlParams.has('date') ? urlParams.get('date') : formatDateForMeteoAPI(null,null);
+        let product = urlParams.has('prod') ? urlParams.get('prod') : NEW_CHART_defaultChartProduct;
+        let output = urlParams.has('output') ? urlParams.get('output') : NEW_CHART_defaultCharOutput;
+        let hours = urlParams.has('hours') ? urlParams.get('hours') : 0;
+        let step = urlParams.has('step') ? urlParams.get('step') : 1;
 
         $('.plot-control-forms').on('change',function(){
             // Prima nasconde il canvas e svuota il contenuto
@@ -56,7 +49,7 @@ let NEW_CHART_defaultCharOutput = "gen";
             var key = product + "-" + output + "-" + ncepDate;
             
             if(!(key in NEW_CHART_loadedChart)){
-                let chartAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?output=${output}`;
+                let chartAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?date=${ncepDate}&output=${output}&hours=${hours}&step=${step}`;
                 console.log(chartAPIUrl);
                 $.ajax({
                     url: chartAPIUrl,
