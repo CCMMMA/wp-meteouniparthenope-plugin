@@ -29,7 +29,7 @@ let hourlyForecastData = {};
         $('#loading-box').append($loadingDiv).show();
 
         function createForecast(place = defaultPlace, name = defaultName ,prod = defaultProd, hours = defaultHours, step = defaultStep){
-            let forecastUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+place+"?hours="+hours+"&step="+step;
+            let forecastUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+place+"?hours=0&step=24";
             
             console.log("forecastUrl: " + forecastUrl);
 
