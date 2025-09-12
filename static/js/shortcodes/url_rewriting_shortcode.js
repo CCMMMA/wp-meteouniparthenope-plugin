@@ -65,11 +65,13 @@
 
 
             const newUrl = baseUrl + '?' + urlParams.toString();
-            console.log(newUrl);
+            console.log("new url: " + newUrl);
             
             //Aggiorna l'URL senza ricaricare la pagina
             window.history.pushState({}, '', newUrl);
         });
 
+        //Aspetta che tutto sia pronto
+        //$controlForms.trigger('change');
     });
 })(jQuery)

@@ -9,7 +9,7 @@ get_header(); ?>
 <div class="custom-search-results">
     <header class="page-header">
         <h1 class="page-title">
-            <?php printf('Risultati di ricerca per: %s', '<span>' . get_search_query() . '</span>'); ?>
+            <?php printf('Search result for: %s', '<span>' . get_search_query() . '</span>'); ?>
         </h1>
     </header>
     <br>

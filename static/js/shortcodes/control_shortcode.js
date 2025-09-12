@@ -54,11 +54,11 @@ if(urlParams.size !== 0){
             
             //Set the current time
             const currentHour = now.getHours().toString().padStart(2, '0');
-            const currentTime = (currentHour) + ':00';
+            const currentTime = (currentHour-2) + ':00';
             
             $('#control-select-time').val(currentTime);
             
-            adjustTime(deltaUTC);
+            //adjustTime(deltaUTC);
         }
         
         //Function to adjust the hours
@@ -145,10 +145,10 @@ if(urlParams.size !== 0){
                     products = productsDataFromAPI['products'];
                     loadProducts();
                     $('#control-select-product option[value='+controlDefaultProduct+']').prop('selected', true);
-                    console.log("Valore di default product: "+$('#control-select-product').val());
+                    //console.log("Valore di default product: "+$('#control-select-product').val());
                     loadOutputs(products[controlDefaultProduct]);
                     $('#control-select-output option[value='+controlDefaultOutput+']').prop('selected', true);
-                    console.log("Valore di default output: "+$('#control-select-output').val());
+                    //console.log("Valore di default output: "+$('#control-select-output').val());
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     //console.log("Error:"+textStatus);

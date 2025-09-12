@@ -50,7 +50,7 @@ let NEW_CHART_defaultCharOutput = "gen";
             
             if(!(key in NEW_CHART_loadedChart)){
                 let chartAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?date=${ncepDate}&output=${output}&hours=${hours}&step=${step}`;
-                console.log(chartAPIUrl);
+                console.log("chart url: " + chartAPIUrl);
                 $.ajax({
                     url: chartAPIUrl,
                     success: function(data){

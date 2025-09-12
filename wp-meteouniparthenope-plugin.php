@@ -66,6 +66,7 @@ class MeteoUniParthenopePluginMain{
 
         //Shortcodes
         add_shortcode('forecast_shortcode', [$this,'forecast_shortcode_callback']);
+        add_shortcode('dynamic_forecast_shortcode', [$this,'dynamic_forecast_shortcode_callback']);
         add_shortcode('forecast_preview_shortcode', [$this, 'forecast_preview_shortcode_callback']);
         add_shortcode('control_shortcode',[$this, 'control_shortcode_callback']);
         add_shortcode('date_control_shortcode',[$this, 'date_control_shortcode_callback']);
@@ -456,6 +457,32 @@ class MeteoUniParthenopePluginMain{
         wp_localize_script('forecast-shortcode-js', 'forecastData', $data);
 
         return '<div id="forecast_shortcode-root"></div>';
+    }
+
+    // Forecast shortcode
+    function dynamic_forecast_shortcode_callback($atts) {
+        $post_id = get_the_ID();
+        $placeID = get_post_meta($post_id, 'place_id', true);
+        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
+        
+        $data = [
+            'place_id' => $placeID,
+            'long_name_it' => $longNameIT
+        ];
+        $data['imagesUrl'] = plugin_dir_url(__FILE__) . 'static/resources/images';
+        $data['pluginUrl'] = plugin_dir_url(__FILE__);
+
+        wp_enqueue_script(
+            'dynamic-forecast-shortcode-js',
+            plugin_dir_url(__FILE__) . 'static/js/shortcodes/dynamic_forecast_shortcode.js',
+            [],
+            null,
+            true
+        );
+
+        wp_localize_script('forecast-shortcode-js', 'dynamicForecastData', $data);
+
+        return '<div id="dynamic_forecast_shortcode-root"></div>';
     }
 
     // Control shortcode
@@ -914,6 +941,14 @@ class MeteoUniParthenopePluginMain{
                 plugin_dir_url(__FILE__) . 'static/js/admin_utility_page.js',
                 array('jquery'), // Dipendenza da jQuery
                 filemtime(plugin_dir_path(__FILE__) . 'static/js/admin_utility_page.js'),
+                true // Carica nel footer
+            );
+
+            wp_enqueue_script(
+                'massive-import-js',
+                plugin_dir_url(__FILE__) . 'static/js/massive_import.js',
+                array('jquery'), // Dipendenza da jQuery
+                filemtime(plugin_dir_path(__FILE__) . 'static/js/massive_import.js'),
                 true // Carica nel footer
             );
 

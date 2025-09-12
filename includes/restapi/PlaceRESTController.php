@@ -80,6 +80,34 @@ class PlaceRESTController extends WP_REST_Controller{
                 ),
             ),
         ));
+
+        // Endpoint per contare i places
+register_rest_route($this->namespace, '/' . $this->rest_base . '/count', array(
+    array(
+        'methods'             => WP_REST_Server::READABLE, // GET
+        'callback'            => array($this, 'count_places'),
+        'permission_callback' => array($this, 'delete_items_permissions_check'),
+    ),
+));
+
+// Endpoint per eliminare tutti i places
+register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', array(
+    array(
+        'methods'             => WP_REST_Server::DELETABLE, // DELETE
+        'callback'            => array($this, 'delete_all_places'),
+        'permission_callback' => array($this, 'delete_items_permissions_check'),
+        'args'                => array(
+            'confirm' => array(
+                'required' => true,
+                'type' => 'boolean',
+                'description' => 'Conferma per eliminazione di massa',
+                'validate_callback' => function($param, $request, $key) {
+                    return $param === true;
+                }
+            ),
+        ),
+    ),
+));
     }
 
     /**
@@ -429,6 +457,132 @@ class PlaceRESTController extends WP_REST_Controller{
             'success' => true
         ), 200);
     }
+/**
+ * Conta i places totali da eliminare
+ */
+public function count_places($request) {
+    try {
+        $count = wp_count_posts('place');
+        $total = $count->publish + $count->draft + $count->private + $count->trash;
+        
+        return new WP_REST_Response(array(
+            'success' => true,
+            'total_count' => $total,
+            'by_status' => array(
+                'publish' => $count->publish,
+                'draft' => $count->draft,
+                'private' => $count->private,
+                'trash' => $count->trash
+            )
+        ), 200);
+        
+    } catch (Exception $e) {
+        return new WP_Error(
+            'count_error',
+            'Errore nel conteggio: ' . $e->getMessage(),
+            array('status' => 500)
+        );
+    }
+}
+
+/**
+ * Elimina places a batch per supportare la progress bar
+ * CORREZIONE: Usa sempre offset 0 perché eliminiamo sempre i primi N places
+ */
+public function delete_all_places($request) {
+    try {
+        $confirm = $request->get_param('confirm');
+        $batch_size = $request->get_param('batch_size') ?: 10;
+        
+        if (!$confirm) {
+            return new WP_Error(
+                'confirmation_required',
+                'Conferma richiesta per eliminare tutti i places',
+                array('status' => 400)
+            );
+        }
+
+        // CORREZIONE: Usa sempre offset 0 e prendi sempre i primi N places
+        // Perché quando elimini, quelli successivi "scivolano" in prima posizione
+        $places = get_posts(array(
+            'post_type' => 'place',
+            'post_status' => array('publish', 'draft', 'private', 'trash'),
+            'posts_per_page' => $batch_size,
+            'offset' => 0, // SEMPRE 0!
+            'fields' => 'ids',
+            'orderby' => 'ID',
+            'order' => 'ASC'
+        ));
+
+        $deleted_count = 0;
+        $errors = array();
+
+        // Se non ci sono più places da eliminare
+        if (empty($places)) {
+            return new WP_REST_Response(array(
+                'success' => true,
+                'deleted_in_batch' => 0,
+                'remaining_count' => 0,
+                'is_completed' => true,
+                'errors' => array(),
+                'message' => "Eliminazione completata! Nessun place rimanente."
+            ), 200);
+        }
+
+        foreach ($places as $place_id) {
+            // Forza l'eliminazione definitiva (bypass cestino)
+            $result = wp_delete_post($place_id, true);
+            
+            if ($result) {
+                $deleted_count++;
+            } else {
+                $errors[] = "Errore eliminazione place ID: $place_id";
+            }
+        }
+
+        // Conta i places rimanenti
+        $remaining_count = wp_count_posts('place');
+        $total_remaining = $remaining_count->publish + $remaining_count->draft + 
+                          $remaining_count->private + $remaining_count->trash;
+
+        $is_completed = $total_remaining === 0;
+
+        // Se è l'ultimo batch, pulisci anche eventuali meta orfani
+        if ($is_completed) {
+            global $wpdb;
+            $wpdb->query("
+                DELETE pm FROM {$wpdb->postmeta} pm
+                LEFT JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+                WHERE p.ID IS NULL
+            ");
+        }
+
+        return new WP_REST_Response(array(
+            'success' => true,
+            'deleted_in_batch' => $deleted_count,
+            'remaining_count' => $total_remaining,
+            'is_completed' => $is_completed,
+            'errors' => $errors,
+            'message' => $is_completed ? 
+                "Eliminazione completata! Eliminati $deleted_count places in questo batch." :
+                "Eliminati $deleted_count places. Rimangono $total_remaining places."
+        ), 200);
+
+    } catch (Exception $e) {
+        return new WP_Error(
+            'deletion_error',
+            'Errore durante l\'eliminazione: ' . $e->getMessage(),
+            array('status' => 500)
+        );
+    }
+}
+
+/**
+ * Controllo permessi per eliminazione
+ */
+public function delete_items_permissions_check($request) {
+    return current_user_can('manage_options');
+}
 
     
 }

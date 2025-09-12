@@ -37,6 +37,7 @@ get_header();
                 <!-- Forecast table -->
                 <div id="forecast" class="forecast-container container-fluid" style="display:block;padding-left: 6px;padding-right: 6px;">
                     <?php echo do_shortcode('[forecast_shortcode]'); ?>
+                    <?php //echo do_shortcode('[dynamic_forecast_shortcode]'); ?>
                     <div class="card container-fluid" style="padding-left: 6px;padding-right: 6px;">
                         <div class="card-body container-fluid" style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
                             <div id="forecast-box-title" class="container-fluid"></div>

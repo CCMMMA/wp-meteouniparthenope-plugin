@@ -10,7 +10,7 @@ let defaultPlace = forecastData['place_id'];
 let defaultName = forecastData['long_name_it'];
 let defaultProd = "wrf5";
 let defaultHours = 0;
-let defaultStep = 24;
+let defaultStep = 1;
 let defaultType = "daybox";
 
 let currentForecastRequest = null;
@@ -28,12 +28,19 @@ let hourlyForecastData = {};
 
         $('#loading-box').append($loadingDiv).show();
 
-        function createForecast(place = defaultPlace, name = defaultName ,prod = defaultProd, hours = defaultHours, step = defaultStep){
-            let forecastUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+place+"?hours=0&step=24";
+        //let $forecastTitleDiv = $('#forecast-box-title');
+        //$forecastTitleDiv.append('<div class="forecast-title">'+forecastData['long_name_it']+'</div>');
+
+        function createForecast(place = defaultPlace, name = defaultName , forecastDate , prod = defaultProd, hours = defaultHours, step = defaultStep){
+            $loadingDiv.show();
+            //var urlParams = new URLSearchParams(window.location.search);
+            //var date = urlParams.get('date').substring(0,8);
+            //console.log("forecast date: "+date);
+            let forecastUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+place+"?date="+forecastDate+"&hours=0&step=24";
             
             console.log("forecastUrl: " + forecastUrl);
 
-            let timeseriesUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+forecastData['place_id']+"?hours=0&step=1";
+            let timeseriesUrl = apiBaseUrl+"/products/"+prod+"/timeseries/"+forecastData['place_id']+"?hours="+(hours ? hours : 0)+"&step="+(step ? step : 1);
             $.getJSON(timeseriesUrl, function(data){
                 let keyToAppend = null;
                 $.each(data['timeseries'], function(key, value){
@@ -50,18 +57,34 @@ let hourlyForecastData = {};
                     url: forecastUrl,
                     type: 'GET',
                     dataType: 'json',
+                    tryCount: 0,
+                    retryLimit: 3,
+                    firstTry: true,
                     success: function(data){
-                        $loadingDiv.hide();
                         printForecast(data);
+                        $loadingDiv.hide();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-
+                        if(textStatus == "timeout"){
+                            this.tryCount++;
+                            if(this.tryCount <= this.retryLimit){
+                                $.ajax(this);
+                                return;
+                            }
+                            return;
+                        }
+                        if (jqXHR.status == 500 && this.firstTry){
+                            console.log("BAD REQUEST,retry for getting forecast");
+                            this.firstTry = false;
+                            $.ajax(this);
+                        }
                     },
                     complete: function(){
-                        
+
                     }
                 });
             });
+            //$loadingDiv.hide();
         }
         function printForecast(data){
             let timeseriesData = data['timeseries'];
@@ -82,9 +105,7 @@ let hourlyForecastData = {};
             table.attr('cellpadding','0');
             table.attr('border','0');
             
-            let $forecastTitleDiv = $('#forecast-box-title');
             let $forecastDiv = $('#forecast-box');
-            $forecastTitleDiv.append('<div class="forecast-title">'+forecastData['long_name_it']+'</div>');
             
             table.append('<tr class="legenda">' +
                         //'<td width="5%" colspan="2">Forecast</td>' +
@@ -251,6 +272,28 @@ let hourlyForecastData = {};
             return `${year}-${month}-${day}`;
         }
 
-        createForecast();
+        
+        $('.plot-control-forms').change(function(){
+            let $forecastBox = $('#forecast-box');
+            //console.log($forecastBox);
+            $forecastBox.hide();
+            $forecastBox.empty();
+            //console.log($loadingDiv);
+            $loadingDiv.show();
+
+            var date = $('#control-select-date').val();
+            date = DateFormatter.formatFromDateToAPI(date,"00:00'");
+
+            var urlParams = new URLSearchParams(window.location.search);
+            var hours = urlParams.get('hours');
+            var step = urlParams.get('step');
+
+            createForecast(undefined, undefined, date, undefined, hours, step);
+
+            //$loadingDiv.hide();
+            $forecastBox.show();
+        });
+
+        //createForecast();
     });
 })(jQuery);

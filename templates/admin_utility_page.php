@@ -42,7 +42,7 @@
                     </td>
                 </tr>
             </table>
-            <div class="progress-container">
+            <div id="add-progress-fill" class="progress-container">
                 <div class="progress-bar">
                     <div class="progress-fill">0%</div>
                 </div>
@@ -58,17 +58,35 @@
     <div class="utility-section">
         <h2><span class="dashicons dashicons-trash"></span> Gestione Places</h2>
         <p><strong>Attenzione:</strong> Questa operazione eliminerà definitivamente tutti i places dal database.</p>
+        
         <?php if (!empty($deletion_message)): ?>
         <div class="notice-custom notice-error">
             <p><?php echo esc_html($deletion_message); ?></p>
         </div>
         <?php endif; ?>
-        <form method="post">
-            <?php wp_nonce_field('meteounipplugin_delete_nonce'); ?>
+        
+        <!-- Form per eliminazione tramite REST API -->
+        <div id="delete-places-container">
+            <!-- Progress bar per l'eliminazione -->
+            <div class="progress-container" id="delete-progress-container" style="display: none; margin: 15px 0;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="delete-progress-fill">0%</div>
+                </div>
+                <div class="progress-info" id="delete-progress-info" style="margin-top: 10px; font-size: 14px; color: #666;">
+                    Preparazione eliminazione...
+                </div>
+            </div>
+            
             <p class="submit">
-                <button type="submit" id="delete-all-places-btn" class="button delete">Elimina tutti i Places</button>
+                <button type="button" id="delete-all-places-btn" class="button delete">
+                    <span class="dashicons dashicons-trash"></span>
+                    Elimina tutti i Places via API
+                </button>
             </p>
-        </form>
+            
+            <!-- Div per i risultati dell'eliminazione -->
+            <div id="delete-result"></div>
+        </div>
     </div>
 
     <!-- SEZIONE 4: Statistiche -->
