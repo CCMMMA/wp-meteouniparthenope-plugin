@@ -5,6 +5,7 @@ let controlDefaultOutput = "gen";
 let deltaUTC = -2;
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+
 if(urlParams.size !== 0){
     if(urlParams.has('prod')){
         //Product input
@@ -19,6 +20,12 @@ if(urlParams.size !== 0){
     if(urlParams.has('date')){
         deltaUTC = 0;
     }
+}
+
+function pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
 (function($){
@@ -41,7 +48,19 @@ if(urlParams.size !== 0){
         
         //Function for setting current date and time
         function setCurrentDateTime() {
+            const dateTime=new Date()
+            defaultNcepDate=dateTime.getUTCFullYear()+pad(dateTime.getUTCMonth()+1,2)+pad(dateTime.getUTCDate(),2)+"Z"+pad(dateTime.getUTCHours(),2)+"00";
 
+            const year = dateTime.getUTCFullYear();
+            const month = (dateTime.getUTCMonth()+ 1).toString().padStart(2, '0');
+            const day = dateTime.getUTCDate().toString().padStart(2, '0');
+            const currentDate = `${year}-${month}-${day}`;
+            $('#control-select-date').val(currentDate);
+
+            const currentTime = dateTime.getUTCHours().toString().padStart(2, '0') + ":00";
+            $('#control-select-time').val(currentTime);
+
+            /*
             const now = new Date();
             
             //Set the current date
@@ -57,6 +76,7 @@ if(urlParams.size !== 0){
             const currentTime = (currentHour-2) + ':00';
             
             $('#control-select-time').val(currentTime);
+            */
             
             //adjustTime(deltaUTC);
         }
