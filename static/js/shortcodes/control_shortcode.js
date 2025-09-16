@@ -59,26 +59,6 @@ function pad(n, width, z) {
 
             const currentTime = dateTime.getUTCHours().toString().padStart(2, '0') + ":00";
             $('#control-select-time').val(currentTime);
-
-            /*
-            const now = new Date();
-            
-            //Set the current date
-            const year = now.getFullYear();
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const day = now.getDate().toString().padStart(2, '0');
-            const currentDate = `${year}-${month}-${day}`;
-            
-            $('#control-select-date').val(currentDate);
-            
-            //Set the current time
-            const currentHour = now.getHours().toString().padStart(2, '0');
-            const currentTime = (currentHour-2) + ':00';
-            
-            $('#control-select-time').val(currentTime);
-            */
-            
-            //adjustTime(deltaUTC);
         }
         
         //Function to adjust the hours

@@ -24,7 +24,7 @@
         '</div>');
     $divShortcodeRoot.append($divDateControl);
     
-    let nowDate = new Date();
+    let nowDate = controlFormDateObj.getInternalUTCDate();
     let maxDate = new Date(nowDate);
     maxDate.setDate(maxDate.getDate() + 4);
     let maxMonth = ((maxDate.getMonth() + 1) < 10 ? '0' + (maxDate.getMonth() + 1) : (maxDate.getMonth() + 1));

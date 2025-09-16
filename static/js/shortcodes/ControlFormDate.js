@@ -19,6 +19,7 @@ class ControlFormDate {
         this.nextButtonID = inputs.nextButtonID || ControlFormDate.defaults.nextButtonID;
         this.dateLabelID = inputs.dateLabelID || ControlFormDate.defaults.dateLabelID;
         this.timeLabelID = inputs.timeLabelID || ControlFormDate.defaults.timeLabelID;
+
         
         this.$divContainer = jQuery('<div>').attr('id', this.containerID);
         this.$inputDate = jQuery('<input type="date" id="' + this.dateInputID + '">');
@@ -32,8 +33,8 @@ class ControlFormDate {
         this.$timeLabel = jQuery('<label for="' + this.timeInputID + '" id="' + this.timeLabelID + '">Time UTC: </label>');
         
         this.populateTimeSelect();
-        this.setCurrentDateTime();
         this.setupEventHandlers();
+        this.internalUTCDate= this.setUTCDateTime();
         
         this.$divContainer.append(this.$inputDate);
         this.$divContainer.append(this.$inputTimeSelect);
@@ -41,6 +42,7 @@ class ControlFormDate {
         this.$divContainer.append(this.$nextButton);
         this.$divContainer.append(this.$dateLabel);
         this.$divContainer.append(this.$timeLabel);
+
     }
 
     getContainer() {
@@ -76,6 +78,10 @@ class ControlFormDate {
         return this.$timeLabel;
     }
 
+    getInternalUTCDate(){
+        return this.internalUTCDate;
+    }
+
     populateTimeSelect() {
         for (let hour = 0; hour < 24; hour++) {
             const hourFormatted = hour.toString().padStart(2, '0');
@@ -87,19 +93,26 @@ class ControlFormDate {
         }
     }
 
-    setCurrentDateTime() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = (now.getMonth() + 1).toString().padStart(2, '0');
-        const day = now.getDate().toString().padStart(2, '0');
+    setUTCDateTime() {
+        const dateTime=new Date()
+        //defaultNcepDate=dateTime.getUTCFullYear()+this.pad(dateTime.getUTCMonth()+1,2)+this.pad(dateTime.getUTCDate(),2)+"Z"+this.pad(dateTime.getUTCHours(),2)+"00";
+
+        const year = dateTime.getUTCFullYear();
+        const month = (dateTime.getUTCMonth()+ 1).toString().padStart(2, '0');
+        const day = dateTime.getUTCDate().toString().padStart(2, '0');
         const currentDate = `${year}-${month}-${day}`;
         this.$inputDate.val(currentDate);
-        
-        const currentHour = now.getHours().toString().padStart(2, '0');
-        const currentTime = (currentHour) + ':00';
+
+        const currentTime = dateTime.getUTCHours().toString().padStart(2, '0') + ":00";
         this.$inputTimeSelect.val(currentTime);
 
-        this.adjustTime(-2);
+        return dateTime;
+    }
+
+    pad(n, width, z) {
+        z = z || '0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 
     setupEventHandlers() {
@@ -237,5 +250,9 @@ class ControlFormDate {
 
     setTimeLabelText(text) {
         this.$timeLabel.text(text);
+    }
+
+    setInternalUTCDate(date){
+        this.internalUTCDate = date;
     }
 }
