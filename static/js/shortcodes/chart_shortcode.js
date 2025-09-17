@@ -98,6 +98,8 @@ let NEW_CHART_defaultCharOutput = "gen";
         if(Object.hasOwn(chartMetadata,'pos_bars')){
             axisY = {
                 title: chartMetadata['title_bars'],
+                minimum: chartMetadata['clevels'][0],
+                maximum: chartMetadata['clevels'][ chartMetadata['clevels'].length - 1 ],
                 includeZero: false,
                 suffix: ` ${extractUnit(chartMetadata['title_bars'])}`
             };
@@ -161,7 +163,8 @@ let NEW_CHART_defaultCharOutput = "gen";
                 dataPoints.push({
                     x: dateTime,
                     y: val[ chartMetadata['var_bars'] ],
-                    color: chartColorFunctions[ chartMetadata['var_bars'] ] ( val[ chartMetadata['var_bars'] ] )
+                    //color: chartColorFunctions[ chartMetadata['var_bars'] ] ( val[ chartMetadata['var_bars'] ] )
+                    color: value2Color( val[ chartMetadata['var_bars'] ], chartMetadata['clevels'], chartMetadata['ccolors'] )
                 });
             }
             if(Object.hasOwn(chartMetadata,'pos_line')){
