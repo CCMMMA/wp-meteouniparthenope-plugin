@@ -1501,17 +1501,19 @@ const forecastTableColumns = {
             vars: ["mci-min","mci-max"]
         },
         subtable: {
-            vars: ["mci"]
+            vars: ["mci"],
+            colspan: ["1"],
         }
     },
     rms3: {
-        descs: ["Current Direction at the surface (°N)", "Current Speed at the surface (m/s)", "Surface current direction (m s-1)", "Surface salinity", "Surface temperature (°C)"],
+        descs: ["Current Direction at the surface (°N)", "Current Speed at the surface (m/s)", "Surface salinity", "Surface temperature (°C)"],
         table: {
-            vars: ["scd-min","scd-max","scm-min","scm-max","scs-min","scs-max","sss-min","sss-max","sst-min","sst-max"],
-            colspan: ["2","2","2","2","2"]
+            vars: ["scd-min","scd-max","scm-min","scm-max","sss-min","sss-max","sst-min","sst-max"],
+            colspan: ["2","2","2","2"]
         },
         subtable: {
-            vars: ["scd","scm","scs","sss","sst"],
+            vars: ["scd","scm","sss","sst"],
+            colspan: ["1","1","1","1"]
         }
     },
     wcm3: {
@@ -1521,17 +1523,19 @@ const forecastTableColumns = {
             colspan: ["2","2"]
         },
         subtable: {
-            vars: ["con","sts"]
+            vars: ["con","sts"],
+            colspan: ["1","1"]
         }
     },
     wrf5: {
-        decs: ["T °C", "Wind (kn)", "Rain (mm)", "Pressure (hPa)", "Humidity (%)"],
+        descs: ["T °C", "Wind (kn)", "Rain (mm)", "Pressure (hPa)", "Humidity (%)"],
         table: {
             vars: ["t2c-min","t2c-max","winds","ws10n","crh","slp","rh2"],
             colspan: ["2","2","1","1","1"],
         },
         subtable: {
-            vars: ["t2c","winds","ws10n","crh","slp","rh2"]
+            vars: ["t2c","winds","ws10n","crh","slp","rh2"],
+            colspan: ["1","2","1","1","1"],
         }
     },
     ww33: {
@@ -1541,7 +1545,8 @@ const forecastTableColumns = {
             colspan: ["2","2","2","2","2"]
         },
         subtable: {
-            vars: ["dir","fp","hs","lm","period"]
+            vars: ["dir","fp","hs","lm","period"],
+            colspan: ["1","1","1","1","1"]
         }
     }
 };

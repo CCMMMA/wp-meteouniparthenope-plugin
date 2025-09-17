@@ -33,7 +33,9 @@ get_header(); ?>
                                 <div class="weather-preview" data-place-id="<?php echo get_the_ID(); ?>">
                                     <!-- <div class="weather-loading">Caricamento previsioni...</div> -->
                                     <div id="weathre-preview"> <?php 
-                                        echo do_shortcode('[plot_shortcode shortcode_id="'.$i++.'" control_forms="STANDALONE" place="'.$placeID.'" product="wrf5" output="gen"]')
+                                        echo do_shortcode('[plot_shortcode shortcode_id="'.$i.'" control_forms="STANDALONE" place="'.$placeID.'" product="wrf5" output="gen"]');
+                                        echo do_shortcode('[image_link_shortcode shortcode_id="'.$i.'" plot_id="'.$i.'"]');
+                                        $i++;
                                         ?>
                                     </div>
                                     <!-- Il contenuto meteo verrà caricato via JavaScript -->

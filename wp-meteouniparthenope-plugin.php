@@ -750,6 +750,13 @@ class MeteoUniParthenopePluginMain{
             null,
             true
         );
+        wp_enqueue_script(
+            'ForecastTable-class-js',
+            plugin_dir_url(__FILE__) . 'static/js/shortcodes/ForecastTable.js',
+            [],
+            null,
+            true
+        );
     }
 
     // Autocomplete shortcode
