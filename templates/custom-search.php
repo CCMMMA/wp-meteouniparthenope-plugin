@@ -21,7 +21,7 @@ get_header(); ?>
                     <article class="search-result-item <?php echo get_post_type(); ?>-result">
                         <?php if (get_post_type() === 'place') : ?>
                             <!-- Template per Place con preview meteo -->
-                            <div class="place-result">
+                            
                                 <div class="place-info">
                                     <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
                                     <p class="place-description"><?php the_excerpt(); ?></p>
@@ -40,7 +40,7 @@ get_header(); ?>
                                     </div>
                                     <!-- Il contenuto meteo verrà caricato via JavaScript -->
                                 </div>
-                            </div>
+                            
                         <?php else : ?>
                             <!-- Template standard per altri post types -->
                             <div class="standard-result">
