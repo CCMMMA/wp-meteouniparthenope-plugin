@@ -60,18 +60,16 @@ let NEW_CHART_defaultCharOutput = "gen";
                         drawChart(data,product,output,ncepDate);
                     },
                     error: function(xhr, textStatus, errorThrown){
-                        if (xhr.status === 500){
-                            console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
-                            this.tryCount++;
-                            if (this.tryCount <= this.retryLimit) {
-                                var self = this;
-                                setTimeout(() =>{
-                                    $.ajax(self);
-                                },this.retryInterval);
-                            }
-                            else{
-                                $chartBox.append('<p>No data available</p>');
-                            }
+                        console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
+                        this.tryCount++;
+                        if (this.tryCount <= this.retryLimit) {
+                            var self = this;
+                            setTimeout(() =>{
+                                $.ajax(self);
+                            },this.retryInterval);
+                        }
+                        else{
+                            $('#chart-container-canvasDiv').append('<p>No data available</p>');
                         }
                     },
                     complete: function(){

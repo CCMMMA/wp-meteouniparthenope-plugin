@@ -119,19 +119,16 @@ function initializeShortcode(plotData, shortcode_id){
                             $divPlotContainer.append($plotImg);
                         },
                         error: function(xhr, textStatus, errorThrown){
-                            if (xhr.status === 500){
-                                console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
-                                this.tryCount++;
-                                if (this.tryCount <= this.retryLimit) {
-                                    var self = this;
-                                    setTimeout(() =>{
-                                        $.ajax(self);
-                                    },this.retryInterval);
-                                }
-                                else{
-                                    $divPlotContainer.append('<p>No data available</p>');
-                                }
-                                
+                            console.log("ERRORE richiesta dati, tentativo "+this.tryCount+"/"+this.retryLimit);
+                            this.tryCount++;
+                            if (this.tryCount <= this.retryLimit) {
+                                var self = this;
+                                setTimeout(() =>{
+                                    $.ajax(self);
+                                },this.retryInterval);
+                            }
+                            else{
+                                $divPlotContainer.append('<p>No data available</p>');
                             }
                         }
                     });
@@ -155,6 +152,9 @@ function initializeShortcode(plotData, shortcode_id){
                             url: plotObj.getImageUrl(),
                             type: 'GET',
                             dataType: 'html',
+                            tryCount: 1,
+                            retryLimit: 3,
+                            retryInterval: 2000,
                             success: function(data){
                                 
                             },
@@ -165,6 +165,19 @@ function initializeShortcode(plotData, shortcode_id){
                                 $plotImg.addClass('meteo-icon');
                                 $plotImg.addClass('hover-zoom-image');
                                 $divPlotContainer.append($plotImg);
+                            },
+                            error: function(xhr, textStatus, errorThrown){
+                                console.log("ERRORE richiesta dati, tentativo "+this.tryCount+"/"+this.retryLimit);
+                                this.tryCount++;
+                                if (this.tryCount <= this.retryLimit) {
+                                    var self = this;
+                                    setTimeout(() =>{
+                                        $.ajax(self);
+                                    },this.retryInterval);
+                                }
+                                else{
+                                    $divPlotContainer.append('<p>No data available</p>');
+                                }
                             }
                         });
                     });
@@ -206,6 +219,9 @@ function initializeShortcode(plotData, shortcode_id){
                                 url: plotObj.getImageUrl(),
                                 type: 'GET',
                                 dataType: 'html',
+                                tryCount: 1,
+                                retryLimit: 3,
+                                retryInterval: 2000,
                                 beforeSend: function(){
                                     if(currentPlotRequest != null){
                                         currentPlotRequest.abort();
@@ -218,6 +234,19 @@ function initializeShortcode(plotData, shortcode_id){
                                     $('#plot-image-container').append($plotDiv);
                                     $loadingDiv.hide();
                                     $('#plot-image-container').show();
+                                },
+                                error: function(xhr, textStatus, errorThrown){
+                                    console.log("ERRORE richiesta dati, tentativo "+this.tryCount+"/"+this.retryLimit);
+                                    this.tryCount++;
+                                    if (this.tryCount <= this.retryLimit) {
+                                        var self = this;
+                                        setTimeout(() =>{
+                                            $.ajax(self);
+                                        },this.retryInterval);
+                                    }
+                                    else{
+                                        $divPlotContainer.append('<p>No data available</p>');
+                                    }
                                 }
                             });
                         });
