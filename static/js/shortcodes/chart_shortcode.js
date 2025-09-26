@@ -53,8 +53,26 @@ let NEW_CHART_defaultCharOutput = "gen";
                 console.log("chart url: " + chartAPIUrl);
                 $.ajax({
                     url: chartAPIUrl,
+                    tryCount: 1,
+                    retryLimit: 3,
+                    retryInterval: 2000,
                     success: function(data){
                         drawChart(data,product,output,ncepDate);
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        if (xhr.status === 500){
+                            console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
+                            this.tryCount++;
+                            if (this.tryCount <= this.retryLimit) {
+                                var self = this;
+                                setTimeout(() =>{
+                                    $.ajax(self);
+                                },this.retryInterval);
+                            }
+                            else{
+                                $chartBox.append('<p>No data available</p>');
+                            }
+                        }
                     },
                     complete: function(){
                         $loadingDiv.hide();
@@ -101,12 +119,13 @@ let NEW_CHART_defaultCharOutput = "gen";
                 minimum: chartMetadata['clevels'][0],
                 maximum: chartMetadata['clevels'][ chartMetadata['clevels'].length - 1 ],
                 includeZero: false,
-                suffix: ` ${extractUnit(chartMetadata['title_bars'])}`
+                suffix: (extractUnit(chartMetadata['title_bars']) == "%") ? "" : ` ${extractUnit(chartMetadata['title_bars'])}`,
+                valueFormatString: (extractUnit(chartMetadata['title_bars']) == "%") ? "#%" : chartMetadata['unit_bars'],
             };
             data.push({
                 name: chartMetadata['var_bars'],
                 type: "column",
-                yValueFormatString: chartMetadata['unit_bars'],
+                yValueFormatString: (extractUnit(chartMetadata['title_bars']) == "%") ? "#%" : chartMetadata['unit_bars'],
                 dataPoints: dataPoints
             });
         }

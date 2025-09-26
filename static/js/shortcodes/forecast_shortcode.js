@@ -41,12 +41,48 @@ let hourlyForecastData = {};
                 url: forecastUrl,
                 type: 'GET',
                 dataType: 'json',
+                tryCount: 1,
+                retryLimit: 3,
+                retryInterval: 2000,
+                error: function(xhr, textStatus, errorThrown){
+                    if (xhr.status === 500){
+                        console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
+                        this.tryCount++;
+                        if (this.tryCount <= this.retryLimit) {
+                            var self = this;
+                            setTimeout(() =>{
+                                $.ajax(self);
+                            },this.retryInterval);
+                        }
+                        else{
+                            $('#forecast_shortcode-root').append('<p>No data available</p>');
+                        }
+                    }
+                }
             });
 
             var hourlyForecastAJAX = $.ajax({
                 url: timeseriesUrl,
                 type: 'GET',
                 dataType: 'json',
+                tryCount: 1,
+                retryLimit: 3,
+                retryInterval: 2000,
+                error: function(xhr, textStatus, errorThrown){
+                    if (xhr.status === 500){
+                        console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
+                        this.tryCount++;
+                        if (this.tryCount <= this.retryLimit) {
+                            var self = this;
+                            setTimeout(() =>{
+                                $.ajax(self);
+                            },this.retryInterval);
+                        }
+                        else{
+                            $('#forecast_shortcode-root').append('<p>No data available</p>');
+                        }
+                    }
+                }
             });
 
             //Wait until both ajax request are completed

@@ -104,6 +104,9 @@ function initializeShortcode(plotData, shortcode_id){
                         url: plotObj.getImageUrl(),
                         type: 'GET',
                         dataType: 'html',
+                        tryCount: 1,
+                        retryLimit: 3,
+                        retryInterval: 2000,
                         success: function(data){
                             
                         },
@@ -114,6 +117,22 @@ function initializeShortcode(plotData, shortcode_id){
                             $plotImg.addClass('meteo-icon');
                             $plotImg.addClass('hover-zoom-image');
                             $divPlotContainer.append($plotImg);
+                        },
+                        error: function(xhr, textStatus, errorThrown){
+                            if (xhr.status === 500){
+                                console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
+                                this.tryCount++;
+                                if (this.tryCount <= this.retryLimit) {
+                                    var self = this;
+                                    setTimeout(() =>{
+                                        $.ajax(self);
+                                    },this.retryInterval);
+                                }
+                                else{
+                                    $divPlotContainer.append('<p>No data available</p>');
+                                }
+                                
+                            }
                         }
                     });
                     $dateSelect = $('#'+controlSelectDate);
