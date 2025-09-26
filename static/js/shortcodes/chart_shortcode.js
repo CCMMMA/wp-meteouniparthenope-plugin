@@ -119,13 +119,15 @@ let NEW_CHART_defaultCharOutput = "gen";
                 minimum: chartMetadata['clevels'][0],
                 maximum: chartMetadata['clevels'][ chartMetadata['clevels'].length - 1 ],
                 includeZero: false,
-                suffix: (extractUnit(chartMetadata['title_bars']) == "%") ? "" : ` ${extractUnit(chartMetadata['title_bars'])}`,
-                valueFormatString: (extractUnit(chartMetadata['title_bars']) == "%") ? "#%" : chartMetadata['unit_bars'],
+                //suffix: (extractUnit(chartMetadata['title_bars']) == "%") ? "" : ` ${extractUnit(chartMetadata['title_bars'])}`,
+                //valueFormatString: (extractUnit(chartMetadata['title_bars']) == "%") ? "#%" : chartMetadata['unit_bars'],
+                //valueFormatString: chartMetadata['unit_bars']
             };
             data.push({
                 name: chartMetadata['var_bars'],
                 type: "column",
-                yValueFormatString: (extractUnit(chartMetadata['title_bars']) == "%") ? "#%" : chartMetadata['unit_bars'],
+                //yValueFormatString: (extractUnit(chartMetadata['title_bars']) == "%") ? "#%" : chartMetadata['unit_bars'],
+                //yValueFormatString: chartMetadata['unit_bars'],
                 dataPoints: dataPoints
             });
         }
@@ -133,7 +135,7 @@ let NEW_CHART_defaultCharOutput = "gen";
             axisY2 = {
                 title: chartMetadata['title_line'],
                 includeZero: false,
-                suffix: ` ${extractUnit(chartMetadata['title_line'])}`
+                //suffix: ` ${extractUnit(chartMetadata['title_line'])}`
             };
             data.push({
                 name: chartMetadata['var_line'],

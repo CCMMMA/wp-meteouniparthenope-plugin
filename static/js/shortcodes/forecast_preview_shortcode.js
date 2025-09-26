@@ -43,11 +43,11 @@ function initializeShortcode(forecastData, shortcode_id){
             return isNaN(month) ? null : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month];
         };
         //console.log(forecastData);
-        let forecastUrl = apiBaseUrl+"/products/"+product+"/timeseries/"+place+"?hours=0&step=24";
+        let forecastUrl = apiBaseUrl+"/products/"+product+"/forecast/"+place;
         $.ajax({
             url: forecastUrl,
             success: function(data){
-                let todayForecast = data['timeseries'][0];
+                let todayForecast = data;
                 let weatherIconUrl = forecastData['imagesUrl'];
 
                 //console.log(todayForecast);
