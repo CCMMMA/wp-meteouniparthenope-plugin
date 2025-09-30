@@ -76,7 +76,7 @@ function initializeShortcode(forecastData, shortcode_id){
                             //'<td width="7%">Pressure (hPa)</>'+
                             //'<td width="7%">Humidity (%)</>'+
                             '<td class="forecast-preview-td" colspan="2">Forecast</td>' +
-                            '<td class="temperature forecast-preview-td" colspan="2">T &deg;C</td>' +
+                            '<td class="temperature forecast-preview-td" colspan="1">T &deg;C</td>' +
                             '<td class="forecast-preview-td" colspan="2">Wind (kn)</td>' +
                             '<td class="forecast-preview-td">Rain (mm)</td>' +
                             '<td class="forecast-preview-td">Pressure (hPa)</>'+
@@ -112,8 +112,7 @@ function initializeShortcode(forecastData, shortcode_id){
                 row += '  <td class="forecast-td-data forecast-preview-td">';
                 row += '  <img class="forecast-image weathericon" src="' + wIconUrl + '" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
                 row += '  </td>';
-                row += '  <td class="forecast-td-data forecast-preview-td tmin">' + todayForecast['t2c-min'] + '</td>';
-                row += '  <td class="forecast-td-data forecast-preview-td tmax">' + todayForecast['t2c-max'] + '</td>';
+                row += '  <td class="forecast-td-data forecast-preview-td tmin">' + todayForecast['t2c'] + '</td>';
                 row += '  <td class="forecast-td-data forecast-preview-td">' + todayForecast['winds'] + '</td>';
                 row += '  <td class="forecast-td-data forecast-preview-td">' + todayForecast['ws10n'] + '</td>';
                 row += '  <td class="forecast-td-data forecast-preview-td">' + todayForecast['crh'] + '</td>';
