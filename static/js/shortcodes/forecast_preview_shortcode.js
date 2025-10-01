@@ -42,50 +42,19 @@ function initializeShortcode(forecastData, shortcode_id){
             
             return isNaN(month) ? null : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month];
         };
-        //console.log(forecastData);
+        
         let forecastUrl = apiBaseUrl+"/products/"+product+"/forecast/"+place;
         $.ajax({
             url: forecastUrl,
             success: function(data){
                 let todayForecast = data;
                 let weatherIconUrl = forecastData['imagesUrl'];
-
-                //console.log(todayForecast);
                 
                 let $forecastPreviewContainer = $('#forecast_preview_shortcode-root-'+shortcode_id);
                 
-                // Creo il wrapper con scroll orizzontale come nel forecast_shortcode
-                let $tableContainer = $('<div>');
-                $tableContainer.addClass('forecast-table-container');
-                $tableContainer.addClass('forecast-preview-container');
-                
-                let table = $('<table class="forecast-preview-table forecast-table">');
-                table.attr('id','forecast-preview-table-'+shortcode_id);
-                table.attr('width',"100%");
-                table.attr('cellspacing','0');
-                table.attr('cellpadding','0');
-                table.attr('border','0');
-                    
-                //$forecastPreviewContainer.append('<div class="forecast-title">'+forecastData['long_name_it']+'</div>');
-                
-                table.append('<tr class="legenda forecast-preview-tr">' +
-                            //'<td width="5%" colspan="2">Forecast</td>' +
-                            //'<td width="21%" class="temperature" colspan="2">T &deg;C</td>' +
-                            //'<td width="14%" colspan="2">Wind (kn)</td>' +
-                            //'<td width="9%">Rain (mm)</td>' +
-                            //'<td width="7%">Pressure (hPa)</>'+
-                            //'<td width="7%">Humidity (%)</>'+
-                            '<td class="forecast-preview-td" colspan="2">Forecast</td>' +
-                            '<td class="temperature forecast-preview-td" colspan="1">T &deg;C</td>' +
-                            '<td class="forecast-preview-td" colspan="2">Wind (kn)</td>' +
-                            '<td class="forecast-preview-td">Rain (mm)</td>' +
-                            '<td class="forecast-preview-td">Pressure (hPa)</>'+
-                            '<td class="forecast-preview-td">Humidity (%)</>'+
-                            '</tr>');
-                
-                // Aggiungo la tabella al container con scroll e poi al container principale
-                $tableContainer.append(table);
-                $forecastPreviewContainer.append($tableContainer);
+                //Responsive container
+                let $responsiveContainer = $('<div>');
+                $responsiveContainer.addClass('forecast-responsive-container');
                 
                 let year = todayForecast['dateTime'].substring(0, 4);
                 let month = todayForecast['dateTime'].substring(4, 6);
@@ -95,34 +64,68 @@ function initializeShortcode(forecastData, shortcode_id){
         
                 let dateTime = new Date(sDateTime);
         
-                let weekDayLabel=dayOfWeek(todayForecast['dateTime']);
-                let monthDay=monthOfYear(todayForecast['dateTime']) + "-" + todayForecast['dateTime'].substring(6,8);
+                let weekDayLabel = dayOfWeek(todayForecast['dateTime']);
+                let monthDay = monthOfYear(todayForecast['dateTime']) + "-" + todayForecast['dateTime'].substring(6,8);
         
-                let wIconUrl=weatherIconUrl+"/"+todayForecast['icon'];
-                let wTextLabel=todayForecast['text'];
+                let wIconUrl = weatherIconUrl + "/" + todayForecast['icon'];
+                let wTextLabel = todayForecast['text'];
 
-                let row='<tr>';
+                //Responsive table
+                let card = '<div class="forecast-card">';
                 
-                row += '  <td class="forecast-td-data forecast-preview-td">'
-                row += '    <p class="day" title="Meteo, ' + weekDayLabel + ' ' + monthDay + '" >';
-                row += weekDayLabel + ',<br> ' + monthDay+'<br>';
-                row += '    </p>';
+                //Icon and date
+                card += '<div class="forecast-item forecast-date-icon">';
+                card += '  <div class="forecast-date">';
+                card += '    <p class="day" title="Meteo, ' + weekDayLabel + ' ' + monthDay + '">';
+                card += weekDayLabel + ',<br>' + monthDay;
+                card += '    </p>';
+                card += '  </div>';
+                card += '  <div class="forecast-icon">';
+                card += '    <img class="weathericon" src="' + wIconUrl + '" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
+                card += '  </div>';
+                card += '</div>';
                 
-                row += '  </td>';
-                row += '  <td class="forecast-td-data forecast-preview-td">';
-                row += '  <img class="forecast-image weathericon" src="' + wIconUrl + '" alt="' + wTextLabel + '" title="' + wTextLabel + '" />';
-                row += '  </td>';
-                row += '  <td class="forecast-td-data forecast-preview-td tmin">' + todayForecast['t2c'] + '</td>';
-                row += '  <td class="forecast-td-data forecast-preview-td">' + todayForecast['winds'] + '</td>';
-                row += '  <td class="forecast-td-data forecast-preview-td">' + todayForecast['ws10n'] + '</td>';
-                row += '  <td class="forecast-td-data forecast-preview-td">' + todayForecast['crh'] + '</td>';
-                row += '  <td class="forecast-td-data forecast-preview-td">' + todayForecast['slp'] + '</td>';
-                row += '  <td class="forecast-td-data forecast-preview-td">' + todayForecast['rh2'] + '</td>';
-                row+='</tr>';
-                table.append(row);
+                //Temperature
+                card += '<div class="forecast-item">';
+                card += '  <span class="forecast-label">T °C</span>';
+                card += '  <span class="forecast-value">' + todayForecast['t2c'] + '</span>';
+                card += '</div>';
+                
+                //Wind direction
+                card += '<div class="forecast-item">';
+                card += '  <span class="forecast-label">Wind Dir</span>';
+                card += '  <span class="forecast-value">' + todayForecast['winds'] + '</span>';
+                card += '</div>';
+                
+                //Wind speed
+                card += '<div class="forecast-item">';
+                card += '  <span class="forecast-label">Wind (kn)</span>';
+                card += '  <span class="forecast-value">' + todayForecast['ws10n'] + '</span>';
+                card += '</div>';
+                
+                //Rain
+                card += '<div class="forecast-item">';
+                card += '  <span class="forecast-label">Rain (mm)</span>';
+                card += '  <span class="forecast-value">' + todayForecast['crh'] + '</span>';
+                card += '</div>';
+                
+                //Pressure
+                card += '<div class="forecast-item">';
+                card += '  <span class="forecast-label">Pressure (hPa)</span>';
+                card += '  <span class="forecast-value">' + todayForecast['slp'] + '</span>';
+                card += '</div>';
+                
+                //Humidity
+                card += '<div class="forecast-item">';
+                card += '  <span class="forecast-label">Humidity (%)</span>';
+                card += '  <span class="forecast-value">' + todayForecast['rh2'] + '</span>';
+                card += '</div>';
+                
+                card += '</div>';
+                
+                $responsiveContainer.append(card);
+                $forecastPreviewContainer.append($responsiveContainer);
             }
         });
-
-        
     })(jQuery);
 }

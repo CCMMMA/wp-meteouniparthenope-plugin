@@ -18,3 +18,130 @@ button:disabled {
   z-index: 1000;
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
+
+
+
+/* Container principale */
+.forecast-responsive-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* Card forecast */
+.forecast-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Singolo item */
+.forecast-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    text-align: center;
+    min-height: 100px;
+}
+
+/* Data e icona (sezione speciale) */
+.forecast-date-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    grid-column: span 2;
+}
+
+.forecast-date-icon .day {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.forecast-icon {
+    margin-top: 10px;
+}
+
+.forecast-icon .weathericon {
+    width: 60px;
+    height: 60px;
+}
+
+/* Label e valore */
+.forecast-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.forecast-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+    .forecast-card {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 15px;
+    }
+    
+    .forecast-date-icon {
+        grid-column: span 2;
+    }
+    
+    .forecast-item {
+        min-height: 80px;
+        padding: 10px;
+    }
+    
+    .forecast-value {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .forecast-card {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .forecast-date-icon {
+        grid-column: span 1;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .forecast-icon {
+        margin-top: 0;
+    }
+    
+    .forecast-icon .weathericon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .forecast-item {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+        min-height: auto;
+    }
+    
+    .forecast-label {
+        margin-bottom: 0;
+    }
+}
