@@ -10,6 +10,12 @@ let apiUsageLanguage = language === 'it' ? apiAviableLanguage['it'] : apiAviable
 let METEOUNIP_PLUGING_DIR = globalData['PLUGIN_DIR'];
 let METEOUNIP_PLUGIN_LOADING_DIR = globalData['LOADING_DIR'];
 
+const METEOUNIP_PLUGIN_DEFAULT_PLACE = "it000";
+const METEOUNIP_PLUGIN_DEFAULT_PRODUCT = "wrf5";
+const METEOUNIP_PLUGIN_DEFAULT_OUTPUT = "gen";
+const METEOUNIP_PLUGIN_DEFAULT_HOURS = 0;
+const METEOUNIP_PLUGIN_DEFAULT_STEP = 1;
+
 function value2Color(value,steps,colors){
     if(value < steps[0]){
         return RGBtoHEX(colors[0]);

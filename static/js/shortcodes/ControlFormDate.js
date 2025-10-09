@@ -23,7 +23,9 @@ class ControlFormDate {
         
         this.$divContainer = jQuery('<div>').attr('id', this.containerID);
         this.$inputDate = jQuery('<input type="date" id="' + this.dateInputID + '">');
+        this.$inputDate.addClass('plot-control-forms');
         this.$inputTimeSelect = jQuery('<select id="' + this.timeInputID + '"></select>');
+        this.$inputTimeSelect.addClass('plot-control-forms');
         
         this.$prevButton = jQuery('<button type="button" id="' + this.prevButtonID + '" class="btn btn-primary">-1h</button>');
         this.$nextButton = jQuery('<button type="button" id="' + this.nextButtonID + '" class="btn btn-primary">+1h</button>');

@@ -52,6 +52,10 @@ class DateFormatter{
         
         return `${year}-${month}-${day}`;
     }
+    static formatFromAPIToTimeString(dateTimeString){
+        const hour = dateTimeString.substring(9,11);
+        return `${hour}:00`;
+    }
 
     static formatFromAPIToDateObj(dateTimeString){
         // Verifica che la stringa abbia la lunghezza corretta
@@ -97,4 +101,18 @@ class DateFormatter{
         
         return date;
     }
+
+    static dayOfWeek(date) {
+        let year = date.substring(0, 4);
+        let month = date.substring(4, 6);
+        let day = date.substring(6, 8);
+
+        let dayOfWeek = new Date(year + "-" + month + "-" + day).getDay();
+        return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+    };
+    static monthOfYear(date) {
+        let month = parseInt(date.substring(4, 6)) - 1;
+        
+        return isNaN(month) ? null : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month];
+    };
 }

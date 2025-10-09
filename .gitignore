@@ -2,3 +2,4 @@ extras
 extras/*
 extras/docker/docker-compose.yml
 *.yml
+static/js/old_shortcodes

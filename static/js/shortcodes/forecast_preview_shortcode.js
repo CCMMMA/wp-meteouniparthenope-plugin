@@ -1,59 +1,42 @@
-//Inizialization of all shortcodes
-Object.keys(allForecastPreviewData).forEach(function(key) {
-    let forecastData = allForecastPreviewData[key];
-    let shortcode_id = forecastData['shortcode_id'];
-    
-    initializeShortcode(forecastData, shortcode_id);
-});
+class ForecastPreview {
+    static get defaults() {
+        return {
+            apiBaseURL: apiBaseUrl,
+            place: "it000",
+            product: "wrf5",
+            output: "gen",
+            container_id: -1,
+            loadingGifPath: METEOUNIP_PLUGIN_LOADING_DIR+"/loading_gif.gif",
+            weatherIconsDirPath: METEOUNIP_PLUGIN_LOADING_DIR
+        };
+    }
 
-function initializeShortcode(forecastData, shortcode_id){
-    let place = forecastData['place_id'];
-    let product = forecastData['product'];
-    
-    (function($){
-        function fromLinkToObject(link){
-            const params = new URLSearchParams(link);
-            return {
-                product: params.get('product'),
-                date: formatDateForInput(params.get('date'))
-            };
-        };
-        function formatDateForInput(dateString) {
-            if (!dateString || dateString.length < 8) {
-                return null;
-            }
-            
-            const year = dateString.substring(0, 4);
-            const month = dateString.substring(4, 6);
-            const day = dateString.substring(6, 8);
-            
-            return `${year}-${month}-${day}`;
-        }
-        function dayOfWeek(date) {
-            let year = date.substring(0, 4);
-            let month = date.substring(4, 6);
-            let day = date.substring(6, 8);
+    constructor(options = {}) {
+        this.container_id = options.container_id || ForecastPreview.defaults.container_id;
+        this.apiBaseURL = options.apiBaseURL || ForecastPreview.defaults.apiBaseURL;
+        this.place = options.place || ForecastPreview.defaults.place;
+        this.product = options.product || ForecastPreview.defaults.product;
+        this.output = options.output || ForecastPreview.defaults.output;
+        this.loadingGifPath = options.loadingGifPath || ForecastPreview.defaults.loadingGifPath;
+        this.weatherIconsDirPath = options.weatherIconsDirPath || ForecastPreview.defaults.weatherIconsDirPath;
 
-            let dayOfWeek = new Date(year + "-" + month + "-" + day).getDay();
-            return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
-        };
-        function monthOfYear(date) {
-            let month = parseInt(date.substring(4, 6)) - 1;
-            
-            return isNaN(month) ? null : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month];
-        };
-        
-        let forecastUrl = apiBaseUrl+"/products/"+product+"/forecast/"+place;
-        $.ajax({
+        this.createTable();
+    }
+
+    createTable(){
+        var self = this;
+        var forecastUrl = self.apiBaseURL+"/products/"+self.product+"/forecast/"+self.place;
+        jQuery.ajax({
             url: forecastUrl,
             success: function(data){
                 let todayForecast = data;
-                let weatherIconUrl = forecastData['imagesUrl'];
+                console.log(todayForecast);
+                let weatherIconUrl = self.weatherIconsDirPath;
                 
-                let $forecastPreviewContainer = $('#forecast_preview_shortcode-root-'+shortcode_id);
+                let $forecastPreviewContainer = jQuery(`#${self.container_id}`);
                 
                 //Responsive container
-                let $responsiveContainer = $('<div>');
+                let $responsiveContainer = jQuery('<div>');
                 $responsiveContainer.addClass('forecast-responsive-container');
                 
                 let year = todayForecast['dateTime'].substring(0, 4);
@@ -64,8 +47,8 @@ function initializeShortcode(forecastData, shortcode_id){
         
                 let dateTime = new Date(sDateTime);
         
-                let weekDayLabel = dayOfWeek(todayForecast['dateTime']);
-                let monthDay = monthOfYear(todayForecast['dateTime']) + "-" + todayForecast['dateTime'].substring(6,8);
+                let weekDayLabel = DateFormatter.dayOfWeek(todayForecast['dateTime']);
+                let monthDay = DateFormatter.monthOfYear(todayForecast['dateTime']) + "-" + todayForecast['dateTime'].substring(6,8);
         
                 let wIconUrl = weatherIconUrl + "/" + todayForecast['icon'];
                 let wTextLabel = todayForecast['text'];
@@ -88,7 +71,7 @@ function initializeShortcode(forecastData, shortcode_id){
                 //Temperature
                 card += '<div class="forecast-item">';
                 card += '  <span class="forecast-label">T °C</span>';
-                card += '  <span class="forecast-value">' + todayForecast['t2c'] + '</span>';
+                card += '  <span class="forecast-value">' + Math.round(todayForecast['t2c']) + '</span>';
                 card += '</div>';
                 
                 //Wind direction
@@ -100,25 +83,25 @@ function initializeShortcode(forecastData, shortcode_id){
                 //Wind speed
                 card += '<div class="forecast-item">';
                 card += '  <span class="forecast-label">Wind (kn)</span>';
-                card += '  <span class="forecast-value">' + todayForecast['ws10n'] + '</span>';
+                card += '  <span class="forecast-value">' + Math.round(todayForecast['ws10n']) + '</span>';
                 card += '</div>';
                 
                 //Rain
                 card += '<div class="forecast-item">';
-                card += '  <span class="forecast-label">Rain (mm)</span>';
-                card += '  <span class="forecast-value">' + todayForecast['crh'] + '</span>';
+                card += '  <span class="forecast-label">Rain (mm/h)</span>';
+                card += '  <span class="forecast-value">' + Math.round(todayForecast['crh']) + '</span>';
                 card += '</div>';
                 
                 //Pressure
                 card += '<div class="forecast-item">';
                 card += '  <span class="forecast-label">Pressure (hPa)</span>';
-                card += '  <span class="forecast-value">' + todayForecast['slp'] + '</span>';
+                card += '  <span class="forecast-value">' + Math.round(todayForecast['slp']) + '</span>';
                 card += '</div>';
                 
                 //Humidity
                 card += '<div class="forecast-item">';
                 card += '  <span class="forecast-label">Humidity (%)</span>';
-                card += '  <span class="forecast-value">' + todayForecast['rh2'] + '</span>';
+                card += '  <span class="forecast-value">' + Math.round(todayForecast['rh2']) + '</span>';
                 card += '</div>';
                 
                 card += '</div>';
@@ -127,5 +110,5 @@ function initializeShortcode(forecastData, shortcode_id){
                 $forecastPreviewContainer.append($responsiveContainer);
             }
         });
-    })(jQuery);
+    }
 }

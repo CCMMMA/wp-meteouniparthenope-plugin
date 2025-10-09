@@ -77,10 +77,10 @@ get_header();
                                     <div class="card-body">
                                         <label class="control-label" for="control-select-date">Date and time:</label>
                                         <div class="input-group mb-3">
-                                            <input class="form-control plot-control-forms" type="date" id="control-select-date">
+                                            <input class="form-control plot-control-forms forecast-control-forms control-forms" type="date" id="control-select-date">
                                         </div>
                                         <div class="input-group mb-3">
-                                            <select class="form-control plot-control-forms" id="control-select-time"></select>
+                                            <select class="form-control plot-control-forms forecast-control-forms control-forms" id="control-select-time"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@ get_header();
                                     <div class="card-body">
                                         <label class="control-label" for="control-select-product">Products:</label>
                                         <div class="input-group mb-3">
-                                            <select class="form-control plot-control-forms" id="control-select-product">
+                                            <select class="form-control plot-control-forms forecast-control-forms control-forms" id="control-select-product">
                                             </select>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@ get_header();
                                     <div class="card-body">
                                         <label class="control-label" for="control-select-output">Outputs:</label>
                                         <div class="input-group mb-3">
-                                            <select class="form-control plot-control-forms" id="control-select-output">
+                                            <select class="form-control plot-control-forms control-forms" id="control-select-output">
                                             </select>
                                         </div>
                                     </div>
@@ -139,12 +139,48 @@ get_header();
                     <div id="chart-container" class="chart-container container-fluid">
                         <?php echo do_shortcode('[chart_shortcode]'); ?>
                         <div class="row">
+                            <!-- Products Column -->
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card control-card">
+                                    <div class="card-body">
+                                        <label class="control-label" for="control-select-hours">Hours:</label>
+                                        <div class="input-group mb-3">
+                                            <select class="form-control chart-control-forms control-forms" id="control-select-hours">
+                                                <option value="0">All hours</option>
+                                                <option value="24">24</option>
+                                                <option value="48">48</option>
+                                                <option value="72">72</option>
+                                                <option value="168">168</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Outputs Column -->
+                            <div class="col-12 col-md-12 col-lg-4">
+                                <div class="card control-card">
+                                    <div class="card-body">
+                                        <label class="control-label" for="control-select-step">Aggregation step:</label>
+                                        <div class="input-group mb-3">
+                                            <select class="form-control chart-control-forms forecast-control-forms control-forms" id="control-select-step">
+                                                <option value="1">No aggregation</option>
+                                                <option value="3">3</option>
+                                                <option value="6">6</option>
+                                                <option value="12">12</option>
+                                                <option value="24">24</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
                                         <div id="chart" style="height: 50vh">
                                             <div id="chart-box" class="box">
-                                                <div id="chart-container-canvasDiv" style="height: 50vh; width: inherit">
+                                                <div id="chart-container-canvasDiv" style="height: 50vh; width: inherit;">
                                                 </div>
                                             </div>
                                         </div>

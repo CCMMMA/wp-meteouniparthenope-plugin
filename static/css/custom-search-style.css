@@ -29,13 +29,39 @@
     margin-bottom: 10px;
 }
 
+/* Ottimizzazione per il container weather-preview - si adatta all'immagine */
 .weather-preview {
     flex: 1;
-    padding: 15px;
+    padding: 0;
     background: rgba(255,255,255,0.8);
     border-radius: 6px;
     margin-left: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-self: flex-start; /* Il box si adatta all'altezza del contenuto */
+}
+
+/* Container del plot - si adatta all'immagine */
+.weather-preview > div,
+.weather-preview .plot-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    line-height: 0; /* Rimuove spazio extra sotto l'immagine */
+}
+
+/* Immagini del plot - dimensioni naturali */
+.weather-preview img {
+    width: 100%;
+    height: auto; /* Mantiene le proporzioni naturali */
+    max-width: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 
 /* Stile per risultati standard */

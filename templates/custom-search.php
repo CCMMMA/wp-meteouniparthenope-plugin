@@ -27,17 +27,16 @@ get_header(); ?>
                                     <p class="place-description"><?php the_excerpt(); ?></p>
                                     <?php
                                         $placeID = get_post_meta(get_the_id(), 'place_id', true);
-                                        echo do_shortcode('[forecast_preview_shortcode shortcode_id="'.$i.'" place_id="'.$placeID.'" product="wrf5" output="gen"]');
+                                        echo do_shortcode('[forecast_preview_shortcode place_id="'.$placeID.'" product="wrf5" output="gen"]');
                                     ?>
                                 </div>
                                 <div class="weather-preview" data-place-id="<?php echo get_the_ID(); ?>">
                                     <!-- <div class="weather-loading">Caricamento previsioni...</div> -->
-                                    <div id="weathre-preview"> <?php 
-                                        echo do_shortcode('[plot_shortcode shortcode_id="'.$i.'" control_forms="STANDALONE" place="'.$placeID.'" product="wrf5" output="gen"]');
-                                        echo do_shortcode('[image_link_shortcode shortcode_id="'.$i.'" plot_id="'.$i.'"]');
+                                    <?php 
+                                        echo do_shortcode('[plot_shortcode control_forms="STANDALONE" place_id="'.$placeID.'" product="wrf5" output="gen"]');
                                         $i++;
-                                        ?>
-                                    </div>
+                                    ?>
+                                    
                                     <!-- Il contenuto meteo verrà caricato via JavaScript -->
                                 </div>
                             

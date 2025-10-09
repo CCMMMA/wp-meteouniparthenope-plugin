@@ -41,7 +41,7 @@
 }
 
 /* Form controls responsive */
-.plot-control-forms {
+.plot-control-forms .control-forms{
     width: 100%;
     padding: 8px 12px;
     border: 1px solid #ddd;
@@ -94,7 +94,7 @@
         padding: 15px;
     }
     
-    .plot-control-forms {
+    .plot-control-forms .control-forms{
         font-size: 13px;
         padding: 6px 10px;
     }
@@ -135,7 +135,7 @@
         padding: 12px;
     }
     
-    .plot-control-forms {
+    .plot-control-forms .control-forms{
         font-size: 16px; /* Prevents zoom on iOS */
         padding: 10px;
         height: 44px; /* Altezza standard mobile */
@@ -170,7 +170,7 @@
         padding: 10px;
     }
     
-    .plot-control-forms {
+    .plot-control-forms .control-forms{
         font-size: 16px;
         padding: 12px 10px;
         height: 46px; /* Altezza fissa per schermi molto piccoli */

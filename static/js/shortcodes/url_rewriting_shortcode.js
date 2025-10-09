@@ -1,77 +1,49 @@
 (function($){
     $(document).ready(function(){
+        var urlParams = new URLSearchParams(window.location.search);
+        var baseUrl = window.location.origin + window.location.pathname;
+
+        //Primo avvio
+        //id parameter
+        if(!urlParams.has('place_id')){
+            urlParams.append('place_id',urlRewritingShortcodeData['place_id']);
+        }
+
+        //date parameter
+        if(!urlParams.has('date')){
+            var newDateTime = DateFormatter.formatFromDateUTCObjToAPI(new Date());
+            urlParams.append('date',newDateTime);
+        }
         
-        let $controlForms = $('.plot-control-forms');
-        $controlForms.change(function(){
-            const urlParams = new URLSearchParams(window.location.search);
-    
-            const baseUrl = window.location.origin + window.location.pathname;
-            
-            //id parameter
-            if(!urlParams.has('id')){
-                urlParams.append('id',urlRewritingShortcodeData['place_id']);
-            }
+        //product
+        if(!urlParams.has('prod')){
+            urlParams.append('prod',METEOUNIP_PLUGIN_DEFAULT_PRODUCT);
+        }
 
-            //date parameter
-            let $controlSelectDate = $('#control-select-date');
-            var date = $controlSelectDate.val();
-            let $controlSelectTime = $('#control-select-time');
-            var time = $controlSelectTime.val();
-            var newDateTime = DateFormatter.formatFromDateToAPI(date,time);
-            if(urlParams.has('date')){
-                urlParams.set('date',newDateTime);
-            }
-            else{
-                urlParams.append('date',newDateTime);
-            }
+        //output
+        if(!urlParams.has('output')){
+            urlParams.append('output',METEOUNIP_PLUGIN_DEFAULT_OUTPUT);
+        }
 
-            //prod parameter
-            let $controlSelectProduct = $('#control-select-product');
-            var product = $controlSelectProduct.val();
-            if(urlParams.has('prod')){
-                urlParams.set('prod',product);
-            }
-            else{
-                urlParams.append('prod',product);
-            }
+        //hours
+        if(!urlParams.has('hours')){
+            urlParams.append('hours',METEOUNIP_PLUGIN_DEFAULT_HOURS);
+        }
 
-            //output parameter
-            let $controlSelectOutput = $('#control-select-output');
-            var output = $controlSelectOutput.val();
-            if(urlParams.has('output')){
-                urlParams.set('output',output);
-            }
-            else{
-                urlParams.append('output',output);
-            }
+        //step
+        if(!urlParams.has('step')){
+            urlParams.append('step',METEOUNIP_PLUGIN_DEFAULT_STEP);
+        }
 
-            //hours parameter
-            //probabile aggiunta di forms per decidere questi due parametri di aggregaazione (hours,step)
-            if(urlParams.has('hours')){
-                urlParams.set('hours',urlParams.get('hours'));
-            }
-            else{
-                urlParams.append('hours',0);
-            }
-            
-            //step paramter
-            //probabile aggiunta di forms per decidere questi due parametri di aggregaazione (hours,step)s
-            if(urlParams.has('step')){
-                urlParams.set('step',urlParams.get('step'));
-            }
-            else{
-                urlParams.append('step',1);
-            }
+        const newUrl = baseUrl + '?' + urlParams.toString();
+        console.log("new url: " + newUrl);
+        
+        //Aggiorna l'URL senza ricaricare la pagina
+        window.history.pushState({}, '', newUrl);
 
-
-            const newUrl = baseUrl + '?' + urlParams.toString();
-            console.log("new url: " + newUrl);
-            
-            //Aggiorna l'URL senza ricaricare la pagina
-            window.history.pushState({}, '', newUrl);
+        $(document).trigger('place.url.loaded', { 
+            message: 'New URL loaded',
+            timestamp: Date.now()
         });
-
-        //Aspetta che tutto sia pronto
-        //$controlForms.trigger('change');
     });
 })(jQuery)

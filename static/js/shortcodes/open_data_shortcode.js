@@ -47,7 +47,7 @@ let openDataDefaultOutput = "gen";
             var openDataMonth = dateTime.substring(4, 6);
             var openDataDay = dateTime.substring(6, 8);
             opendapHistoryLink += openDataYear + "/" + openDataMonth + "/" + openDataDay + "/";
-            opendapHistoryLink += controlDefaultProduct + "_d03_" + dateTime + ".nc.html";
+            opendapHistoryLink += openDataProduct + "_d03_" + dateTime + ".nc.html";
             $('#opendap_history_link').attr('href',opendapHistoryLink);
         
             //OPeNDAP (Archive) button
@@ -57,7 +57,7 @@ let openDataDefaultOutput = "gen";
             //WMS (History) button
             var wmsHistoryLink = apiBaseUrl + "/ncWMS2/wms/lds/" + openDataDefaultProduct + "/d03/history";
             wmsHistoryLink += openDataYear + "/" + openDataMonth + "/" + openDataDay + "/";
-            wmsHistoryLink += controlDefaultProduct + "_d03_" + dateTime;
+            wmsHistoryLink += openDataProduct + "_d03_" + dateTime;
             wmsHistoryLink += ".nc?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0"
             $('#wms_history_link').attr('href',wmsHistoryLink);
         
@@ -65,10 +65,14 @@ let openDataDefaultOutput = "gen";
             var wmsHistoryArchive = wmsHistoryLink.replace('history','archive');
             $('#wms_archive_link').attr('href',wmsHistoryArchive);
         }
-
-        loadOpenData();
-
-        $('.plot-control-forms').on('change',loadOpenData);
+        $(document).on('place.control_forms.loaded',function(){
+            console.log("PRIMO CARICAMENTO DELLA PAGINA");
+            loadOpenData();
+        });
+        $('.control-forms').on('change',function(){
+            console.log("QUALCOSA È CAMBIATO");
+            loadOpenData();
+        });
     });
 
 })(jQuery)

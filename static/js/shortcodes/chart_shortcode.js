@@ -9,96 +9,107 @@ let NEW_CHART_defaultChartProduct = "wrf5";
 let NEW_CHART_defaultCharOutput = "gen";
 
 (function($){
+    let $loadingDiv;
+    let $loadingGif;
+    let $chartBox;
+    let $chartBoxCanvaJS;
+
     $(document).ready(function() {
-        let $loadingDiv = $('<div>').attr('class','loading-gif');
-        $loadingDiv.attr('id','loading-div');
-        let $loadingGif = $('<img>').attr('id','loading-gif');
-        $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/loading_gif.gif");
-        $loadingDiv.addClass('d-flex justify-content-center align-items-center');
-        $loadingDiv.css('height', '400px');
-        $loadingDiv.append($loadingGif);
-
-        let $chartBox = $('#chart-box');
-        $chartBox.append($loadingDiv);
-        let $chartBoxCanvaJS = $('#chart-container-canvasDiv');
-        
-        //url parameters check
-        let urlParams = new URLSearchParams(window.location.search);
-        let ncepDate = urlParams.has('date') ? urlParams.get('date') : formatDateForMeteoAPI(null,null);
-        let product = urlParams.has('prod') ? urlParams.get('prod') : NEW_CHART_defaultChartProduct;
-        let output = urlParams.has('output') ? urlParams.get('output') : NEW_CHART_defaultCharOutput;
-        let hours = urlParams.has('hours') ? urlParams.get('hours') : 0;
-        let step = urlParams.has('step') ? urlParams.get('step') : 1;
-
-        $('.plot-control-forms').on('change',function(){
-            // Prima nasconde il canvas e svuota il contenuto
-            $chartBoxCanvaJS.hide();
-            $chartBoxCanvaJS.empty();
+        $(document).on('place.control_forms.loaded',function(){
+            $loadingDiv = $('<div>').attr('class','loading-gif');
+            $loadingDiv.attr('id','loading-div');
+            $loadingGif = $('<img>').attr('id','loading-gif');
+            $loadingGif.attr('src',METEOUNIP_PLUGIN_LOADING_DIR + "/loading_gif.gif");
             $loadingDiv.addClass('d-flex justify-content-center align-items-center');
             $loadingDiv.css('height', '400px');
-            $loadingDiv.show();
-            
-            let $selectProduct = $('#control-select-product');
-            product = $selectProduct.val();
+            $loadingDiv.append($loadingGif);
+    
+            $chartBox = $('#chart-box');
+            $chartBox.append($loadingDiv);
 
-            let $selectOutput = $('#control-select-output');
-            output = $selectOutput.val();
-            
-            ncepDate = formatDateForMeteoAPI(null,null);
-            
-            var key = product + "-" + output + "-" + ncepDate;
-            
-            if(!(key in NEW_CHART_loadedChart)){
-                let chartAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?date=${ncepDate}&output=${output}&hours=${hours}&step=${step}`;
-                console.log("chart url: " + chartAPIUrl);
-                $.ajax({
-                    url: chartAPIUrl,
-                    tryCount: 1,
-                    retryLimit: 3,
-                    retryInterval: 2000,
-                    success: function(data){
-                        drawChart(data,product,output,ncepDate);
-                    },
-                    error: function(xhr, textStatus, errorThrown){
-                        console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
-                        this.tryCount++;
-                        if (this.tryCount <= this.retryLimit) {
-                            var self = this;
-                            setTimeout(() =>{
-                                $.ajax(self);
-                            },this.retryInterval);
-                        }
-                        else{
-                            $('#chart-container-canvasDiv').append('<p>No data available</p>');
-                        }
-                    },
-                    complete: function(){
-                        $loadingDiv.hide();
-                        $loadingDiv.attr('class','loading-gif');
-                        // Assicurati che il container sia visibile prima di mostrare il chart
-                        $chartBoxCanvaJS.show();
-                        
-                        // Forza il ridimensionamento del chart dopo un breve delay
-                        setTimeout(function(){
-                            var currentChart = NEW_CHART_loadedChart[key];
-                            if(currentChart){
-                                currentChart.render();
-                            }
-                        }, 100);
-                    }
-                });
-            } else {
-                // Se il chart è già in cache, lo ri-renderizza
-                $loadingDiv.hide();
-                $chartBoxCanvaJS.show();
-                
-                // Assicura che il container abbia le dimensioni corrette
-                setTimeout(function(){
-                    NEW_CHART_loadedChart[key].render();
-                }, 100);
-            }
+            prepareChart();
+    
+            $('.control-forms').on('change',prepareChart);
         });
     });
+
+    function prepareChart(){
+        $chartBoxCanvaJS = $('#chart-container-canvasDiv');
+
+        // Prima nasconde il canvas e svuota il contenuto
+        $chartBoxCanvaJS.empty();
+        $chartBoxCanvaJS.hide();
+        
+        $loadingDiv.addClass('d-flex justify-content-center align-items-center');
+        $loadingDiv.css('height', '400px');
+        $loadingDiv.show();
+        
+        let $selectProduct = $('#control-select-product');
+        var product = $selectProduct.val();
+
+        let $selectOutput = $('#control-select-output');
+        var output = $selectOutput.val();
+        
+        var ncepDate = DateFormatter.formatFromDateToAPI($('#control-select-date').val(),$('#control-select-time').val());
+
+        let $selectHours = $('#control-select-hours');
+        var hours = $selectHours.val();
+
+        let $selectStep = $('#control-select-step');
+        var step = $selectStep.val();
+        
+        var key = product + "-" + output + "-" + ncepDate + "-" + hours + "-" + step;
+        
+        if(!(key in NEW_CHART_loadedChart)){
+            let chartAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?date=${ncepDate}&output=${output}&hours=${hours}&step=${step}`;
+            console.log("chart url: " + chartAPIUrl);
+            $.ajax({
+                url: chartAPIUrl,
+                tryCount: 1,
+                retryLimit: 3,
+                retryInterval: 2000,
+                success: function(data){
+                    drawChart(data,product,output,ncepDate);
+                },
+                error: function(xhr, textStatus, errorThrown){
+                    console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
+                    this.tryCount++;
+                    if (this.tryCount <= this.retryLimit) {
+                        var self = this;
+                        setTimeout(() =>{
+                            $.ajax(self);
+                        },this.retryInterval);
+                    }
+                    else{
+                        $('#chart-container-canvasDiv').append('<p>No data available</p>');
+                    }
+                },
+                complete: function(){
+                    $loadingDiv.hide();
+                    $loadingDiv.attr('class','loading-gif');
+                    // Assicurati che il container sia visibile prima di mostrare il chart
+                    $chartBoxCanvaJS.show();
+                    
+                    // Forza il ridimensionamento del chart dopo un breve delay
+                    setTimeout(function(){
+                        var currentChart = NEW_CHART_loadedChart[key];
+                        if(currentChart){
+                            currentChart.render();
+                        }
+                    }, 100);
+                }
+            });
+        } else {
+            // Se il chart è già in cache, lo ri-renderizza
+            $loadingDiv.hide();
+            $chartBoxCanvaJS.show();
+            
+            // Assicura che il container abbia le dimensioni corrette
+            setTimeout(function(){
+                NEW_CHART_loadedChart[key].render();
+            }, 100);
+        }
+    }
 
     function drawChart(timeSeriesDataAndMetadata,product,output,ncepDate){
         let chartMetadata = timeSeriesDataAndMetadata['meta-chart'];
@@ -108,7 +119,6 @@ let NEW_CHART_defaultCharOutput = "gen";
         let dataPoints2 = [];
         let data=[];
         let axisY=null, axisY2=null;
-        let colorSet=null;
 
         title = chartMetadata['title_chart'];
         if(Object.hasOwn(chartMetadata,'pos_bars')){
@@ -202,55 +212,4 @@ let NEW_CHART_defaultCharOutput = "gen";
         var key = product + "-" + output + "-" + ncepDate;
         NEW_CHART_loadedChart[key] = chart;
     }
-
-    function formatDateForMeteoAPI(dateValue, timeValue){
-        // Se non vengono passati parametri, usa i valori correnti dagli input
-        if (!dateValue) {
-            dateValue = $('#control-select-date').val();
-        }
-        if (!timeValue) {
-            timeValue = $('#control-select-time').val();
-        }
-        
-        // Verifica che i valori siano validi
-        if (!dateValue || !timeValue) {
-            console.error('Data o ora non valide');
-            return null;
-        }
-        
-        // Estrae anno, mese, giorno dalla data (formato YYYY-MM-DD)
-        const dateParts = dateValue.split('-');
-        const year = dateParts[0];
-        const month = dateParts[1];
-        const day = dateParts[2];
-        
-        // Estrae l'ora dal tempo (formato HH:MM)
-        const timeParts = timeValue.split(':');
-        const hour = timeParts[0];
-        
-        // Compone il formato finale: yyyymmddZhh00
-        const formattedDateTime = year + month + day + 'Z' + hour + '00';
-        
-        return formattedDateTime;
-    }
-
-    function extractUnit(str) {
-        if (typeof str !== 'string') {
-            return null;
-        }
-        
-        // Regex per trovare contenuto tra parentesi tonde o quadre
-        // Cerca l'ultima occorrenza per gestire casi con multiple parentesi
-        const regex = /[\(\[](.*?)[\)\]]/g;
-        let match;
-        let lastMatch = null;
-        
-        // Trova l'ultima occorrenza di parentesi
-        while ((match = regex.exec(str)) !== null) {
-            lastMatch = match[1].trim();
-        }
-        
-        return lastMatch ? lastMatch : "";
-    }
-
 })(jQuery);
