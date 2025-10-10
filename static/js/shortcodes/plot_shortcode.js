@@ -43,13 +43,29 @@ class MeteoPlot {
             let now = new Date();
             this.dateTime = DateFormatter.formatFromDateUTCObjToAPI(now);
         }
-
-        this.createPlot();
-        if(this.controlForms !== "STANDALONE"){
+        
+        if(this.controlForms === "STANDALONE"){
+            this.createPlot();
+            this.createLink();
+        }
+        if(this.controlForms === "DATETIME_ONLY"){
+            this.createPlot();
+            this.createLink();
             this.registerEvent();
         }
-        if(this.controlForms !== "FULL"){
-            this.createLink();
+        if(this.controlForms === "FULL"){
+            var self = this;
+            jQuery(document).on('place.control_forms.loaded',function(){
+                var newDate = jQuery(`#${self.dateForm_id}`).val();
+                var newTime = jQuery(`#${self.timeForm_id}`).val();
+                var dateString = DateFormatter.formatFromDateToAPI(newDate,newTime);
+                self.dateTime = dateString;
+                self.product = jQuery(`#${self.productForm_id}`).val();
+                self.output = jQuery(`#${self.outputForm_id}`).val();
+
+                self.createPlot();
+                self.registerEvent();
+            });
         }
     }
 
@@ -76,8 +92,13 @@ class MeteoPlot {
     createPlot(){
         let html=
         `<div id="${this.container_id}_loader" style="display: block"><img src="${this.loadingGifPath}"/></div>` +
-        `<div id="${this.container_id}_image" style="display: none">` +
-        `  <img src="https://api.meteo.uniparthenope.it/products/${this.product}/forecast/${this.place}/plot/image?output=${this.output}`;
+        `<div id="${this.container_id}_image" style="display: none">`;
+        if(this.controlForms === "FULL"){
+            html += `<img src="${this.getImageUrl()}`;
+        }
+        else{
+            `<img src="https://api.meteo.uniparthenope.it/products/${this.product}/forecast/${this.place}/plot/image?output=${this.output}`;
+        }
         if(this.controlForms === "DATETIME_ONLY" || this.controlForms === "FULL"){
             html += `&date=${this.dateTime}`;
         }

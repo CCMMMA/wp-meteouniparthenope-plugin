@@ -133,9 +133,22 @@
             });
         }
         function setProduct(product){
-            $('#control-select-product option[value='+product+']').prop('selected', true);
-            loadOutputs(productFromAPI[urlParams.get('prod')]);
-            setOutput(urlParams.get('output'));
+            if(urlParams.get('prod') in productFromAPI){
+                $('#control-select-product option[value='+product+']').prop('selected', true);
+                loadOutputs(productFromAPI[urlParams.get('prod')]);
+                if(urlParams.get('output') in outputsGivenProduct[urlParams.get('prod')]){
+                    setOutput(urlParams.get('output'));
+                }
+                else{
+                    alert("ERROR: Output not allowed for given product");
+                }
+            }
+            else{
+                alert("ERROR: Product not allowed for this place");
+                $('#control-select-product option[value="wrf5"]').prop('selected', true);
+                loadOutputs(productFromAPI['wrf5']);
+                setOutput("gen");
+            }
         }
         function setOutput(output){
             $('#control-select-output option[value='+output+']').prop('selected', true);
