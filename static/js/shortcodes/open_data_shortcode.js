@@ -66,11 +66,9 @@ let openDataDefaultOutput = "gen";
             $('#wms_archive_link').attr('href',wmsHistoryArchive);
         }
         $(document).on('place.control_forms.loaded',function(){
-            console.log("PRIMO CARICAMENTO DELLA PAGINA");
             loadOpenData();
         });
         $('.control-forms').on('change',function(){
-            console.log("QUALCOSA È CAMBIATO");
             loadOpenData();
         });
     });

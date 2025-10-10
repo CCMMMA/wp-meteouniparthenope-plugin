@@ -111,7 +111,6 @@
                     let $selectProduct = $('#control-select-product');
                     $.each(controlData['available_products'], function(index, value){
                         try{
-                            console.log(productFromAPI[index]);
                             outputsGivenProduct[index] = productFromAPI[index]['outputs'];
                             $selectProduct.append(`<option value="${index}">${productFromAPI[index]['desc'][apiUsageLanguage]}</option>`);
                         } catch(err){
@@ -185,7 +184,6 @@
 
         $('#control-select-date, #control-select-time').on('change',function(){
             var newDateString = DateFormatter.formatFromDateToAPI($('#control-select-date').val(),$('#control-select-time').val());
-            console.log(newDateString);
             urlParams.set('date',newDateString);
         });
 

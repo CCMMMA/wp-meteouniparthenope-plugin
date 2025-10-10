@@ -54,10 +54,8 @@ class MeteoPlot {
     }
 
     registerEvent(){
-        console.log("REGISTRO L'EVENTO");
         var self = this;
         jQuery('.plot-control-forms').change(function(){
-            console.log("CAMBIATO!");
             var newDate = jQuery(`#${self.dateForm_id}`).val();
             var newTime = jQuery(`#${self.timeForm_id}`).val();
             var dateString = DateFormatter.formatFromDateToAPI(newDate,newTime);

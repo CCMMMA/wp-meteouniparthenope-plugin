@@ -8,6 +8,29 @@
         if(!urlParams.has('place_id')){
             urlParams.append('place_id',urlRewritingShortcodeData['place_id']);
         }
+        else{
+            console.log("CONFRONTO URL");
+            console.log(urlParams.get('place_id')+"!=="+urlRewritingShortcodeData['place_id']);
+            
+            if(urlParams.get('place_id') !== urlRewritingShortcodeData['place_id']){
+                console.log("DIVERSO");
+                
+                jQuery.ajax({
+                    url: `/wp-json/meteounip/v1/places/${urlParams.get('place_id')}/link`,
+                    success: function(data){
+                        var wpLink = data['link'];
+                        var newLink = wpLink + `?place_id=${urlParams.get('place_id')}`;
+                        window.location.href = newLink;
+                    },
+                    error: function(){
+                        alert("ERROR: Incorrect place id or place not registered, redirect not performed");
+                    }
+                });
+            }
+            else{
+                console.log("UGUALE");
+            }
+        }
 
         //date parameter
         if(!urlParams.has('date')){

@@ -711,7 +711,7 @@ class MeteoUniParthenopePluginMain{
             true
         );
 
-        $urlRewritingShortcodeData['place_id'] = get_post_meta(get_the_ID(),'place_id');
+        $urlRewritingShortcodeData['place_id'] = get_post_meta(get_the_ID(),'place_id',true);
 
         wp_localize_script('url-rewriting-shortcode','urlRewritingShortcodeData',$urlRewritingShortcodeData);
         

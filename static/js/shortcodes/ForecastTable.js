@@ -55,10 +55,48 @@ class ForecastTable{
             
             $tableRow = jQuery('<tr>');
             var $tableTD = jQuery('<td class="forecast-td-data">');
-            var $tableLink = jQuery(`<a class="forecast-link" href="${val['link']}" target="_blank" class="day" title="Meteo ${forecastData['long_name_it']} - ${weekDayLabel} ${monthDay}">`);
-            $tableLink.text(`${weekDayLabel},\n ${monthDay}\n`);
-            $tableLink.append('<br>');
-            $tableTD.append($tableLink);
+            
+            // Crea uno span cliccabile invece di un link
+            var $dateTimeSelector = jQuery('<span class="forecast-date-selector" style="cursor: pointer; color: #0073aa; text-decoration: underline;">');
+            $dateTimeSelector.attr('title', `Meteo ${forecastData['long_name_it']} - ${weekDayLabel} ${monthDay}`);
+            $dateTimeSelector.text(`${weekDayLabel},\n ${monthDay}\n`);
+            $dateTimeSelector.append('<br>');
+            
+            // Aggiungi l'evento click per impostare data e ora
+            $dateTimeSelector.on('click', function(e) {
+                e.preventDefault();
+                
+                // Estrai data e ora dal dateTime (formato YYYYMMDD)
+                let dateValue = DateFormatter.formatFromAPIToDateString(val['dateTime']); // es: "20231015"
+                
+                // Se hai anche un'ora nel dato, estraila, altrimenti usa un valore di default
+                // Assumo che l'ora sia "00:00" se non specificata
+                let timeValue = "00:00";
+                
+                // Imposta il valore del select della data
+                let $dateSelect = jQuery('#control-select-date');
+                if ($dateSelect.length) {
+                    $dateSelect.val(dateValue);
+                } else {
+                    console.warn('Select con id "select-control-date" non trovato');
+                }
+                
+                // Imposta il valore del select dell'ora
+                let $timeSelect = jQuery('#control-select-time');
+                if ($timeSelect.length) {
+                    $timeSelect.val(timeValue);
+                } else {
+                    console.warn('Select con id "select-control-time" non trovato');
+                }
+                
+                // Triggera l'evento change sul select della data
+                if ($dateSelect.length) {
+                    $dateSelect.trigger('change');
+                }
+            });
+            
+            $tableTD.append($dateTimeSelector);
+            
             var $tableButton = jQuery('<button id="'+val['dateTime']+'-button" class="btn btn-sm btn-primary ml-2" data-toggle="collapse" data-target="#'+val['dateTime']+'-collapse">+</button>');
             $tableTD.append($tableButton);
             $tableRow.append($tableTD);
@@ -90,7 +128,7 @@ class ForecastTable{
 
             //Qui va creata la subtable dopo richiesta ajax
             self.cache[`${val['dateTime']}-button`] = false;
-            jQuery(`#${val['dateTime']}-button`).on('click',function(){
+            $tableButton.on('click',function(){
                 //if first time then ajax request
                 if(!self.cache[`${val['dateTime']}-button`]){
                     self.cache[`${val['dateTime']}-button`] = true;
@@ -101,18 +139,21 @@ class ForecastTable{
                     $loadingDiv.append($loadingGif);
                     jQuery(`#${val['dateTime']}-collapse`).children().append($loadingDiv);
                     $loadingDiv.show();
-    
+
                     var prod = jQuery('#control-select-product').val();
-                    var hours = jQuery('#control-select-hours').val();
                     var step = jQuery('#control-select-step').val();
                     let timeseriesUrl = `${apiBaseUrl}/products/${prod}/timeseries/${place}?output=gen&date=${val['dateTime']}&hours=24&step=${step}`;
                     console.log("timeseriesUrl: "+timeseriesUrl);
                     jQuery.ajax({
                         url: timeseriesUrl,
                         success: function(data){
-                            console.log(data);
+                            var hourlyForecastData = [];
+                            for(var i=0;i<(24/step);i++){
+                                hourlyForecastData.push(data['timeseries'][i]);
+                            }
+                            
                             var subtableObj = new ForecastSubtable({tableContainerID: self.tableContainerID, forecastTableID: self.forecastTableID, forecastTableRowForSubtableID: `${val['dateTime']}-collapse`});
-                            var $subTable = subtableObj.fillSubtable(data['timeseries'],prod,step,imagesUrl);
+                            var $subTable = subtableObj.fillSubtable(hourlyForecastData,prod,step,imagesUrl);
                             $tableTD.append($subTable);
                             $loadingDiv.hide();
                             $subTable.show();
