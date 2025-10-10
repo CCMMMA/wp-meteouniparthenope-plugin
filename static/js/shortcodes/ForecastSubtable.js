@@ -13,7 +13,7 @@ class ForecastSubtable{
         this.forecastTableRowForSubtable = options.forecastTableRowForSubtable || ForecastSubtable.defaults.forecastTableRowForSubtable;
     }
 
-    fillSubtable(hourlyForecastData, product, step, imagesUrl){
+    fillSubtable(hourlyForecastData, dateTimeFormTableRow, product, step, imagesUrl){
         var $subTable = jQuery('<table class="table table-bordered table-striped table-responsive">');
         var $subTableTHead = jQuery('<thead>');
         var $subTableRow = jQuery('<tr>');
@@ -56,10 +56,20 @@ class ForecastSubtable{
                 
                 // Aggiungi l'evento click per impostare l'ora
                 $timeSelector.on('click', function(e) {
+                    console.log(dateTimeFormTableRow);
                     e.preventDefault();
                     
                     let timeValue = `${subTableHour}:00`;
                     
+                    let $dateSelect = jQuery('#control-select-date');
+                    if ($dateSelect.length) {
+                        $dateSelect.val(DateFormatter.formatFromAPIToDateString(dateTimeFormTableRow));
+                        // Triggera l'evento change
+                        $dateSelect.trigger('change');
+                    } else {
+                        console.warn('Select con id "control-select-time" non trovato');
+                    }
+
                     // Imposta il valore del select dell'ora
                     let $timeSelect = jQuery('#control-select-time');
                     if ($timeSelect.length) {
@@ -69,6 +79,7 @@ class ForecastSubtable{
                     } else {
                         console.warn('Select con id "control-select-time" non trovato');
                     }
+
                 });
                 
                 $subTableTD.append($timeSelector);

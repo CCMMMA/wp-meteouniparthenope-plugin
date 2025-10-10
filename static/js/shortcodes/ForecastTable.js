@@ -153,7 +153,7 @@ class ForecastTable{
                             }
                             
                             var subtableObj = new ForecastSubtable({tableContainerID: self.tableContainerID, forecastTableID: self.forecastTableID, forecastTableRowForSubtableID: `${val['dateTime']}-collapse`});
-                            var $subTable = subtableObj.fillSubtable(hourlyForecastData,prod,step,imagesUrl);
+                            var $subTable = subtableObj.fillSubtable(hourlyForecastData,val['dateTime'],prod,step,imagesUrl);
                             $tableTD.append($subTable);
                             $loadingDiv.hide();
                             $subTable.show();
