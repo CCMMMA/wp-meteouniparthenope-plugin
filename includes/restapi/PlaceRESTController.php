@@ -220,7 +220,7 @@ register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', ar
         
         // Parametri per la query
         $query_args = array(
-            'post_type'      => 'place',
+            'post_type'      => 'places',
             'post_status'    => 'publish',
             'posts_per_page' => $per_page ? intval( $per_page ) : 20,
             'orderby'        => $orderby ? sanitize_text_field( $orderby ) : 'title',
@@ -271,7 +271,7 @@ register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', ar
      */
     private function get_place_titles( $args = array() ) {
         $default_args = array(
-            'post_type' => 'place',
+            'post_type' => 'places',
             'post_status' => 'publish',
             'posts_per_page' => -1,
             'orderby' => 'title',
@@ -371,7 +371,7 @@ register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', ar
      */
     public function getPlacePostLinkByID($place_id) {
         $posts = get_posts([
-            'post_type' => 'place',
+            'post_type' => 'places',
             'post_status' => 'publish',
             'numberposts' => 1,
             'fields' => 'ids', // Ottieni solo gli ID per massima efficienza
@@ -394,7 +394,7 @@ register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', ar
      */
     public function getPlacePostIDByPlaceID($place_id) {
         $posts = get_posts([
-            'post_type' => 'place',
+            'post_type' => 'places',
             'post_status' => 'publish',
             'numberposts' => 1,
             'fields' => 'ids',
@@ -414,7 +414,7 @@ register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', ar
      */
     private function get_place_by_place_id($place_id) {
         $posts = get_posts([
-            'post_type' => 'place',
+            'post_type' => 'places',
             'post_status' => 'publish',
             'numberposts' => 1,
             'meta_key' => 'place_id',
@@ -462,7 +462,7 @@ register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', ar
  */
 public function count_places($request) {
     try {
-        $count = wp_count_posts('place');
+        $count = wp_count_posts('places');
         $total = $count->publish + $count->draft + $count->private + $count->trash;
         
         return new WP_REST_Response(array(
@@ -505,7 +505,7 @@ public function delete_all_places($request) {
         // CORREZIONE: Usa sempre offset 0 e prendi sempre i primi N places
         // Perché quando elimini, quelli successivi "scivolano" in prima posizione
         $places = get_posts(array(
-            'post_type' => 'place',
+            'post_type' => 'places',
             'post_status' => array('publish', 'draft', 'private', 'trash'),
             'posts_per_page' => $batch_size,
             'offset' => 0, // SEMPRE 0!
@@ -541,7 +541,7 @@ public function delete_all_places($request) {
         }
 
         // Conta i places rimanenti
-        $remaining_count = wp_count_posts('place');
+        $remaining_count = wp_count_posts('places');
         $total_remaining = $remaining_count->publish + $remaining_count->draft + 
                           $remaining_count->private + $remaining_count->trash;
 

@@ -92,16 +92,14 @@ class MeteoPlot {
     createPlot(){
         let html=
         `<div id="${this.container_id}_loader" style="display: block"><img src="${this.loadingGifPath}"/></div>` +
-        `<div id="${this.container_id}_image" style="display: none">`;
+        `<div id="${this.container_id}_image" style="display: none">` +
+        `<img src="${this.getImageUrl()}`;
+        /*
+        `<img src="https://api.meteo.uniparthenope.it/products/${this.product}/forecast/${this.place}/plot/image?Date=${this.dateTime}&output=${this.output}`;
         if(this.controlForms === "FULL"){
-            html += `<img src="${this.getImageUrl()}`;
+            html+= `&opt=bars`;
         }
-        else{
-            `<img src="https://api.meteo.uniparthenope.it/products/${this.product}/forecast/${this.place}/plot/image?output=${this.output}`;
-        }
-        if(this.controlForms === "DATETIME_ONLY" || this.controlForms === "FULL"){
-            html += `&date=${this.dateTime}`;
-        }
+        */
         html += `" onload="jQuery('#${this.container_id}_loader').hide();jQuery('#${this.container_id}_image').show()"/>` +
         `</div>`;
 

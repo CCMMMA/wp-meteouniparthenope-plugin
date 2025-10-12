@@ -116,11 +116,11 @@ class MeteoUniParthenopePluginMain{
             'show_ui'            => true,
             'show_in_menu'       => false,
             'show_in_rest'       => true,
-            'rewrite'            => array('slug' => 'place', 'with_front' => false),
+            'rewrite'            => array('slug' => 'places', 'with_front' => false),
             'supports'           => array('title', 'editor', 'excerpt', 'custom-fields')
         );
 
-        register_post_type('place', $args);
+        register_post_type('places', $args);
     }
 
     // 3. Adding custom plugin menu + submenu
@@ -148,7 +148,7 @@ class MeteoUniParthenopePluginMain{
             'Places',
             'Places',
             'manage_options',
-            'edit.php?post_type=place'
+            'edit.php?post_type=places'
         );
 
         add_submenu_page(
@@ -176,7 +176,7 @@ class MeteoUniParthenopePluginMain{
 
             <ul style="list-style: none; margin-left: 0; padding-left: 0;">
                 <li style="margin-bottom: 10px;">
-                    <a href="<?php echo admin_url('edit.php?post_type=place'); ?>" class="button button-primary">Places management</a>
+                    <a href="<?php echo admin_url('edit.php?post_type=places'); ?>" class="button button-primary">Places management</a>
                 </li>
                 <li style="margin-bottom: 10px;">
                     <a href="<?php echo admin_url('admin.php?page=meteounipplugin_utility'); ?>" class="button">Plugin utilities</a>
@@ -245,7 +245,7 @@ class MeteoUniParthenopePluginMain{
         $template_data = array(
             //'nonce_single_place' => wp_create_nonce('add_single_place_nonce'),
             //'nonce_import_places' => wp_create_nonce('import_places_nonce'),
-            'place_count' => wp_count_posts('place')//,
+            'place_count' => wp_count_posts('places')//,
             //'ajaxurl' => admin_url('admin-ajax.php')
         );
 
@@ -337,7 +337,7 @@ class MeteoUniParthenopePluginMain{
             if(empty($post_types)){                              // If there are no post types defined, be sure to include posts so that they are not ignored
                 $post_types[] = 'post';
             }         
-            $post_types[] = 'place';                         // Add your custom post type
+            $post_types[] = 'places';                         // Add your custom post type
             
             $post_types = array_map('trim', $post_types);       // Trim every element, just in case
             $post_types = array_filter($post_types);            // Remove any empty elements, just in case
@@ -457,12 +457,12 @@ class MeteoUniParthenopePluginMain{
     */
 
     function meteounipplugin_use_custom_place_template($template) {
-        if (is_singular('place')) {
-            $theme_template = get_stylesheet_directory() . '/single-place.php';
+        if (is_singular('places')) {
+            $theme_template = get_stylesheet_directory() . '/single-places.php';
             if (file_exists($theme_template)) {
                 return $theme_template;
             }
-            return plugin_dir_path(__FILE__) . 'templates/single-place.php';
+            return plugin_dir_path(__FILE__) . 'templates/single-places.php';
         }
         return $template;
     }
@@ -860,7 +860,7 @@ class MeteoUniParthenopePluginMain{
             true
         );
 
-        if (is_singular('place')) {
+        if (is_singular('places')) {
 
             wp_enqueue_script(
                 'canvasjs-core', 
@@ -944,7 +944,7 @@ class MeteoUniParthenopePluginMain{
             filemtime(plugin_dir_path(__FILE__) . 'static/css/global_style.css') // Versione dinamica per cache busting
         );
         
-        if (is_singular('place')) {
+        if (is_singular('places')) {
             wp_enqueue_style(
                 'place-custom-style',
                 plugin_dir_url(__FILE__) . 'static/css/place-custom-style.css',
@@ -1000,7 +1000,7 @@ class MeteoUniParthenopePluginMain{
     }
 
     function meteounipplugin_query_vars($vars){
-        $vars[] = 'place_id';
+        $vars[] = 'place';
         $vars[] = 'date';
         $vars[] = 'prod';
         $vars[] = 'output';
@@ -1008,7 +1008,7 @@ class MeteoUniParthenopePluginMain{
     }
 
     function meteounipplugin_disable_place_redirect_canonical($redirect_url) {
-        if ( is_singular( 'place' ) ) {
+        if ( is_singular( 'places' ) ) {
             return false; // blocca il redirect canonico per i CPT place
         }
         return $redirect_url;

@@ -11,7 +11,7 @@
 }
 
 /* Stile per risultati Place */
-.place-result {
+.places-result {
     display: flex;
     border: 2px solid #2196F3;
     border-radius: 8px;
@@ -20,11 +20,11 @@
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.place-result .place-info {
+.places-result .places-info {
     flex: 2;
 }
 
-.place-result h2 {
+.places-result h2 {
     color: #1976D2;
     margin-bottom: 10px;
 }
@@ -121,7 +121,7 @@
 }
 
 /* Forza lo scroll anche sulla classe generale */
-.place-result .forecast-table-container {
+.places-result .forecast-table-container {
     width: 100% !important;
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
@@ -148,7 +148,7 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .place-result {
+    .places-result {
         flex-direction: column;
     }
     

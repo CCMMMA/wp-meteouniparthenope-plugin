@@ -34,7 +34,7 @@ class WPPlaceExecutor
 
         // Controllo se esiste già
         $args = [
-            'post_type' => 'place',
+            'post_type' => 'places',
             'title' => $title,
             'post_status' => 'any',
             'posts_per_page' => 1,
@@ -52,7 +52,7 @@ class WPPlaceExecutor
             'post_title' => $title,
             'post_content' => '', // Contenuto vuoto, useremo i meta fields
             'post_status' => 'publish',
-            'post_type' => 'place',
+            'post_type' => 'places',
         ]);
 
         if (is_wp_error($wp_post_id) || !$wp_post_id) {

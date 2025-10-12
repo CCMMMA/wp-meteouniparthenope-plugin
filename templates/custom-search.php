@@ -19,12 +19,12 @@ get_header(); ?>
             <div class="search-results-list">
                 <?php $i = 0; while (have_posts()) : the_post(); ?>
                     <article class="search-result-item <?php echo get_post_type(); ?>-result">
-                        <?php if (get_post_type() === 'place') : ?>
+                        <?php if (get_post_type() === 'places') : ?>
                             <!-- Template per Place con preview meteo -->
                             
-                                <div class="place-info">
+                                <div class="places-info">
                                     <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-                                    <p class="place-description"><?php the_excerpt(); ?></p>
+                                    <p class="places-description"><?php the_excerpt(); ?></p>
                                     <?php
                                         $placeID = get_post_meta(get_the_id(), 'place_id', true);
                                         echo do_shortcode('[forecast_preview_shortcode place_id="'.$placeID.'" product="wrf5" output="gen"]');
