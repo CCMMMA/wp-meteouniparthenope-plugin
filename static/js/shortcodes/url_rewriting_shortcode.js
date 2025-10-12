@@ -10,9 +10,8 @@
         }
         else{
             if(urlParams.get('place') !== urlRewritingShortcodeData['place_id']){
-                
                 jQuery.ajax({
-                    url: `/wp-json/meteounip/v1/places/${urlParams.get('place_id')}/link`,
+                    url: `/wp-json/meteounip/v1/places/${urlParams.get('place')}/link`,
                     success: function(data){
                         var wpLink = data['link'];
                         var newLink = wpLink + `?place=${urlParams.get('place')}`;

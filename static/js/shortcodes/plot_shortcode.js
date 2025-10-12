@@ -116,7 +116,7 @@ class MeteoPlot {
             url: `/wp-json/meteounip/v1/places/${self.place}/link`,
             success: function(data){
                 var wpLink = data['link'];
-                var newLink = wpLink + `?place_id=${self.place}&date=${self.dateTime}&prod=${self.product}&output=${self.output}`;
+                var newLink = wpLink + `?place=${self.place}&date=${self.dateTime}&prod=${self.product}&output=${self.output}`;
                 
                 jQuery(`#${self.container_id}`).css('cursor', 'pointer').click(function(){
                     window.location.href = newLink;
