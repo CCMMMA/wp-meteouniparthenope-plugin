@@ -144,6 +144,12 @@ let NEW_CHART_defaultCharOutput = "gen";
                 title: chartMetadata['title_line'],
                 includeZero: false,
                 //suffix: ` ${extractUnit(chartMetadata['title_line'])}`
+                //minimum: (chartMetadata['values_line'][0]) ? chartMetadata['values_line'][0] : null,
+                minimum: chartMetadata['values_line'][0],
+                //maximum: (chartMetadata['values_line'][0]) ? chartMetadata['values_line'][ chartMetadata['values_line'].length-1 ] : null ,
+                maximum: chartMetadata['values_line'][ chartMetadata['values_line'].length-1 ],
+                //interval: (chartMetadata['values_line'][0]) ? chartMetadata['values_line'][1]-chartMetadata['values_line'][0] : null
+                interval: chartMetadata['values_line'][1]-chartMetadata['values_line'][0]
             };
             data.push({
                 name: chartMetadata['var_line'],
