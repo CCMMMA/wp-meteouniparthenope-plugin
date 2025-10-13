@@ -64,8 +64,6 @@ class ForecastSubtable{
                     let $dateSelect = jQuery('#control-select-date');
                     if ($dateSelect.length) {
                         $dateSelect.val(DateFormatter.formatFromAPIToDateString(dateTimeFormTableRow));
-                        // Triggera l'evento change
-                        $dateSelect.trigger('change');
                     } else {
                         console.warn('Select con id "control-select-time" non trovato');
                     }
