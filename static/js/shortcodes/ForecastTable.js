@@ -112,7 +112,14 @@ class ForecastTable{
 
             jQuery.each( forecastTableColumns[product]['table']['vars'], function(keyRow,valRow){
                 $tableTD = jQuery('<td class="forecast-td-data">');
-                $tableTD.text(`${ val[valRow] }`);
+                if(valRow === "winds"){
+                    $tableTD.append(`${val[valRow]}`);
+                    $tableTD.append('<br>');
+                    $tableTD.append(`${Math.round(val['wd10'])}°`);
+                }
+                else{
+                    $tableTD.text(`${val[valRow]}`);
+                }
                 $tableRow.append($tableTD);
             });
             self.$table.append($tableRow);

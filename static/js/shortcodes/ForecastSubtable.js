@@ -96,7 +96,14 @@ class ForecastSubtable{
                 
                 jQuery.each(forecastTableColumns[product][subTableDiscriminant]['vars'], function(index, variable){
                     $subTableTD = jQuery('<td class="forecast-td-data">');
-                    $subTableTD.text(`${value[variable]}`);
+                    if(variable === "winds"){
+                        $subTableTD.append(`${value[variable]}`);
+                        $subTableTD.append('<br>');
+                        $subTableTD.append(`${Math.round(value['wd10'])}°`);
+                    }
+                    else{
+                        $subTableTD.text(`${value[variable]}`);
+                    }
                     $subTableRow.append($subTableTD);
                 });
                 

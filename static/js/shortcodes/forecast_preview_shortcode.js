@@ -77,7 +77,7 @@ class ForecastPreview {
                 //Wind direction
                 card += '<div class="forecast-item">';
                 card += '  <span class="forecast-label">Wind Dir</span>';
-                card += '  <span class="forecast-value">' + todayForecast['winds'] + '</span>';
+                card += '  <span class="forecast-value">' + todayForecast['winds'] + '<br> ' + Math.round(todayForecast['wd10']) + '°</span>';
                 card += '</div>';
                 
                 //Wind speed

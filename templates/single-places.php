@@ -147,6 +147,9 @@ get_header();
                                         <div class="input-group mb-3">
                                             <select class="form-control chart-control-forms control-forms" id="control-select-hours">
                                                 <option value="0">All hours</option>
+                                                <option value="3">3</option>
+                                                <option value="6">6</option>
+                                                <option value="12">12</option>
                                                 <option value="24">24</option>
                                                 <option value="48">48</option>
                                                 <option value="72">72</option>
