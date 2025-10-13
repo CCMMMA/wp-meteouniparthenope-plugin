@@ -18,7 +18,7 @@
             var place = forecastData['place_id']
             var product = $('#control-select-product').val();
             
-            let forecastH24Url = `${apiProdBaseUrl}/${product}/timeseries/${place}?&output=gen&date=${forecastDate}&hours=0&step=24`
+            let forecastH24Url = `${apiProdBaseUrl}/${product}/timeseries/${place}?date=${forecastDate}&hours=0&step=24`
             console.log("forecastUrl: " + forecastH24Url);
 
             $.ajax({

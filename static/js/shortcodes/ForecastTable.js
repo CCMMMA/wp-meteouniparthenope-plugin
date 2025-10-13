@@ -149,7 +149,7 @@ class ForecastTable{
 
                     var prod = jQuery('#control-select-product').val();
                     var step = jQuery('#control-select-step').val();
-                    let timeseriesUrl = `${apiBaseUrl}/products/${prod}/timeseries/${place}?output=gen&date=${val['dateTime']}&hours=24&step=${step}`;
+                    let timeseriesUrl = `${apiBaseUrl}/products/${prod}/timeseries/${place}?date=${val['dateTime']}&hours=24&step=${step}`;
                     console.log("timeseriesUrl: "+timeseriesUrl);
                     jQuery.ajax({
                         url: timeseriesUrl,
