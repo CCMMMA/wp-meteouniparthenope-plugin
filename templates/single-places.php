@@ -14,26 +14,6 @@ get_header();
                     <?php the_content(); ?>
                 <?php endif; ?>
 
-                <!-- Map -->
-                <p>
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#map-collapse" aria-expanded="false" aria-controls="map-collapse">
-                        Show map
-                    </button>
-                </p>
-                <div class="collapse" id="map-collapse">
-                    <div class="card card-body">
-                        <div id="map-container" class="container-fluid">
-                            <?php echo do_shortcode('[map_shortcode]'); ?>
-                            <div id="map-image">
-        
-                            </div>
-                            <div id="map">
-        
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
                 <!-- Forecast table -->
                 <div id="forecast" class="forecast-container container-fluid" style="display:block;padding-left: 6px;padding-right: 6px;">
                     <?php echo do_shortcode('[forecast_shortcode]'); ?>
@@ -223,6 +203,36 @@ get_header();
                     </div>
                 </div>
                 -->
+
+                <br>
+
+                <!-- Map -->
+                <p>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#map-collapse" aria-expanded="false" aria-controls="map-collapse">
+                        Show map
+                    </button>
+                </p>
+                <div class="collapse" id="map-collapse">
+                    <div class="card card-body">
+                        <p>Click inside the bounding box to forecast the vertical weather profile!</p>
+                        <div id="map-container" class="container-fluid">
+                            <?php echo do_shortcode('[map_shortcode]'); ?>
+                            <div id="map-image">
+        
+                            </div>
+                            <div id="map">
+        
+                            </div>
+                        </div>
+                        <div id="vertical-profile-plot-container" class="container-fluid d-flex justify-content-center">
+                            <?php echo do_shortcode('[vertical_profile_shortcode]'); ?>
+                            <div id="vertical-profile-plot-image">
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <br>
                 <br>
                 <!-- Open Data - Made responsive -->

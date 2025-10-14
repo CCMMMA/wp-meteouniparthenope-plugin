@@ -6,6 +6,8 @@ let placeMaxZoom = 999;
 let tileLayerUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png' //Da aggiornare in modo dinamico
 let extras = {attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"};
 
+let mapInstance = null;
+
 (function($){
     $(document).ready(function() {
         //console.log(mapData);
@@ -16,12 +18,12 @@ let extras = {attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USD
             success: function(data){
                 placeMinZoom = data['zoom']['min'];
                 placeMaxZoom = data['zoom']['max'];
-                var map = L.map('map').setView(placeCoordinates, placeMinZoom);
+                mapInstance = L.map('map').setView(placeCoordinates, placeMinZoom);
                 $('#map-collapse').on('shown.bs.collapse', function () {
-                    map.invalidateSize();
+                    mapInstance.invalidateSize();
                 });
-                L.tileLayer(tileLayerUrl, extras).addTo(map);
-                var polygon = L.polygon(placeBoundingBox).addTo(map);
+                L.tileLayer(tileLayerUrl, extras).addTo(mapInstance);
+                var polygon = L.polygon(placeBoundingBox).addTo(mapInstance);
             }
         });
 

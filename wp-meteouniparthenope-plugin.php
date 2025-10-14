@@ -75,6 +75,7 @@ class MeteoUniParthenopePluginMain{
         add_shortcode('chart_shortcode', [$this,'chart_shortcode_callback']);
         add_shortcode('map_shortcode', [$this,'map_shortcode_callback']);
         add_shortcode('live_chart_shortcode',[$this,'live_chart_shortcode_callback']);
+        add_shortcode('vertical_profile_shortcode',[$this,'vertical_profile_shortcode_callback']);
         add_shortcode('open_data_shortcode',[$this,'open_data_shortcode_callback']);
         add_shortcode('autocomplete_search_shortcode',[$this,'autocomplete_search_shortcode_callback']);
         add_shortcode('url_rewriting_shortcode',[$this,'url_rewriting_shortcode_callback']);
@@ -675,6 +676,33 @@ class MeteoUniParthenopePluginMain{
         );
 
         return '<div id="live_chart_shortcode-root"></div>';
+    }
+
+    function vertical_profile_shortcode_callback(){
+        wp_enqueue_script(
+            'vertical-profile-shortcode-js',
+            plugin_dir_url(__FILE__) . 'static/js/shortcodes/vertical_profile_shortcode.js',
+            [],
+            null,
+            true
+        );
+
+        $post_id = get_the_ID();
+        $placeID = get_post_meta($post_id, 'place_id', true);
+        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
+        $coordinates = get_post_meta($post_id, 'coordinates', true);
+        $bbox = get_post_meta($post_id, 'bbox', true);
+
+        $data = [
+            'place_id' => $placeID,
+            'long_name_it' => $longNameIT,
+            'coordinates' => json_decode($coordinates),
+            'bbox' => json_decode($bbox),
+        ];
+
+        wp_localize_script('vertical-profile-shortcode-js', 'verticalProfileData', $data);
+
+        return '<div id="vertical_profile_shortcode-root"></div>';
     }
 
     // Open data shortcode

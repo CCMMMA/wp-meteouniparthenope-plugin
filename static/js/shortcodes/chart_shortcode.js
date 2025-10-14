@@ -61,16 +61,14 @@ let NEW_CHART_defaultCharOutput = "gen";
         var key = product + "-" + output + "-" + ncepDate + "-" + hours + "-" + step;
         
         if(!(key in NEW_CHART_loadedChart)){
-            let chartAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?date=${ncepDate}&output=${output}&hours=${hours}&step=${step}`;
-            console.log("chart url: " + chartAPIUrl);
-            $.ajax({
-                url: chartAPIUrl,
+            let chartTimeseriesAPIUrl = `${apiProdBaseUrl}/${product}/timeseries/${NEW_CHART_placeID}?date=${ncepDate}&hours=${hours}&step=${step}`;
+            console.log("chart url: " + chartTimeseriesAPIUrl);
+            var ajaxRequestForTimeseries = $.ajax({
+                url: chartTimeseriesAPIUrl,
+                type: 'GET',
                 tryCount: 1,
                 retryLimit: 3,
                 retryInterval: 2000,
-                success: function(data){
-                    drawChart(data,product,output,ncepDate);
-                },
                 error: function(xhr, textStatus, errorThrown){
                     console.log("ERRORE 500, tentativo "+this.tryCount+"/"+this.retryLimit);
                     this.tryCount++;
@@ -98,6 +96,21 @@ let NEW_CHART_defaultCharOutput = "gen";
                         }
                     }, 100);
                 }
+            });
+            let chartMetadatasAPIUrl = `${apiProdBaseUrl}/${product}/plot/${output}/metacharts`;
+            console.log("chart metadata url: " + chartMetadatasAPIUrl);
+            var ajaxRequestForMetadata = $.ajax({
+                url: chartMetadatasAPIUrl,
+                type: 'GET'
+            });
+
+            Promise.all([ajaxRequestForTimeseries,ajaxRequestForMetadata]).then(function(responses){
+                var data = {
+                    'meta-chart': responses[1]['meta-chart'],
+                    'timeseries': responses[0]['timeseries'],
+                }
+                console.log(data['meta-chart']);
+                drawChart(data,product,output,ncepDate);
             });
         } else {
             // Se il chart è già in cache, lo ri-renderizza
@@ -145,8 +158,8 @@ let NEW_CHART_defaultCharOutput = "gen";
                 includeZero: false,
                 //suffix: ` ${extractUnit(chartMetadata['title_line'])}`
                 minimum: chartMetadata['values_line'][0],
-                maximum: chartMetadata['values_line'][ chartMetadata['values_line'].length-1 ],
-                interval: chartMetadata['values_line'][1]-chartMetadata['values_line'][0]
+                maximum: chartMetadata['values_line'][ chartMetadata['values_line'].length-1 ]
+                //interval: chartMetadata['values_line'][1]-chartMetadata['values_line'][0]
             };
             data.push({
                 name: chartMetadata['var_line'],
@@ -164,7 +177,8 @@ let NEW_CHART_defaultCharOutput = "gen";
                 text: title
             },
             axisX: {
-                valueFormatString: "DD MMM, HHZ"
+                valueFormatString: "DD MMM, HHZ",
+                labelAngle: -45
             },
             axisY: axisY,
             axisY2: axisY2,
