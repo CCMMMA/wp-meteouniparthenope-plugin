@@ -1,10 +1,9 @@
 <?php
 
-namespace includes\executors;
+namespace Meteouniparthenope\executors;
 
-
-use includes\API\PlacesAPI;
-use includes\cpts\Place;
+use Meteouniparthenope\API\PlacesAPI;
+use Meteouniparthenope\ctps\Place;
 use WP_Query;
 
 use includes\JSONParser\ProductParser;

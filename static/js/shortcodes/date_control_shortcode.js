@@ -39,11 +39,10 @@
     let $divDateRow = $('<div>').attr('class','d-flex align-items-center mb-3');
     let $divDateLabelCol = $('<div>').css({
         'flex': '0 0 auto',
-        'margin-right': '15px' // Spazio tra label e input
+        'margin-right': '15px'
     });
-    let $divDateInputCol = $('<div>').css('flex', '1'); // Prende tutto lo spazio rimanente
+    let $divDateInputCol = $('<div>').css('flex', '1');
     
-    // Aggiungiamo uno stile inline per forzare l'allineamento
     controlFormDateObj.getDateLabel().css({
         'line-height': '38px',
         'height': '38px',
@@ -59,17 +58,16 @@
     
     controlFormDateObj.appendInputTimeClass("form-control");
     
-    // Aggiungere la label e styling per il campo time
+    // Aggiungere la label e styling per il campo time con i nuovi pulsanti
     controlFormDateObj.appendTimeLabelClass("form-label mb-0");
     let $divTimeRow = $('<div>').attr('class','d-flex align-items-center mb-3');
     let $divTimeLabelCol = $('<div>').css({
         'flex': '0 0 auto',
-        'margin-right': '15px' // Spazio tra label e input
+        'margin-right': '15px'
     });
-    let $divTimeInputCol = $('<div>').css('flex', '1'); // Prende tutto lo spazio rimanente
+    let $divTimeInputCol = $('<div>').css('flex', '1');
     let $divTimeInputGroup = $('<div>').attr('class','input-group');
     
-    // Aggiungiamo uno stile inline per forzare l'allineamento
     controlFormDateObj.getTimeLabel().css({
         'line-height': '38px',
         'height': '38px',
@@ -77,10 +75,18 @@
         'align-items': 'center'
     });
     
-    $divTimeLabelCol.append(controlFormDateObj.getTimeLabel());
-    $divTimeInputGroup.append(controlFormDateObj.getTimeInput());
+    // Costruire il layout: [-1d][-1h][00][06]<select>[12][18][+1h][+1d]
+    $divTimeInputGroup.append(controlFormDateObj.getPrevDayButton());
     $divTimeInputGroup.append(controlFormDateObj.getPrevButton());
+    $divTimeInputGroup.append(controlFormDateObj.getTime00Button());
+    $divTimeInputGroup.append(controlFormDateObj.getTime06Button());
+    $divTimeInputGroup.append(controlFormDateObj.getTimeInput());
+    $divTimeInputGroup.append(controlFormDateObj.getTime12Button());
+    $divTimeInputGroup.append(controlFormDateObj.getTime18Button());
     $divTimeInputGroup.append(controlFormDateObj.getNextButton());
+    $divTimeInputGroup.append(controlFormDateObj.getNextDayButton());
+    
+    $divTimeLabelCol.append(controlFormDateObj.getTimeLabel());
     $divTimeInputCol.append($divTimeInputGroup);
     $divTimeRow.append($divTimeLabelCol);
     $divTimeRow.append($divTimeInputCol);
@@ -89,14 +95,25 @@
     let $controlForms = controlFormDateObj.getCombinedInputs();
     $controlForms.change(function(){
         const currentDate = $('#'+controlFormDateInput.dateInputID).val();
+        const currentTime = $('#'+controlFormDateInput.timeInputID).val();
+        
+        // Disabilita il pulsante +1d se siamo alla data massima
         if(currentDate >= maxDateString){
-            const currentTime = $('#'+controlFormDateInput.timeInputID).val();
+            controlFormDateObj.getNextDayButton().prop("disabled", true);
+        } else {
+            controlFormDateObj.getNextDayButton().prop("disabled", false);
+        }
+        
+        // Disabilita il pulsante +1h se siamo alla data massima e all'ultima ora
+        if(currentDate >= maxDateString){
             if(currentTime === "23:00"){
-                controlFormDateObj.getNextButton().prop("disabled",true);
+                controlFormDateObj.getNextButton().prop("disabled", true);
             }
             else {
-                controlFormDateObj.getNextButton().prop("disabled",false);
+                controlFormDateObj.getNextButton().prop("disabled", false);
             }
+        } else {
+            controlFormDateObj.getNextButton().prop("disabled", false);
         }
     });
 })(jQuery)

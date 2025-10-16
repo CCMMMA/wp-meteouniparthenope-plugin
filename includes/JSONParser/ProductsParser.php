@@ -1,8 +1,8 @@
 <?php
 
-namespace includes\JSONParser;
+namespace Meteouniparthenope\JSONParser;
 
-use includes\JSONParser\JSONParser;
+use Meteouniparthenope\JSONParser\JSONParser;
 use InvalidArgumentException;
 
 class ProductParser implements JSONParser

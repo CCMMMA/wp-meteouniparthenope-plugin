@@ -5,6 +5,7 @@
         var outputsGivenProduct = {};
         var productFromAPI = {};
         var ajaxLoadProducts = null;
+        var maxDateString = null;
         
         //Function for populating the time select
         function populateTimeSelect() {
@@ -33,17 +34,24 @@
             maxDate.setDate(maxDate.getDate() + 6);
             let maxMonth = ((maxDate.getMonth() + 1) < 10 ? '0' + (maxDate.getMonth() + 1) : (maxDate.getMonth() + 1));
             let maxDay = (maxDate.getDate() < 10 ? '0' + maxDate.getDate() : maxDate.getDate());
-            let maxDateString = maxDate.getFullYear() + '-' + maxMonth + '-' + maxDay;
+            maxDateString = maxDate.getFullYear() + '-' + maxMonth + '-' + maxDay;
             $('#control-select-date').attr('max', maxDateString);
 
             let $controlForms = $('.plot-control-forms');
             $controlForms.change(function(){
                 const currentDate = $('#control-select-date').val();
+                const currentTime = $('#control-select-time').val();
+                
+                // Disabilita il pulsante +1d se siamo alla data massima
                 if(currentDate >= maxDateString){
-                    const currentTime = $('#control-select-time').val();
+                    $('#control-next-day').prop("disabled", true);
+                } else {
+                    $('#control-next-day').prop("disabled", false);
+                }
+                
+                // Disabilita il pulsante +1h se siamo alla data massima e all'ultima ora
+                if(currentDate >= maxDateString){
                     if(currentTime === "23:00"){
-                        //If the hour is 23:00 and is the last available day for forecasting
-                        //  the "next hour" button must be disabled
                         $('#control-next-hour').prop("disabled",true);
                     }
                     else {
@@ -79,18 +87,76 @@
             $('#control-select-time').val(newTime);
             $('#control-select-time').trigger('change');
         }
+        //Function to adjust the days
+        function adjustDay(dayDelta) {
+            const currentDate = $('#control-select-date').val();
+            const currentTime = $('#control-select-time').val();
+            
+            if (!currentDate || !currentTime) {
+                return; //If values are missing, do nothing
+            }
+
+            const currentDateTime = new Date(currentDate + 'T' + currentTime + ':00');
+            
+            //Add/Subtract days
+            currentDateTime.setDate(currentDateTime.getDate() + dayDelta);
+            
+            //Update fields to new values
+            const newYear = currentDateTime.getFullYear();
+            const newMonth = (currentDateTime.getMonth() + 1).toString().padStart(2, '0');
+            const newDay = currentDateTime.getDate().toString().padStart(2, '0');
+            const newDate = `${newYear}-${newMonth}-${newDay}`;
+            
+            $('#control-select-date').val(newDate);
+            $('#control-select-time').trigger('change');
+        }
+        //Function to set a specific time
+        function setTime(timeValue) {
+            $('#control-select-time').val(timeValue);
+            $('#control-select-time').trigger('change');
+        }
         //Function for create and add hourly buttons - Updated for responsive
         function setupTimeButtons() {
-            const $prevButton = $('<button type="button" id="control-prev-hour" class="btn btn-primary btn-time-control">- 1h</button>');
-            const $nextButton = $('<button type="button" id="control-next-hour" class="btn btn-primary btn-time-control">+ 1h</button>');
+            const $prevDayButton = $('<button type="button" id="control-prev-day" class="btn btn-primary btn-time-control">-1d</button>');
+            const $prevButton = $('<button type="button" id="control-prev-hour" class="btn btn-primary btn-time-control">-1h</button>');
+            const $time00Button = $('<button type="button" id="control-time-00" class="btn btn-primary btn-time-control">00</button>');
+            const $time06Button = $('<button type="button" id="control-time-06" class="btn btn-primary btn-time-control">06</button>');
+            const $time12Button = $('<button type="button" id="control-time-12" class="btn btn-primary btn-time-control">12</button>');
+            const $time18Button = $('<button type="button" id="control-time-18" class="btn btn-primary btn-time-control">18</button>');
+            const $nextButton = $('<button type="button" id="control-next-hour" class="btn btn-primary btn-time-control">+1h</button>');
+            const $nextDayButton = $('<button type="button" id="control-next-day" class="btn btn-primary btn-time-control">+1d</button>');
 
             //Adding event handlers
+            $prevDayButton.on('click', function() {
+                adjustDay(-1);
+            });
+            
             $prevButton.on('click', function() {
                 adjustTime(-1);
             });
             
+            $time00Button.on('click', function() {
+                setTime('00:00');
+            });
+            
+            $time06Button.on('click', function() {
+                setTime('06:00');
+            });
+            
+            $time12Button.on('click', function() {
+                setTime('12:00');
+            });
+            
+            $time18Button.on('click', function() {
+                setTime('18:00');
+            });
+            
             $nextButton.on('click', function() {
                 adjustTime(1);
+            });
+            
+            $nextDayButton.on('click', function() {
+                adjustDay(1);
             });
             
             const $timeSelect = $('#control-select-time');
@@ -98,8 +164,16 @@
             
             // Create a button container for better responsive layout
             const $buttonContainer = $('<div class="time-buttons-container mt-2"></div>');
+            // Layout: [-1d][-1h][00][06]<select>[12][18][+1h][+1d]
+            $buttonContainer.append($prevDayButton);
             $buttonContainer.append($prevButton);
+            $buttonContainer.append($time00Button);
+            $buttonContainer.append($time06Button);
+            $buttonContainer.append($timeSelect);
+            $buttonContainer.append($time12Button);
+            $buttonContainer.append($time18Button);
             $buttonContainer.append($nextButton);
+            $buttonContainer.append($nextDayButton);
             
             $timeContainer.append($buttonContainer);
         }
@@ -187,7 +261,9 @@
             loadOutputs(productFromAPI[$(this).val()]);
             var newProduct = $(this).val();
             urlParams.set('prod',newProduct);
-            $('#control-select-output').trigger('change');
+            setOutput('gen');
+            urlParams.set('output','gen');
+            //$('#control-select-output').trigger('change');
         });
 
         $('#control-select-output').on('change',function(){

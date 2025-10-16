@@ -2,9 +2,9 @@
 /**
  * Plugin Name: meteo@uniparthenope-plugin
  * Description: Management system for meteo@uniparthenope.it
- * Author: Francesco Peluso
+ * Authors: Francesco Peluso
  * Author URI: 
- * Version: Alphav1.0
+ * Version: 1.0
  * Text Domain: meteo@uniparthenope
  */
 
@@ -12,29 +12,45 @@
 
  //Security system
 
-use includes\API\PlaceRESTController;
-use includes\API\PlacesAPI;
-use includes\executors\WPPlaceExecutor;
-use includes\JSONParser\PlaceParser;
-
-use includes\API\PlacesAPIController;
-
-if (!defined( 'ABSPATH' )) {
+if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-spl_autoload_register(function ($class_name) {
+/**
+ * PSR-4 Autoloader per il plugin
+ */
+spl_autoload_register(function ($class) {
+    // Il namespace root del plugin
+    $prefix = 'Meteouniparthenope\\';
     $base_dir = plugin_dir_path(__FILE__) . 'includes/';
-    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base_dir));
-
-    foreach ($iterator as $file) {
-        if ($file->isFile() && $file->getExtension() === 'php') {
-            if (strpos($file->getFilename(), '.php') !== false) {
-                require_once $file->getPathname();
-            }
-        }
+    
+    // Controlla se la classe usa il namespace del plugin
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        return; // Non è una classe del nostro plugin
+    }
+    
+    // Rimuovi il prefix dal nome della classe
+    $relative_class = substr($class, $len);
+    
+    // Converti il namespace in percorso file
+    // Es: Meteouniparthenope\API\PlacesAPI -> includes/API/PlacesAPI.php
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+    
+    // Se il file esiste, caricalo
+    if (file_exists($file)) {
+        require_once $file;
     }
 });
+
+// Ora usa i namespace corretti
+use Meteouniparthenope\API\PlaceRESTController;
+use Meteouniparthenope\API\PlacesAPI;
+use Meteouniparthenope\executors\WPPlaceExecutor;
+use Meteouniparthenope\JSONParser\PlaceParser;
+use Meteouniparthenope\API\PlacesAPIController;
+use Meteouniparthenope\shorcodes\BaseShortcode;
+use Meteouniparthenope\shorcodes\ShortcodeInterface;
 
 class MeteoUniParthenopePluginMain{
     static $plotIDs = 0;
@@ -67,7 +83,6 @@ class MeteoUniParthenopePluginMain{
 
         //Shortcodes
         add_shortcode('forecast_shortcode', [$this,'forecast_shortcode_callback']);
-        add_shortcode('dynamic_forecast_shortcode', [$this,'dynamic_forecast_shortcode_callback']);
         add_shortcode('forecast_preview_shortcode', [$this, 'forecast_preview_shortcode_callback']);
         add_shortcode('control_shortcode',[$this, 'control_shortcode_callback']);
         add_shortcode('date_control_shortcode',[$this, 'date_control_shortcode_callback']);
@@ -81,7 +96,7 @@ class MeteoUniParthenopePluginMain{
         add_shortcode('url_rewriting_shortcode',[$this,'url_rewriting_shortcode_callback']);
 
         //prova
-        add_shortcode('prova_shortcode',[$this,'prova_shortcode_callback']);
+        //add_shortcode('prova_shortcode',[$this,'prova_shortcode_callback']);
 
         //Other plugins functionalities
         add_action('wp_ajax_add_single_place', [$this, 'handle_add_single_place']);

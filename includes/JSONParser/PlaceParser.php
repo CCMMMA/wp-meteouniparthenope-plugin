@@ -1,9 +1,9 @@
 <?php
 
-namespace includes\JSONParser;
+namespace Meteouniparthenope\JSONParser;
 
-use includes\cpts\Place;
-use includes\JSONParser\JSONParser;
+use Meteouniparthenope\cpts\Place;
+use Meteouniparthenope\JSONParser\JSONParser;
 use InvalidArgumentException;
 
 class PlaceParser implements JSONParser

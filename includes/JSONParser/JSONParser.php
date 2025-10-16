@@ -1,6 +1,7 @@
 <?php
 
-namespace includes\JSONParser;
+namespace Meteouniparthenope\JSONParser;
+
 interface JSONParser
 {
     public function parseMultipleFromJSON($json): array;

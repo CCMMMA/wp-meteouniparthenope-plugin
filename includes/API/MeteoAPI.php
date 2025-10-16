@@ -1,6 +1,7 @@
 <?php
 
-namespace includes\API;
+namespace Meteouniparthenope\API;
+
 interface MeteoAPI
 {
     function getData(string $url): string;

@@ -1,8 +1,6 @@
 <?php
 
-namespace includes\cpts;
-
-use includes\cpts\MeteoCustomPostType;
+namespace Meteouniparthenope\ctps;
 
 class Place extends MeteoCustomPostType
 {

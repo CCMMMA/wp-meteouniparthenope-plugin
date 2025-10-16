@@ -4,7 +4,7 @@
  * File: includes/API/PlaceAPIController.php
  */
 
-namespace includes\API;
+namespace Meteouniparthenope\API;
 
 use Exception;
 use WP_REST_Controller;
@@ -12,10 +12,10 @@ use WP_REST_Server;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
-use includes\API\PlacesAPI;
-use includes\cpts\Place;
-use includes\executors\WPPlaceExecutor;
-use includes\JSONParser\PlaceParser;
+use Meteouniparthenope\API\PlacesAPI;
+use Meteouniparthenope\cpts\Place;
+use Meteouniparthenope\executors\WPPlaceExecutor;
+use Meteouniparthenope\JSONParser\PlaceParser;
 
 class PlaceRESTController extends WP_REST_Controller{
 

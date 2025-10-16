@@ -1,9 +1,8 @@
 <?php
 
-namespace includes\API;
+namespace Meteouniparthenope\API;
 
 use Exception;
-use includes\API\MeteoAPI;
 
 class PlacesAPI implements MeteoAPI
 {

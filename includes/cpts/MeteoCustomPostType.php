@@ -1,6 +1,7 @@
 <?php
 
-namespace includes\cpts;
+namespace Meteouniparthenope\ctps;
+
 class MeteoCustomPostType
 {
 
