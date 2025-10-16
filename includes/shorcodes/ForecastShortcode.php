@@ -1,4 +1,3 @@
-
 <?php
 
 namespace Meteouniparthenope\shorcodes;
@@ -12,7 +11,7 @@ class ForecastShortcode extends BaseShortcode {
     public function enqueueAssets() {
         wp_enqueue_script(
             'forecast-shortcode-js',
-            $this->plugin_url . 'static/js/shortcodes/forecast_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/forecast_shortcode.js',
             [],
             null,
             true
@@ -24,8 +23,8 @@ class ForecastShortcode extends BaseShortcode {
         return [
             'place_id' => $metadata['place_id'],
             'long_name_it' => $metadata['long_name_it'],
-            'imagesUrl' => $this->plugin_url . 'static/resources/images',
-            'pluginUrl' => $this->plugin_url
+            'imagesUrl' => $this->plugin_dir_url . 'static/resources/images',
+            'pluginUrl' => $this->plugin_dir_url
         ];
     }
     

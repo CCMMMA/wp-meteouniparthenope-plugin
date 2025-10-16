@@ -11,7 +11,7 @@ class AutocompleteSearchShortcode extends BaseShortcode{
     public function enqueueAssets(){
         wp_enqueue_script(
             'autocomplete-search-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/autocomplete_search_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/autocomplete_search_shortcode.js',
             [],
             null,
             true

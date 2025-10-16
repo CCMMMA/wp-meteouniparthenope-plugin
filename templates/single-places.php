@@ -55,7 +55,7 @@ get_header();
                             <div class="col-12 col-md-6 col-lg-4">
                                 <div class="card control-card">
                                     <div class="card-body">
-                                        <label class="control-label" for="control-select-date">Date and time:</label>
+                                        <label class="control-label" for="control-select-date">Date and time (UTC):</label>
                                         <div class="input-group mb-3">
                                             <input class="form-control plot-control-forms forecast-control-forms control-forms" type="date" id="control-select-date">
                                         </div>

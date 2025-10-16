@@ -1,3 +1,7 @@
+<?php
+
+namespace Meteouniparthenope\shorcodes;
+
 // ============================================
 // CONCRETE CLASSES FOR EVERY SHORTCODE
 // ============================================
@@ -7,7 +11,7 @@ class MapShortcode extends BaseShortcode {
     public function enqueueAssets() {
         wp_enqueue_script(
             'map-shortcode-js',
-            $this->plugin_url . 'static/js/shortcodes/map_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/map_shortcode.js',
             [],
             null,
             true
@@ -23,3 +27,5 @@ class MapShortcode extends BaseShortcode {
         return '<div id="map_shortcode-root"></div>';
     }
 }
+
+?>

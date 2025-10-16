@@ -1,13 +1,17 @@
+<?php
+
+namespace Meteouniparthenope\shorcodes;
+
 // ============================================
 // CONCRETE CLASSES FOR EVERY SHORTCODE
 // ============================================
 
-class VerticalProfileShortcode implements BaseShortcode{
+class VerticalProfileShortcode extends BaseShortcode{
 
     public function enqueueAssets(){
         wp_enqueue_script(
             'vertical-profile-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/vertical_profile_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/vertical_profile_shortcode.js',
             [],
             null,
             true
@@ -30,3 +34,5 @@ class VerticalProfileShortcode implements BaseShortcode{
         return '<div id="vertical_profile_shortcode-root"></div>';
     }
 }
+
+?>

@@ -1,3 +1,7 @@
+<?php
+
+namespace Meteouniparthenope\shorcodes;
+
 // ============================================
 // CONCRETE CLASSES FOR EVERY SHORTCODE
 // ============================================
@@ -7,7 +11,7 @@ class OpenDataShortcode extends BaseShortcode {
     public function enqueueAssets() {
         wp_enqueue_script(
             'open-data-shortcode-js',
-            $this->plugin_url . 'static/js/shortcodes/open_data_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/open_data_shortcode.js',
             [],
             null,
             true
@@ -23,3 +27,5 @@ class OpenDataShortcode extends BaseShortcode {
         return '<div id="open_data_shortcode-root"></div>';
     }
 }
+
+?>

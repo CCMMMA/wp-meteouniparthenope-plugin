@@ -11,7 +11,7 @@ class UrlRewritingShortcode extends BaseShortcode{
     public function enqueueAssets(){
         wp_enqueue_script(
             'url-rewriting-shortcode',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/url_rewriting_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/url_rewriting_shortcode.js',
             [],
             null,
             true

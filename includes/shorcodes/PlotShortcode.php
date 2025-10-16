@@ -1,3 +1,7 @@
+<?php
+
+namespace Meteouniparthenope\shorcodes;
+
 // ============================================
 // CONCRETE CLASSES FOR EVERY SHORTCODE
 // ============================================
@@ -8,7 +12,7 @@ class PlotShortcode extends BaseShortcode {
     public function enqueueAssets() {
         wp_enqueue_script(
             'plot-shortcode-js',
-            $this->plugin_url . 'static/js/shortcodes/plot_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/plot_shortcode.js',
             [],
             null,
             true
@@ -44,3 +48,5 @@ class PlotShortcode extends BaseShortcode {
         return '<div id="' . $data['id'] . '"></div>';
     }
 }
+
+?>

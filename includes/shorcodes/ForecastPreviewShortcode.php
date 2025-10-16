@@ -1,14 +1,18 @@
+<?php
+
+namespace Meteouniparthenope\shorcodes;
+
 // ============================================
 // CONCRETE CLASSES FOR EVERY SHORTCODE
 // ============================================
 
-class ForecastPreviewShortcode implements BaseShortcode{
+class ForecastPreviewShortcode extends BaseShortcode{
     private static $instanceCount = 0;
     
     public function enqueueAssets() {
         wp_enqueue_script(
             'forecast-preview-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/forecast_preview_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/forecast_preview_shortcode.js',
             [],
             null,
             true
@@ -41,3 +45,5 @@ class ForecastPreviewShortcode implements BaseShortcode{
         return '<div id="' . $data['id'] . '"></div>';
     }
 }
+
+?>

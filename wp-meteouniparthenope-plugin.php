@@ -44,7 +44,7 @@ spl_autoload_register(function ($class) {
 });
 
 // Ora usa i namespace corretti
-use Meteouniparthenope\API\PlaceRESTController;
+use Meteouniparthenope\restapi\PlaceRESTController;
 use Meteouniparthenope\API\PlacesAPI;
 use Meteouniparthenope\executors\WPPlaceExecutor;
 use Meteouniparthenope\JSONParser\PlaceParser;

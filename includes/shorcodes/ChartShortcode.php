@@ -11,7 +11,7 @@ class ChartShortcode extends BaseShortcode {
     public function enqueueAssets() {
         wp_enqueue_script(
             'chart-shortcode-js',
-            $this->plugin_url . 'static/js/shortcodes/chart_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/chart_shortcode.js',
             [],
             null,
             true

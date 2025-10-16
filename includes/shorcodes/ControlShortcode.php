@@ -11,7 +11,7 @@ class ControlShortcode extends BaseShortcode{
     public function enqueueAssets(){
         wp_enqueue_script(
             'control-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/control_shortcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/control_shortcode.js',
             [],
             null,
             true

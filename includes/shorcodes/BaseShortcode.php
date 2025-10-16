@@ -6,12 +6,12 @@ namespace Meteouniparthenope\shorcodes;
 // ABSTRACT BSE CLASS OF SHORTCODES
 // ============================================
 
-abstract class BaseShortcode extends ShortcodeInterface {
-    protected $plugin_url;
+abstract class BaseShortcode implements ShortcodeInterface {
+    protected $plugin_dir_url;
     protected $post_id;
     
     public function __construct() {
-        $this->plugin_url = plugin_dir_url(__FILE__);
+        $this->plugin_dir_url = METEOUNIPARTHENOPE_PLUGIN_DIR;
         $this->post_id = get_the_ID();
     }
     
