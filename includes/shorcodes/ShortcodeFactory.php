@@ -38,15 +38,7 @@ class ShortcodeFactory {
      */
     public static function registerAll() {
         foreach (self::$shortcodes as $tag => $class) {
-            add_shortcode($tag, function($atts) use ($tag) {
-                try {
-                    $shortcode = ShortcodeFactory::create($tag);
-                    return $shortcode->render($atts);
-                } catch (Exception $e) {
-                    error_log('Shortcode Factory Error: ' . $e->getMessage());
-                    return '<!-- Errore rendering shortcode -->';
-                }
-            });
+            add_shortcode($tag, [ShortcodeFactory::create($tag),'render']);
         }
     }
     

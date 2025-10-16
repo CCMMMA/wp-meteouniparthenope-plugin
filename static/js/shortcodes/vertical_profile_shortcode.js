@@ -11,6 +11,7 @@ let verticalProfileMap = null;
             }, 300);
         });
     });
+
 })(jQuery);
 
 function initializeVerticalProfileInteraction() {

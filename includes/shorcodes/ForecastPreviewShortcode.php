@@ -20,6 +20,7 @@ class ForecastPreviewShortcode extends BaseShortcode{
     }
     
     public function prepareData($atts) {
+        $this->post_id = get_the_ID();
         $place = isset($atts['place_id']) ? esc_js($atts['place_id']) : get_post_meta($this->post_id, 'place_id', true);
         $product = isset($atts['product']) ? esc_js($atts['product']) : "wrf5";
         $output = isset($atts['output']) ? esc_js($atts['output']) : "gen";

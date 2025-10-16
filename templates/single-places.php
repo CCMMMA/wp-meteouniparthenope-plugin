@@ -17,7 +17,6 @@ get_header();
                 <!-- Forecast table -->
                 <div id="forecast" class="forecast-container container-fluid" style="display:block;padding-left: 6px;padding-right: 6px;">
                     <?php echo do_shortcode('[forecast_shortcode]'); ?>
-                    <?php //echo do_shortcode('[dynamic_forecast_shortcode]'); ?>
                     <div class="card container-fluid" style="padding-left: 6px;padding-right: 6px;">
                         <div class="card-body container-fluid" style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
                             <div id="forecast-box-title" class="container-fluid"></div>
@@ -70,7 +69,7 @@ get_header();
                             <div class="col-12 col-md-6 col-lg-4">
                                 <div class="card control-card">
                                     <div class="card-body">
-                                        <label class="control-label" for="control-select-product">Products:</label>
+                                        <label class="control-label" for="control-select-product">Product:</label>
                                         <div class="input-group mb-3">
                                             <select class="form-control plot-control-forms forecast-control-forms control-forms" id="control-select-product">
                                             </select>
@@ -83,7 +82,7 @@ get_header();
                             <div class="col-12 col-md-12 col-lg-4">
                                 <div class="card control-card">
                                     <div class="card-body">
-                                        <label class="control-label" for="control-select-output">Outputs:</label>
+                                        <label class="control-label" for="control-select-output">Output:</label>
                                         <div class="input-group mb-3">
                                             <select class="form-control plot-control-forms control-forms" id="control-select-output">
                                             </select>

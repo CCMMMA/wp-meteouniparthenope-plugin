@@ -43,14 +43,12 @@ spl_autoload_register(function ($class) {
     }
 });
 
-// Ora usa i namespace corretti
+define('METEOUNIPARTHENOPE_PLUGIN_URL', plugins_url('', __FILE__));
+define('METEOUNIPARTHENOPE_PLUGIN_DIR', plugin_dir_url(__FILE__));
+define('METEOUNIPARTHENOPE_PLUGIN_DIR_ABS', plugin_dir_path(__FILE__));
+
 use Meteouniparthenope\restapi\PlaceRESTController;
-use Meteouniparthenope\API\PlacesAPI;
-use Meteouniparthenope\executors\WPPlaceExecutor;
-use Meteouniparthenope\JSONParser\PlaceParser;
-use Meteouniparthenope\API\PlacesAPIController;
-use Meteouniparthenope\shorcodes\BaseShortcode;
-use Meteouniparthenope\shorcodes\ShortcodeInterface;
+use Meteouniparthenope\shorcodes\ShortcodeFactory;
 
 class MeteoUniParthenopePluginMain{
     static $plotIDs = 0;
@@ -82,6 +80,8 @@ class MeteoUniParthenopePluginMain{
         add_action('wp_enqueue_scripts',[$this,'meteounipplugin_enqueue_global_data']);
 
         //Shortcodes
+        add_action('init',[ShortcodeFactory::class, 'registerAll']);
+        /*
         add_shortcode('forecast_shortcode', [$this,'forecast_shortcode_callback']);
         add_shortcode('forecast_preview_shortcode', [$this, 'forecast_preview_shortcode_callback']);
         add_shortcode('control_shortcode',[$this, 'control_shortcode_callback']);
@@ -94,6 +94,7 @@ class MeteoUniParthenopePluginMain{
         add_shortcode('open_data_shortcode',[$this,'open_data_shortcode_callback']);
         add_shortcode('autocomplete_search_shortcode',[$this,'autocomplete_search_shortcode_callback']);
         add_shortcode('url_rewriting_shortcode',[$this,'url_rewriting_shortcode_callback']);
+        */
 
         //prova
         //add_shortcode('prova_shortcode',[$this,'prova_shortcode_callback']);

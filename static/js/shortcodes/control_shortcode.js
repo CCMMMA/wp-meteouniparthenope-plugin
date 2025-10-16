@@ -6,6 +6,20 @@
         var productFromAPI = {};
         var ajaxLoadProducts = null;
         var maxDateString = null;
+
+        $(document).on('place.url.loaded', function() {
+            Promise.all([ajaxLoadProducts]).then(function(requests){
+                urlParams = new URLSearchParams(window.location.search);
+                setURLDateTime(urlParams.get('date'));
+                setProduct(urlParams.get('prod'));
+                setHours(urlParams.get('hours'));
+                setStep(urlParams.get('step'));
+                $(document).trigger('place.control_forms.loaded', { 
+                    message: 'New URL loaded',
+                    timestamp: Date.now()
+                });
+            });
+        });
         
         //Function for populating the time select
         function populateTimeSelect() {
@@ -117,14 +131,14 @@
         }
         //Function for create and add hourly buttons - Updated for responsive
         function setupTimeButtons() {
-            const $prevDayButton = $('<button type="button" id="control-prev-day" class="btn btn-primary btn-time-control">-1d</button>');
-            const $prevButton = $('<button type="button" id="control-prev-hour" class="btn btn-primary btn-time-control">-1h</button>');
-            const $time00Button = $('<button type="button" id="control-time-00" class="btn btn-primary btn-time-control">00</button>');
-            const $time06Button = $('<button type="button" id="control-time-06" class="btn btn-primary btn-time-control">06</button>');
-            const $time12Button = $('<button type="button" id="control-time-12" class="btn btn-primary btn-time-control">12</button>');
-            const $time18Button = $('<button type="button" id="control-time-18" class="btn btn-primary btn-time-control">18</button>');
-            const $nextButton = $('<button type="button" id="control-next-hour" class="btn btn-primary btn-time-control">+1h</button>');
-            const $nextDayButton = $('<button type="button" id="control-next-day" class="btn btn-primary btn-time-control">+1d</button>');
+            const $prevDayButton = $('<button type="button" id="control-prev-day" class="btn btn-primary">-1d</button>');
+            const $prevButton = $('<button type="button" id="control-prev-hour" class="btn btn-primary">-1h</button>');
+            const $time00Button = $('<button type="button" id="control-time-00" class="btn btn-primary">00</button>');
+            const $time06Button = $('<button type="button" id="control-time-06" class="btn btn-primary">06</button>');
+            const $time12Button = $('<button type="button" id="control-time-12" class="btn btn-primary">12</button>');
+            const $time18Button = $('<button type="button" id="control-time-18" class="btn btn-primary">18</button>');
+            const $nextButton = $('<button type="button" id="control-next-hour" class="btn btn-primary">+1h</button>');
+            const $nextDayButton = $('<button type="button" id="control-next-day" class="btn btn-primary">+1d</button>');
 
             //Adding event handlers
             $prevDayButton.on('click', function() {
@@ -162,20 +176,22 @@
             const $timeSelect = $('#control-select-time');
             const $timeContainer = $timeSelect.parent();
             
-            // Create a button container for better responsive layout
-            const $buttonContainer = $('<div class="time-buttons-container mt-2"></div>');
-            // Layout: [-1d][-1h][00][06]<select>[12][18][+1h][+1d]
-            $buttonContainer.append($prevDayButton);
-            $buttonContainer.append($prevButton);
-            $buttonContainer.append($time00Button);
-            $buttonContainer.append($time06Button);
-            $buttonContainer.append($timeSelect);
-            $buttonContainer.append($time12Button);
-            $buttonContainer.append($time18Button);
-            $buttonContainer.append($nextButton);
-            $buttonContainer.append($nextDayButton);
+            // Create an input-group container for Bootstrap styling consistency
+            const $inputGroup = $('<div class="input-group"></div>');
             
-            $timeContainer.append($buttonContainer);
+            // Layout: [-1d][-1h][00][06]<select>[12][18][+1h][+1d]
+            $inputGroup.append($prevDayButton);
+            $inputGroup.append($prevButton);
+            $inputGroup.append($time00Button);
+            $inputGroup.append($time06Button);
+            $inputGroup.append($timeSelect);
+            $inputGroup.append($time12Button);
+            $inputGroup.append($time18Button);
+            $inputGroup.append($nextButton);
+            $inputGroup.append($nextDayButton);
+            
+            $timeContainer.html('');
+            $timeContainer.append($inputGroup);
         }
         function loadProducts(){
             ajaxLoadProducts = $.ajax({
@@ -237,22 +253,7 @@
         populateTimeSelect();
         setMaxDateFromToday();
         setupTimeButtons();
-        loadProducts();
-        
-        $(document).on('place.url.loaded', function() {
-            Promise.all([ajaxLoadProducts]).then(function(requests){
-                urlParams = new URLSearchParams(window.location.search);
-                setURLDateTime(urlParams.get('date'));
-                setProduct(urlParams.get('prod'));
-                setHours(urlParams.get('hours'));
-                setStep(urlParams.get('step'));
-                $(document).trigger('place.control_forms.loaded', { 
-                    message: 'New URL loaded',
-                    timestamp: Date.now()
-                });
-            });
-        });
-
+        loadProducts();        
         //FINE PRIMO AVVIO
 
 

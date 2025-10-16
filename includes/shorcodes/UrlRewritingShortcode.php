@@ -19,8 +19,9 @@ class UrlRewritingShortcode extends BaseShortcode{
     }
 
     public function prepareData($atts){
+        $this->post_id = get_the_ID();
         return [
-            'place_id' => get_post_meta(get_the_ID(),'place_id',true)
+            'place_id' => get_post_meta($this->post_id,'place_id',true)
         ];
     }
 

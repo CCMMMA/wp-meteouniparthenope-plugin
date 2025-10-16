@@ -12,7 +12,6 @@ abstract class BaseShortcode implements ShortcodeInterface {
     
     public function __construct() {
         $this->plugin_dir_url = METEOUNIPARTHENOPE_PLUGIN_DIR;
-        $this->post_id = get_the_ID();
     }
     
     // Template method pattern
@@ -30,6 +29,7 @@ abstract class BaseShortcode implements ShortcodeInterface {
     
     // Helper for obtainning place's metadata
     protected function getPlaceMetadata() {
+        $this->post_id = get_the_ID();
         return [
             'place_id' => get_post_meta($this->post_id, 'place_id', true),
             'long_name_it' => get_post_meta($this->post_id, 'long_name_it', true),

@@ -19,13 +19,7 @@ class VerticalProfileShortcode extends BaseShortcode{
     }
 
     public function prepareData($atts){
-        $metadata = $this->getPlaceMetadata();
-        return [
-            'place_id' => $metadata['place_id'],
-            'long_name_it' => $metadata['long_name_it'],
-            'coordinates' => json_decode($metadata['coordinates']),
-            'bbox' => json_decode($metadata['bbox'])
-        ];
+        return $this->getPlaceMetadata();
     }
 
 
