@@ -37,7 +37,7 @@ class WeatherMapDefShortcode extends BaseShortcode{
 
         wp_enqueue_script(
             'weather-map-def-shortcode-js',
-            $this->plugin_dir_url . 'static/js/shortcodes/weather_map_def_shotcode.js',
+            $this->plugin_dir_url . 'static/js/shortcodes/weather_map_def_shortcode.js',
             [],
             time(),
             true

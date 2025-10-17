@@ -19,7 +19,7 @@ class ShortcodeFactory {
         'open_data_shortcode' => OpenDataShortcode::class,
         'autocomplete_search_shortcode' => AutocompleteSearchShortcode::class,
         'url_rewriting_shortcode' => UrlRewritingShortcode::class,
-        'weather_map_def_shotcode' => WeatherMapDefShortcode::class
+        'weather_map_def_shortcode' => WeatherMapDefShortcode::class
     ];
     
     /**
