@@ -81,26 +81,8 @@ class MeteoUniParthenopePluginMain{
 
         //Shortcodes
         add_action('init',[ShortcodeFactory::class, 'registerAll']);
-        /*
-        add_shortcode('forecast_shortcode', [$this,'forecast_shortcode_callback']);
-        add_shortcode('forecast_preview_shortcode', [$this, 'forecast_preview_shortcode_callback']);
-        add_shortcode('control_shortcode',[$this, 'control_shortcode_callback']);
-        add_shortcode('date_control_shortcode',[$this, 'date_control_shortcode_callback']);
-        add_shortcode('plot_shortcode', [$this,'plot_shortcode_callback']);
-        add_shortcode('chart_shortcode', [$this,'chart_shortcode_callback']);
-        add_shortcode('map_shortcode', [$this,'map_shortcode_callback']);
-        add_shortcode('live_chart_shortcode',[$this,'live_chart_shortcode_callback']);
-        add_shortcode('vertical_profile_shortcode',[$this,'vertical_profile_shortcode_callback']);
-        add_shortcode('open_data_shortcode',[$this,'open_data_shortcode_callback']);
-        add_shortcode('autocomplete_search_shortcode',[$this,'autocomplete_search_shortcode_callback']);
-        add_shortcode('url_rewriting_shortcode',[$this,'url_rewriting_shortcode_callback']);
-        */
-
-        //prova
-        //add_shortcode('prova_shortcode',[$this,'prova_shortcode_callback']);
 
         //Other plugins functionalities
-        add_action('wp_ajax_add_single_place', [$this, 'handle_add_single_place']);
         add_filter('the_content', [$this,'meteounipplugin_autocomplete_search_injection']);
     }
 
@@ -203,61 +185,6 @@ class MeteoUniParthenopePluginMain{
         <?php
     }
 
-    // 5. API import function in the "Utility" menu page
-    //$api_url="https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06"; //594 places
-    //$api_url = "https://api.meteo.uniparthenope.it/places/search/bycoords/40.83/14.24"; //Pochi per prova
-    //$api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
-    /*
-    function meteounipplugin_render_utility_page() {
-        echo '<div class="wrap"><h1>Importa Places da API</h1>';
-        //IMPORT places
-        if (isset($_POST['meteounipplugin_import_places']) && check_admin_referer('meteounipplugin_import_nonce')) {
-            //$api_url="https://api.meteo.uniparthenope.it/places/search/byboundingbox/41.46/13.78/39.50/15.06"; //594 places
-            $api_url = "https://api.meteo.uniparthenope.it/places/search/bycoords/40.83/14.24"; //Pochi per prova
-            //$api_url = "https://api.meteo.uniparthenope.it/places"; //Tutti i place
-            //2,3) Richiesta recupero dati e recupero JSON
-            $api = new PlacesAPI;
-            $jsonString = $api->getData($api_url);
-
-            //4,5) Richiesta parsing e dati parsati
-            $jsonParser = new PlaceParser;
-            $placesList = $jsonParser->parseFromJSON($jsonString);
-            //console_log($placesList);
-            
-            //6,7)Creazione dei posts
-            $wpExecutor = new WPPlaceExecutor;
-            $status = $wpExecutor->executePostsCreation($placesList);
-
-            //8)Controllo status
-            if($status != 0){
-                echo "Something went wrong...!";
-            }
-
-            echo '<div class="notice notice-success"><p>Importazione completata!</p></div>';
-        }
-
-        //Form: Importa
-        echo '<form method="post">';
-        wp_nonce_field('meteounipplugin_import_nonce');
-        submit_button('Importa Places', 'primary', 'meteounipplugin_import_places');
-        echo '</form></div>';
-
-        // ELIMINA places
-        if (isset($_POST['meteounipplugin_delete_places']) && check_admin_referer('meteounipplugin_delete_nonce')) {
-            $deleted = $this->meteounipplugin_delete_all_places();
-            echo '<div class="notice notice-error"><p>' . $deleted . ' place eliminati definitivamente.</p></div>';
-        }
-
-        // Form: Elimina
-        echo '<form method="post">';
-        wp_nonce_field('meteounipplugin_delete_nonce');
-        submit_button('Elimina tutti i Places', 'delete', 'meteounipplugin_delete_places');
-        echo '</form>';
-
-        echo '</div>';
-    }
-    */
-
     function meteounipplugin_render_utility_page(){
         $template_data = array(
             //'nonce_single_place' => wp_create_nonce('add_single_place_nonce'),
@@ -280,67 +207,6 @@ class MeteoUniParthenopePluginMain{
             echo '<div class="notice notice-error"><p>Template non trovato: ' . $template_name . '</p></div>';
         }
     }
-
-    /*
-    function meteounipplugin_delete_all_places(): int {
-        $args = array(
-            'post_type' => 'place',
-            'post_status' => 'any',
-            'numberposts' => -1
-        );
-
-        $places = get_posts($args);
-        $count = 0;
-
-        foreach ($places as $place) {
-            wp_delete_post($place->ID, true); // true = elimina definitivamente
-            $count++;
-        }
-
-        return $count;
-    }
-    */
-
-    /*
-    function meteounipplugin_places_search_shortcode(){
-        $output = '';
-
-        // Prendo il termine di ricerca dal parametro GET 'titolo' (o lo puoi rinominare a piacere)
-        $termine = isset($_GET['titolo']) ? sanitize_text_field($_GET['titolo']) : '';
-
-        // Form di ricerca
-        $output .= '<form method="get" action="' . esc_url(get_permalink()) . '">';
-        $output .= '<input type="text" name="titolo" placeholder="Cerca place per titolo..." value="' . esc_attr($termine) . '" />';
-        $output .= '<button type="submit">Cerca</button>';
-        $output .= '</form>';
-
-        // Se è stato inserito un termine, faccio la query
-        if (!empty($termine)) {
-            $args = array(
-                'post_type' => 'place',       // Qui cambio il CPT
-                'posts_per_page' => 100,
-                's' => $termine,              // Termine di ricerca
-            );
-
-            $query = new WP_Query($args);
-
-            if ($query->have_posts()) {
-                $output .= '<ul>';
-                while ($query->have_posts()) {
-                    $query->the_post();
-                    $output .= '<li><a href="' . get_permalink() . '">' . get_the_title() . '</a></li>';
-                }
-                $output .= '</ul>';
-            } else {
-                $output .= '<p>Nessun place trovato.</p>';
-            }
-
-            wp_reset_postdata();
-        }
-
-        return $output;
-    }
-    */
 
     function meteounipplugin_include_place_in_search($query){
         if(is_search() && $query->is_main_query()){             // Ensure you only alter your desired query
@@ -387,92 +253,6 @@ class MeteoUniParthenopePluginMain{
         }
     }
 
-    /*
-    function forecast_preview_shortcode_callback($atts){
-        static $forecast_preview_shortcode_instances = [];
-        $returnString = null;
-        $data = [];
-        if(isset($atts['shortcode_id'])){
-            $data['shortcode_id'] = $atts['shortcode_id'];
-            $returnString = '<div id="forecast_preview_shortcode-root-'.$atts['shortcode_id'].'"></div>';
-            $data['place_id'] = $atts['place_id'];
-            $data['product'] = $atts['product'];
-            $data['output'] = $atts['output'];
-            $data['imagesUrl'] = plugin_dir_url(__FILE__) . 'static/resources/images';
-            $data['pluginUrl'] = plugin_dir_url(__FILE__);
-            
-            // Aggiungi all'array statico
-            $forecast_preview_shortcode_instances[$atts['shortcode_id']] = $data;
-        }
-        else{
-            $forecast_preview_shortcode_instances['default'] = $data;
-        }
-
-        wp_enqueue_script(
-            'forecast-preview-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/forecast_preview_shortcode.js',
-            [],
-            null,
-            true
-        );
-        
-        wp_localize_script('forecast-preview-shortcode-js', 'allForecastPreviewData', $forecast_preview_shortcode_instances);
-
-        return $returnString ? $returnString : '<div id="image_link_shortcode-root"></div>';
-    }
-    */
-    function forecast_preview_shortcode_callback($atts){
-        $id = 'forecast_preview_shortcode-root-'.self::$forecastPreviewIDs++;
-        $place = null;
-        $product  = "wrf5";
-        $output = "gen";
-        if(isset($atts['place_id'])){
-            $place = $atts['place_id'];
-        }
-        if(isset($atts['product'])){
-            $product = $atts['product'];
-        }
-        if(isset($atts['output'])){
-            $output = $atts['output'];
-        }
-
-        wp_enqueue_script(
-            'forecast-preview-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/forecast_preview_shortcode.js',
-            [],
-            null,
-            true
-        );
-        
-        wp_add_inline_script('forecast-preview-shortcode-js', 
-            'new ForecastPreview({container_id: "'.$id.'",place: "'.$place.'",product: "'.$product.'",output: "'.$output.'"});'
-        );
-        $returnString = '<div id="'.$id.'"></div>';
-        return $returnString;
-    }
-
-    /*
-    function meteounipplugin_extend_place_in_search($search, $wp_query){
-        global $wpdb;
-        
-        if (!is_admin() && $wp_query->is_search() && $wp_query->is_main_query()) {
-            $search_term = $wp_query->get('s');
-            console_log($search_term);
-            
-            if (!empty($search_term)) {
-                // Modifica la query per cercare anche nel contenuto
-                $search = " AND (
-                    ({$wpdb->posts}.post_title LIKE '%{$search_term}%') 
-                    OR ({$wpdb->posts}.post_content LIKE '%{$search_term}%')
-                    OR ({$wpdb->posts}.post_excerpt LIKE '%{$search_term}%')
-                ) ";
-            }
-        }
-        
-        return $search;
-    }
-    */
-
     function meteounipplugin_use_custom_place_template($template) {
         if (is_singular('places')) {
             $theme_template = get_stylesheet_directory() . '/single-places.php';
@@ -482,284 +262,6 @@ class MeteoUniParthenopePluginMain{
             return plugin_dir_path(__FILE__) . 'templates/single-places.php';
         }
         return $template;
-    }
-
-    // Forecast shortcode
-    function forecast_shortcode_callback($atts) {
-        $post_id = get_the_ID();
-        $placeID = get_post_meta($post_id, 'place_id', true);
-        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
-        
-        $data = [
-            'place_id' => $placeID,
-            'long_name_it' => $longNameIT
-        ];
-        $data['imagesUrl'] = plugin_dir_url(__FILE__) . 'static/resources/images';
-        $data['pluginUrl'] = plugin_dir_url(__FILE__);
-
-        wp_enqueue_script(
-            'forecast-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/forecast_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        wp_localize_script('forecast-shortcode-js', 'forecastData', $data);
-
-        return '<div id="forecast_shortcode-root"></div>';
-    }
-
-    // Forecast shortcode
-    function dynamic_forecast_shortcode_callback($atts) {
-        $post_id = get_the_ID();
-        $placeID = get_post_meta($post_id, 'place_id', true);
-        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
-        
-        $data = [
-            'place_id' => $placeID,
-            'long_name_it' => $longNameIT
-        ];
-        $data['imagesUrl'] = plugin_dir_url(__FILE__) . 'static/resources/images';
-        $data['pluginUrl'] = plugin_dir_url(__FILE__);
-
-        wp_enqueue_script(
-            'dynamic-forecast-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/dynamic_forecast_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        wp_localize_script('forecast-shortcode-js', 'dynamicForecastData', $data);
-
-        return '<div id="dynamic_forecast_shortcode-root"></div>';
-    }
-
-    // Control shortcode
-    function control_shortcode_callback($atts) {
-        //Ottenimento dei metadati salvati
-        $post_id = get_the_ID();
-        $placeID = get_post_meta($post_id, 'place_id', true);
-        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
-        $domain = get_post_meta($post_id, 'domain', true);
-        $coordinates = get_post_meta($post_id, 'coordinates', true);
-        $bbox = get_post_meta($post_id, 'bbox', true);
-        $availableProducts = get_post_meta($post_id, 'available_products', true);
-
-        //Preparazione dati per shortcode
-        $data = [
-            'place_id' => $placeID,
-            'long_name_it' => $longNameIT,
-            'domain' => $domain,
-            'coordinates' => json_decode($coordinates),
-            'bbox' => json_decode($bbox),
-            'available_products' => json_decode($availableProducts)
-        ];
-
-
-        wp_enqueue_script(
-            'control-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/control_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        wp_localize_script('control-shortcode-js', 'controlData', $data);
-
-        return '<div id="control_shortcode-root"></div>';
-    }
-
-    // Date and time forms shortcode
-    function date_control_shortcode_callback($atts) {
-        wp_enqueue_script(
-            'control-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/date_control_shortcode.js',
-            [],
-            null,
-            true
-        );
-        return '<div id="date_control_shortcode-root"></div>';
-    }
-
-    // Plot shortcodeo
-    function plot_shortcode_callback($atts) {
-        $id = 'plot_shortcode-root-'.self::$plotIDs++;
-        $place = null;
-        $product = null;
-        $output = null;
-        $controlForms = null;
-        $inPlace = false;
-        if(isset($atts['control_forms'])){
-            $controlForms = esc_js($atts['control_forms']);
-            if($atts['control_forms'] != "FULL"){
-                if(isset($atts['in_place'])){
-                    if($atts['in_place'] == "ture"){
-                        $inPlace = true;
-                        $place = get_post_meta(get_the_ID(),'place_id',true);
-                    }
-                    else{
-                        $place = esc_js($atts['place_id']);
-                    }
-                }
-                else{
-                    $place = esc_js($atts['place_id']);
-                }
-                $product = esc_js($atts['product']);
-                $output = esc_js($atts['output']);
-            }
-            else{
-                $place = get_post_meta(get_the_ID(),'place_id',true);
-            }
-        }
-
-        wp_enqueue_script(
-            'plot-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/plot_shortcode.js',
-            [],
-            null,
-            true
-        );
-        
-        wp_add_inline_script('plot-shortcode-js', 
-            'new MeteoPlot({container_id: "'.$id.'",place: "'.$place.'",product: "'.$product.'", output: "'.$output.'", controlForms: "'.$controlForms.'", dateForm_id: "control-select-date", timeForm_id: "control-select-time", productForm_id: "control-select-product", outputForm_id: "control-select-output", inPlace: "'.$inPlace.'"});'
-        );
-        $returnString = '<div id="'.$id.'"></div>';
-        return $returnString;
-    }
-
-    // Chart shortcode
-    function chart_shortcode_callback($atts) {
-        $post_id = get_the_ID();
-        $placeID = get_post_meta($post_id, 'place_id', true);
-        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
-
-        $data = [
-            'place_id' => $placeID,
-            'long_name_it' => $longNameIT,
-        ];
-
-        wp_enqueue_script(
-            'chart-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/chart_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        wp_localize_script('chart-shortcode-js', 'chartData', $data);
-
-        return '<div id="chart_shortcode-root"></div>';
-    }
-
-    // Map shortcode
-    function map_shortcode_callback($atts){
-        $post_id = get_the_ID();
-        $placeID = get_post_meta($post_id, 'place_id', true);
-        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
-        $coordinates = get_post_meta($post_id, 'coordinates', true);
-        $bbox = get_post_meta($post_id, 'bbox', true);
-
-        $data = [
-            'place_id' => $placeID,
-            'long_name_it' => $longNameIT,
-            'coordinates' => json_decode($coordinates),
-            'bbox' => json_decode($bbox),
-        ];
-
-        wp_enqueue_script(
-            'map-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/map_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        wp_localize_script('map-shortcode-js', 'mapData', $data);
-
-        return '<div id="map_shortcode-root"></div>';
-    }
-
-    // Live chart shortcode
-    function live_chart_shortcode_callback(){
-        wp_enqueue_script(
-            'live-chart-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/live_chart_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        return '<div id="live_chart_shortcode-root"></div>';
-    }
-
-    function vertical_profile_shortcode_callback(){
-        wp_enqueue_script(
-            'vertical-profile-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/vertical_profile_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        $post_id = get_the_ID();
-        $placeID = get_post_meta($post_id, 'place_id', true);
-        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
-        $coordinates = get_post_meta($post_id, 'coordinates', true);
-        $bbox = get_post_meta($post_id, 'bbox', true);
-
-        $data = [
-            'place_id' => $placeID,
-            'long_name_it' => $longNameIT,
-            'coordinates' => json_decode($coordinates),
-            'bbox' => json_decode($bbox),
-        ];
-
-        wp_localize_script('vertical-profile-shortcode-js', 'verticalProfileData', $data);
-
-        return '<div id="vertical_profile_shortcode-root"></div>';
-    }
-
-    // Open data shortcode
-    function open_data_shortcode_callback(){
-        $post_id = get_the_ID();
-        $placeID = get_post_meta($post_id, 'place_id', true);
-        $longNameIT = get_post_meta($post_id, 'long_name_it', true);
-        $coordinates = get_post_meta($post_id, 'coordinates', true);
-        $bbox = get_post_meta($post_id, 'bbox', true);
-
-        $data = [
-            'place_id' => $placeID,
-        ];
-
-        wp_enqueue_script(
-            'open-data-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/open_data_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        wp_localize_script('open-data-shortcode-js', 'openDataData', $data);
-
-        return '<div id="open_data_shortcode-root"></div>';
-    }
-
-    function url_rewriting_shortcode_callback($atts){
-        wp_enqueue_script(
-            'url-rewriting-shortcode',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/url_rewriting_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        $urlRewritingShortcodeData['place_id'] = get_post_meta(get_the_ID(),'place_id',true);
-
-        wp_localize_script('url-rewriting-shortcode','urlRewritingShortcodeData',$urlRewritingShortcodeData);
-        
-        return '<div id="url_rewriting_shortcode-root"></div>';
     }
 
     // Global data
@@ -778,15 +280,6 @@ class MeteoUniParthenopePluginMain{
         ];
         wp_localize_script('global-data-js', 'globalData', $data);
         
-        /*
-        wp_enqueue_script(
-            'Plot-class-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/MeteoPlot.js',
-            [],
-            null,
-            true
-        );
-        */
         wp_enqueue_script(
             'DateFormatter-class-js',
             plugin_dir_url(__FILE__) . 'static/js/shortcodes/DateFormatter.js',
@@ -817,42 +310,10 @@ class MeteoUniParthenopePluginMain{
         );
     }
 
-    // Autocomplete shortcode
-    function autocomplete_search_shortcode_callback($atts){
-        wp_enqueue_script(
-            'autocomplete-search-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/autocomplete_search_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        return '<div id="autocomplete_search_shortcode-root"></div>';
-    }
-
     // Autocomplete shortcode injection
     function meteounipplugin_autocomplete_search_injection($content){
-        if( is_search() || is_home() ){
-        }
         $content = '[autocomplete_search_shortcode]' . $content;
         return $content;
-    }
-
-    function prova_shortcode_callback($atts){
-        if (wp_script_is('prova-shortcode-js')){
-            wp_dequeue_script('prova-shortcode-js');
-        }
-        wp_enqueue_script(
-            'prova-shortcode-js',
-            plugin_dir_url(__FILE__) . 'static/js/shortcodes/prova_shortcode.js',
-            [],
-            null,
-            true
-        );
-
-        wp_localize_script('prova-shortcode-js','provaShortcodeData',$atts);
-
-        return '<div id="prova_shortcode_'.$atts['shortcode_id'].'-root"></div>';
     }
 
     // Frontend files
@@ -861,12 +322,6 @@ class MeteoUniParthenopePluginMain{
             'bootstrap-css',
             'https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css'
         );
-        /*
-        wp_enqueue_style(
-            'bootstrap-css',
-            'https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css'
-        );
-        */
 
         // JS di Bootstrap (CORRETTO)
         
@@ -877,16 +332,7 @@ class MeteoUniParthenopePluginMain{
             '5.3.7',
             true
         );
-        
-        /*
-        wp_enqueue_script(
-            'bootstrap-js',
-            'https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js', // <-- URL corretto per Bootstrap JS
-            array('jquery'),
-            '4.0.0',
-            true
-        );
-        */
+
 
         // jQueryUI
         wp_enqueue_script(

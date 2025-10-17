@@ -18,7 +18,8 @@ class ShortcodeFactory {
         'vertical_profile_shortcode' => VerticalProfileShortcode::class,
         'open_data_shortcode' => OpenDataShortcode::class,
         'autocomplete_search_shortcode' => AutocompleteSearchShortcode::class,
-        'url_rewriting_shortcode' => UrlRewritingShortcode::class
+        'url_rewriting_shortcode' => UrlRewritingShortcode::class,
+        'weather_map_def_shotcode' => WeatherMapDefShortcode::class
     ];
     
     /**

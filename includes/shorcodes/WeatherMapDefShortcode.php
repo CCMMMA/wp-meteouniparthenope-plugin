@@ -1,31 +1,11 @@
 <?php
-/**
- * Plugin Name: Weather Map
- * Description: Visualizes weather maps with day/hour selectors using 3bMeteo.
- * Version: 1.0
- * Author: vincenzo.bucciero001@studenti.uniparthenope.it
- */
 
-// Mock WordPress functions for non-WordPress environments (for testing only)
-if (!function_exists('add_action')) {
-    function add_action($hook, $callback) {}
-}
-if (!function_exists('add_shortcode')) {
-    function add_shortcode($tag, $callback) {}
-}
-if (!function_exists('wp_enqueue_style')) {
-    function wp_enqueue_style($handle, $src, $deps = [], $ver = false, $media = 'all') {}
-}
-if (!function_exists('wp_enqueue_script')) {
-    function wp_enqueue_script($handle, $src, $deps = [], $ver = false, $in_footer = false) {}
-}
-if (!function_exists('plugin_dir_url')) {
-    function plugin_dir_url($file) { return ''; }
-}
-if (!defined('ABSPATH')) exit;
+namespace Meteouniparthenope\shorcodes;
 
-class WeatherMapDef
-{
+use DateTime;
+
+class WeatherMapDefShortcode extends BaseShortcode{
+
     // Configuration for each map type
     private $mapConfigs = [
         'mainMap'          => ['product' => 'wrf5',  'place' => 'it000'],
@@ -35,16 +15,7 @@ class WeatherMapDef
         'currentsMap'      => ['product' => 'wcm3',  'place' => 'ca000']
     ];
 
-    // Constructor: hooks for scripts and shortcode
-    public function __construct()
-    {
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
-        add_shortcode('weather_map_def', [$this, 'render_shortcode']);
-    }
-
-    // Enqueue CSS and JS assets
-    public function enqueue_assets()
-    {
+    public function enqueueAssets(){
         wp_enqueue_style(
             'weather-map-font',
             'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap',
@@ -53,7 +24,7 @@ class WeatherMapDef
         );
         wp_enqueue_style(
             'weather-map-def-style',
-            plugin_dir_url(__FILE__) . 'css/styles.css',
+            $this->plugin_dir_url . 'static/css/weather_map_def_styles.css',
             [],
             time()
         );
@@ -65,25 +36,20 @@ class WeatherMapDef
         );
 
         wp_enqueue_script(
-            'weather-map-def-script',
-            plugin_dir_url(__FILE__) . 'js/scripts.js',
+            'weather-map-def-shortcode-js',
+            $this->plugin_dir_url . 'static/js/shortcodes/weather_map_def_shotcode.js',
             [],
             time(),
             true
         );
     }
 
-    // Generate the API URL for a given product, place, date, and hour
-    private function generateApiUrl($product, $place, $date, $hour = '12:00')
-    {
-        $dateObj = new DateTime($date);
-        $formattedDate = $dateObj->format('Ymd') . 'Z' . str_replace(':', '', $hour);
-        return "https://api.meteo.uniparthenope.it/products/{$product}/forecast/{$place}/plot/image?date={$formattedDate}&output=gen";
+    public function prepareData($atts){
+        return null;
     }
-
+    
     // Render the shortcode output with selectors and weather maps
-    public function render_shortcode()
-    {
+    protected function generateHTML($data){
         ob_start();
         $today = date('Y-m-d');
         ?>
@@ -91,7 +57,7 @@ class WeatherMapDef
             <div class="weatherHeader">
                 <div class="selectorWrapper">
                     <h1>
-                        <img class="weatherIcon" src="<?php echo plugin_dir_url(__FILE__) . 'images/285670_calendar_icon.svg'; ?>" alt="Calendar Icon">
+                        <img class="weatherIcon" src="<?php echo $this->plugin_dir_url . 'static/resources/images/285670_calendar_icon.svg'; ?>" alt="Calendar Icon">
                         Day Selection
                     </h1>
                     <div class="daySelectorRow">
@@ -108,7 +74,7 @@ class WeatherMapDef
                         <?php endfor; ?>
                     </div>
                     <h1>
-                        <img src="<?php echo plugin_dir_url(__FILE__) . 'images/2530808_alarm_clock_deadline_general_office_icon.svg'; ?>" alt="Clock Icon" style="width:20px; vertical-align:middle; margin: right 20px;">
+                        <img src="<?php echo $this->plugin_dir_url . 'static/resources/images/2530808_alarm_clock_deadline_general_office_icon.svg'; ?>" alt="Clock Icon" style="width:20px; vertical-align:middle; margin: right 20px;">
                         Hour Selection
                     </h1>
                     <div class="hourSelectorRow">
@@ -135,6 +101,13 @@ class WeatherMapDef
         <?php
         return ob_get_clean();
     }
+
+    // Generate the API URL for a given product, place, date, and hour
+    private function generateApiUrl($product, $place, $date, $hour = '12:00'){
+        $dateObj = new DateTime($date);
+        $formattedDate = $dateObj->format('Ymd') . 'Z' . str_replace(':', '', $hour);
+        return "https://api.meteo.uniparthenope.it/products/{$product}/forecast/{$place}/plot/image?date={$formattedDate}&output=gen";
+    }
 }
 
-new WeatherMapDef();
+?>
