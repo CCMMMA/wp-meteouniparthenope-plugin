@@ -16,6 +16,8 @@ const METEOUNIP_PLUGIN_DEFAULT_OUTPUT = "gen";
 const METEOUNIP_PLUGIN_DEFAULT_HOURS = 0;
 const METEOUNIP_PLUGIN_DEFAULT_STEP = 1;
 
+const METEOUNIP_PLUGIN_IMAGES_URL = 'https://api.meteo.uniparthenope.it/products/resource/forecast';
+
 function value2Color(value,steps,colors){
     if(value < steps[0]){
         return RGBtoHEX(colors[0]);

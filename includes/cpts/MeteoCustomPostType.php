@@ -1,10 +1,9 @@
 <?php
 
-namespace Meteouniparthenope\ctps;
+namespace Meteouniparthenope\cpts;
 
-class MeteoCustomPostType
-{
-
+interface MeteoCustomPostType{
+    public function registerCTP();
 }
 
 ?>

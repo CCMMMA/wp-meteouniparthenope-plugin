@@ -3,8 +3,9 @@
 namespace Meteouniparthenope\shorcodes;
 
 use Exception;
+use Meteouniparthenope\FactoryInterface;
 
-class ShortcodeFactory {
+class ShortcodeFactory implements FactoryInterface{
     
     private static $shortcodes = [
         'forecast_shortcode' => ForecastShortcode::class,

@@ -30,7 +30,7 @@
                 retryInterval: 2000,
                 success: function(data){
                     var forecastTableObj = new ForecastTable();
-                    forecastTableObj.fillTable(data['timeseries'],place,product,forecastData['imagesUrl']);
+                    forecastTableObj.fillTable(data['timeseries'],place,product,METEOUNIP_PLUGIN_IMAGES_URL);
                     $loadingDiv.hide();
                     let $forecastBox = $('#forecast-box');
                     $forecastBox.show();
