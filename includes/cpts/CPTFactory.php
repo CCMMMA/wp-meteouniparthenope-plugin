@@ -8,7 +8,8 @@ use Meteouniparthenope\FactoryInterface;
 class CPTFactory implements FactoryInterface{
 
     private static $customPostTypes= [
-        'places' => CustomPostTypePlace::class
+        'places' => CustomPostTypePlaces::class,
+        'instruments' => CustomPostTypeInstruments::class
     ];
 
     public static function create($cpt_name){
@@ -22,7 +23,8 @@ class CPTFactory implements FactoryInterface{
 
     public static function registerAll(){
         foreach (self::$customPostTypes as $tag => $class) {
-            add_action('init',[CPTFactory::create($tag),'registerCTP']);
+            $cpt = CPTFactory::create($tag);
+            $cpt->registerCTP();
         }
     }
 

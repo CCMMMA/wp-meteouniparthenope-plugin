@@ -15,6 +15,7 @@ use WP_REST_Response;
 use Meteouniparthenope\API\PlacesAPI;
 use Meteouniparthenope\executors\WPPlaceExecutor;
 use Meteouniparthenope\JSONParser\PlaceParser;
+use Meteouniparthenope\cpts\Place;
 
 class PlaceRESTController extends WP_REST_Controller{
 

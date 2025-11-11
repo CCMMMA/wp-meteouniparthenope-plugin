@@ -1,6 +1,7 @@
 <div class="wrap">
     <h1>Plugin Utilities</h1>
 
+    <h2>Place management</h2>
     <!-- SEZIONE 1: Aggiungi singolo Place -->
     <div class="utility-section">
         <h2><span class="dashicons dashicons-plus-alt"></span> Aggiungi singolo Place</h2>
@@ -97,6 +98,22 @@
             <tr><th>Places in bozza:</th><td><span id="places-draft"><?php echo esc_html($place_count->draft); ?></span></td></tr>
             <tr><th>Places nel cestino:</th><td><span id="places-trash"><?php echo esc_html($place_count->trash); ?></span></td></tr>
             <tr><th>Totale places:</th><td><span id="places-total"><?php echo esc_html($place_count->publish + $place_count->draft + $place_count->private); ?></span></td></tr>
+        </table>
+    </div>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    
+    <h2>Instrument management</h2>
+    <div class="utility-section">
+        <h2><span class="dashicons dashicons-chart-area"></span> Statistiche</h2>
+        <table class="form-table">
+            <tr><th>Instruments pubblicati:</th><td><span id="instruments-published"><?php echo esc_html($instrument_count->publish); ?></span></td></tr>
+            <tr><th>Instruments in bozza:</th><td><span id="instruments-draft"><?php echo esc_html($instrument_count->draft); ?></span></td></tr>
+            <tr><th>Instruments nel cestino:</th><td><span id="instruments-trash"><?php echo esc_html($instrument_count->trash); ?></span></td></tr>
+            <tr><th>Totale instruments:</th><td><span id="instruments-total"><?php echo esc_html($instrument_count->publish + $instrument_count->draft + $instrument_count->private); ?></span></td></tr>
         </table>
     </div>
 </div>

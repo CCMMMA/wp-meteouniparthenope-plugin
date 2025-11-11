@@ -2,7 +2,7 @@
 
 namespace Meteouniparthenope\executors;
 
-use Meteouniparthenope\ctps\MeteoCustomPostType;
+use Meteouniparthenope\cpts\MeteoCustomPostType;
 
 interface WPExecutor
 {

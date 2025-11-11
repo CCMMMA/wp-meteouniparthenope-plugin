@@ -1,8 +1,8 @@
 <?php
 
-namespace Meteouniparthenope\ctps;
+namespace Meteouniparthenope\cpts;
 
-class Place extends MeteoCustomPostType
+class Place
 {
     private string $name;
     private string $longName;

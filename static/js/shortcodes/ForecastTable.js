@@ -46,11 +46,8 @@ class ForecastTable{
 
         const self = this;
         jQuery.each( timeSeriesDataH24, function( key, val ){
-            console.log("VAL DEENTRO FORECAST:");
-            console.log(val);
             let weatherIconUrl = imagesUrl;
             let wIconUrl = weatherIconUrl+"/"+val['icon'];
-            console.log("URL:::::::::::::"+wIconUrl);
             let wTextLabel = val['text'];
 
             let weekDayLabel = self.dayOfWeek(val['dateTime']);

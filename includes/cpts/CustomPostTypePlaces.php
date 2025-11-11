@@ -2,7 +2,7 @@
 
 namespace Meteouniparthenope\cpts;
 
-class CustomPostTypePlace implements MeteoCustomPostType{
+class CustomPostTypePlaces implements MeteoCustomPostType{
     
     public function registerCTP(){
         $labels = array(

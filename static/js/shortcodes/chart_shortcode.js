@@ -109,7 +109,6 @@ let NEW_CHART_defaultCharOutput = "gen";
                     'meta-chart': responses[1]['meta-chart'],
                     'timeseries': responses[0]['timeseries'],
                 }
-                console.log(data['meta-chart']);
                 drawChart(data,product,output,ncepDate);
             });
         } else {
@@ -126,7 +125,6 @@ let NEW_CHART_defaultCharOutput = "gen";
 
     function drawChart(timeSeriesDataAndMetadata,product,output,ncepDate){
         let chartMetadata = timeSeriesDataAndMetadata['meta-chart'];
-        console.log(chartMetadata);
         let title = "Forecast";
         let dataPoints = [];
         let dataPoints2 = [];
