@@ -88,7 +88,7 @@ class AdminLoader{
 
         extract($template_data);
 
-        $template_path = plugin_dir_path(__FILE__) . 'templates/admin_utility_page.php';
+        $template_path = $this->plugin_dir_path . 'templates/admin_utility_page.php';
         // Verifica che il file esista
         if (file_exists($template_path)) {
             // Cattura l'output del template

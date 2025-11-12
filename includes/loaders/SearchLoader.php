@@ -3,6 +3,9 @@
 namespace Meteouniparthenope\loaders;
 
 class SearchLoader{
+    private $plugin_dir_path = METEOUNIPARTHENOPE_PLUGIN_DIR_ABS;
+    private $plugin_dir_url = METEOUNIPARTHENOPE_PLUGIN_DIR;
+
     public function loadSearchComponents(){
         add_action('pre_get_posts', [$this,'meteounipplugin_include_place_in_search'], 99);
         add_filter('template_include', [$this,'meteounipplugin_use_custom_search_template']);
@@ -36,7 +39,7 @@ class SearchLoader{
 
     function meteounipplugin_use_custom_search_template($template) {
         if (is_search()) {
-            $custom_template = plugin_dir_path(__FILE__) . 'templates/custom-search.php';
+            $custom_template = $this->plugin_dir_path . 'templates/custom-search.php';
             if (file_exists($custom_template)) {
                 return $custom_template;
             }
@@ -48,7 +51,7 @@ class SearchLoader{
         if (is_search()) {
             wp_enqueue_style(
                 'custom-search-style',
-                plugin_dir_url(__FILE__) . 'static/css/custom-search-style.css',
+                $this->plugin_dir_url . 'static/css/custom-search-style.css',
                 array(),
                 '1.0.0'
             );
