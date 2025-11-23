@@ -1,5 +1,5 @@
-extras
-extras/*
-extras/docker/docker-compose.yml
-*.yml
+extras/docker/db_data
+extras/docker/news-magazine-x-child
+extras/docker/db_data
+extras/docker/wp_data
 static/js/old_shortcodes
