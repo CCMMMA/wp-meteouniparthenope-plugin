@@ -2,7 +2,6 @@
 
 namespace Meteouniparthenope\JSONParser;
 
-use Meteouniparthenope\JSONParser\JSONParser;
 use InvalidArgumentException;
 
 class ProductParser implements JSONParser

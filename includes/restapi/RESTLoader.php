@@ -9,18 +9,18 @@ class RESTLoader{
         'places' => PlaceRESTController::class,
     ];
     
-    public function loadRESTControlers(){
+    public static function loadRESTControllers(){
         //$this->api_controller = new PlaceRESTController();
         //$this->api_controller->register_routes();
         foreach (self::$restControllers as $tag => $class) {
-            $api_controller = $this->create($tag);
+            $api_controller = self::create($tag);
             $api_controller->register_routes();
         }
     }
 
-    function create($name){
+    public static function create($name){
         if (!isset(self::$restControllers[$name])) {
-            throw new Exception("Shortcode '{$name}' non registrato nella factory.");
+            throw new Exception("REST Controller '{$name}' non registrato nel plugin.");
         }
         
         $class = self::$restControllers[$name];

@@ -2,4 +2,5 @@ extras/docker/db_data
 extras/docker/news-magazine-x-child
 extras/docker/db_data
 extras/docker/wp_data
+extras/docker/envs
 static/js/old_shortcodes

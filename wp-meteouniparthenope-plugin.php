@@ -51,13 +51,13 @@ use Meteouniparthenope\loaders\PlaceLoader;
 use Meteouniparthenope\shorcodes\ShortcodeFactory;
 
 class MeteoUniParthenopePluginMain{
-    function __construct()
+    public function __construct()
     {
         //CPTs registration: 'Places' and 'Instruments'
         add_action('init',[CPTFactory::class, 'registerAll']);
 
         //REST API registration
-        add_action('rest_api_init', [new RESTLoader(), 'loadRESTControlers']);
+        add_action('rest_api_init', [RESTLoader::class, 'loadRESTControllers']);
         
         //HTML templates, styles, dependencies and global JS data
         $assetLoader = new AssetsLoader;

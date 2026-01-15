@@ -7,6 +7,9 @@ jQuery(document).ready(function($) {
         console.error('wpApiSettings non è definito. Verifica che wp_localize_script sia configurato correttamente.');
         return;
     }
+    else{
+        console.log(wpApiSettings);
+    }
     
     // Configurazione base per le chiamate REST API
     const API_BASE = wpApiSettings.root + 'meteounip/v1/places/';

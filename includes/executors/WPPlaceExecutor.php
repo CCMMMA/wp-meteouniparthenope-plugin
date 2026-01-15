@@ -4,9 +4,8 @@ namespace Meteouniparthenope\executors;
 
 use Meteouniparthenope\API\PlacesAPI;
 use Meteouniparthenope\cpts\Place;
+use Meteouniparthenope\JSONParser\ProductParser;
 use WP_Query;
-
-use Meteouniparthenope\JSONParser\ProductParser as JSONParserProductParser;
 
 class WPPlaceExecutor
 {
@@ -79,7 +78,7 @@ class WPPlaceExecutor
         $api_url = "https://api.meteo.uniparthenope.it/places/" . $idPlace;
         $apiProducts = $api->getData($api_url);
         //console_log($apiProducts);
-        $parser = new JSONParserProductParser;
+        $parser = new ProductParser;
         $availableProducts = $parser->parseMultipleFromJSON($apiProducts);
         $place->setAvailableProducts($availableProducts);
 

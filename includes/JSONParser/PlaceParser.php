@@ -3,7 +3,7 @@
 namespace Meteouniparthenope\JSONParser;
 
 use Meteouniparthenope\cpts\Place;
-use Meteouniparthenope\JSONParser\JSONParser;
+
 use InvalidArgumentException;
 
 class PlaceParser implements JSONParser
