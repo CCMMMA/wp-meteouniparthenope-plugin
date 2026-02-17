@@ -123,10 +123,26 @@ class AdminLoader{
             );
 
             wp_enqueue_script(
-                'massive-import-js',
-                $this->plugin_dir_url . 'static/js/massive_import.js',
+                'massive-import-places-js',
+                $this->plugin_dir_url . 'static/js/massive_import_places.js',
                 array('jquery'), // Dipendenza da jQuery
-                filemtime($this->plugin_dir_path . 'static/js/massive_import.js'),
+                filemtime($this->plugin_dir_path . 'static/js/massive_import_places.js'),
+                true // Carica nel footer
+            );
+
+            wp_enqueue_script(
+                'places-missing-js',
+                $this->plugin_dir_url . 'static/js/places_missing.js',
+                array('jquery'), // Dipendenza da jQuery
+                filemtime($this->plugin_dir_path . 'static/js/places_missing.js'),
+                true // Carica nel footer
+            );
+
+            wp_enqueue_script(
+                'massive-import-instruments-js',
+                $this->plugin_dir_url . 'static/js/massive_import_instruments.js',
+                array('jquery'), // Dipendenza da jQuery
+                filemtime($this->plugin_dir_path . 'static/js/massive_import_instruments.js'),
                 true // Carica nel footer
             );
 

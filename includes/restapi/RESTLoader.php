@@ -7,6 +7,7 @@ use Exception;
 class RESTLoader{
     private static $restControllers = [
         'places' => PlaceRESTController::class,
+        'instruments' => InstrumentRESTController::class
     ];
     
     public static function loadRESTControllers(){

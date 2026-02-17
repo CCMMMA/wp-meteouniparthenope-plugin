@@ -1,4 +1,6 @@
 <?php
+
+use Meteouniparthenope\loaders\InstrumentLoader;
 /**
  * Plugin Name: meteo@uniparthenope-plugin
  * Description: Management system for meteo@uniparthenope.it
@@ -74,6 +76,10 @@ class MeteoUniParthenopePluginMain{
         //Place components
         $placeLoader = new PlaceLoader();
         $placeLoader->loadPlaceComponents();
+
+        //Instrument components
+        $instrumentLoader = new InstrumentLoader();
+        $instrumentLoader->loadInstrumentComponents();
 
         //Shortcodes
         add_action('init',[ShortcodeFactory::class, 'registerAll']);

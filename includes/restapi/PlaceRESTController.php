@@ -82,32 +82,41 @@ class PlaceRESTController extends WP_REST_Controller{
         ));
 
         // Endpoint per contare i places
-register_rest_route($this->namespace, '/' . $this->rest_base . '/count', array(
-    array(
-        'methods'             => WP_REST_Server::READABLE, // GET
-        'callback'            => array($this, 'count_places'),
-        'permission_callback' => array($this, 'delete_items_permissions_check'),
-    ),
-));
-
-// Endpoint per eliminare tutti i places
-register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', array(
-    array(
-        'methods'             => WP_REST_Server::DELETABLE, // DELETE
-        'callback'            => array($this, 'delete_all_places'),
-        'permission_callback' => array($this, 'delete_items_permissions_check'),
-        'args'                => array(
-            'confirm' => array(
-                'required' => true,
-                'type' => 'boolean',
-                'description' => 'Conferma per eliminazione di massa',
-                'validate_callback' => function($param, $request, $key) {
-                    return $param === true;
-                }
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/count', array(
+            array(
+                'methods'             => WP_REST_Server::READABLE, // GET
+                'callback'            => array($this, 'count_places'),
+                'permission_callback' => array($this, 'delete_items_permissions_check'),
             ),
-        ),
-    ),
-));
+        ));
+
+        // NUOVO: Endpoint per ottenere tutti i place_id esistenti
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/existing-ids', array(
+            array(
+                'methods'             => WP_REST_Server::READABLE, // GET
+                'callback'            => array($this, 'get_existing_place_ids'),
+                'permission_callback' => array($this, 'get_items_permissions_check'),
+            ),
+        ));
+
+        // Endpoint per eliminare tutti i places
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', array(
+            array(
+                'methods'             => WP_REST_Server::DELETABLE, // DELETE
+                'callback'            => array($this, 'delete_all_places'),
+                'permission_callback' => array($this, 'delete_items_permissions_check'),
+                'args'                => array(
+                    'confirm' => array(
+                        'required' => true,
+                        'type' => 'boolean',
+                        'description' => 'Conferma per eliminazione di massa',
+                        'validate_callback' => function($param, $request, $key) {
+                            return $param === true;
+                        }
+                    ),
+                ),
+            ),
+        ));
     }
 
     /**
@@ -238,114 +247,123 @@ register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', ar
         // Prepara la risposta
         $data = array();
         foreach ( $places as $place ) {
-            $data[] = array(
-                'label' => $place['title'],
-                'value' => $place['title'],
-                'link'  => $place['url']
-            );
+            $data[] = $this->prepare_item_for_response( $place, $request );
         }
         
-        return new WP_REST_Response( $data, 200 );
-    }
-
-    /**
-     * Controlla le permissioni per leggere i places
-     *
-     * @param WP_REST_Request $request Full details about the request.
-     * @return true|WP_Error True if the request has read access, WP_Error object otherwise.
-     */
-    public function get_items_permissions_check( $request ) {
-        // Puoi personalizzare le permissioni qui
-        // Per ora permetti a tutti di leggere
-        return true;
+        $response = rest_ensure_response( $data );
         
-        // Esempi di controlli permessi:
-        //return current_user_can( 'read' );
-        //return current_user_can('manage_options');
-        // return is_user_logged_in();
+        // Aggiungi header con il totale se disponibile
+        $response->header( 'X-WP-Total', count( $data ) );
+        
+        return $response;
     }
     
     /**
-     * Restituisce un array con i titoli dei post di tipo "Place"
-     * (stessa funzione dell'artifact precedente)
+     * Ottiene i titoli dei places basandosi sui parametri di query
+     *
+     * @param array $query_args Query arguments.
+     * @return array Array di post objects.
      */
-    private function get_place_titles( $args = array() ) {
-        $default_args = array(
-            'post_type' => 'places',
-            'post_status' => 'publish',
-            'posts_per_page' => -1,
-            'orderby' => 'title',
-            'order' => 'ASC',
-            'fields' => 'ids'
+    private function get_place_titles( $query_args ) {
+        // Esegui la query
+        $query = new \WP_Query( $query_args );
+        
+        // Restituisci i post
+        return $query->posts;
+    }
+    
+    /**
+     * Prepara un singolo item per la risposta
+     *
+     * @param \WP_Post        $post    Post object.
+     * @param WP_REST_Request $request Request object.
+     * @return array
+     */
+    public function prepare_item_for_response( $post, $request ) {
+        // Ottieni i metadati del place
+        $place_id = get_post_meta( $post->ID, 'place_id', true );
+        
+        $data = array(
+            'id'       => $post->ID,
+            'title'    => $post->post_title,
+            'place_id' => $place_id,
+            'value'    => $post->post_title, // Per compatibilità con sistemi di autocomplete
         );
         
-        $query_args = wp_parse_args( $args, $default_args );
-        $places = get_posts( $query_args );
-        $result = array();
-        
-        foreach ( $places as $place_id ) {
-            $title = get_the_title( $place_id );
-            if ( ! empty( $title ) ) {
-                $result[] = array(
-                    'id' => $place_id,
-                    'title' => html_entity_decode( $title, ENT_QUOTES | ENT_HTML5, 'UTF-8' ),
-                    'url' => get_permalink( $place_id )
-                );
-            }
-        }
-        
-        return $result;
+        return $data;
     }
     
     /**
-     * Parametri della collection
+     * Ottiene i parametri per la collection
+     *
+     * @return array
      */
     public function get_collection_params() {
-        $params = parent::get_collection_params();
-        
-        $params['search'] = array(
-            'description'       => __( 'Cerca nei titoli dei places.' ),
-            'type'              => 'string',
-            'sanitize_callback' => 'sanitize_text_field',
+        return array(
+            'search' => array(
+                'description'       => __( 'Cerca nei titoli dei places.' ),
+                'type'              => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => 'rest_validate_request_arg',
+            ),
+            'per_page' => array(
+                'description'       => __( 'Numero massimo di risultati da restituire.' ),
+                'type'              => 'integer',
+                'default'           => 20,
+                'minimum'           => 1,
+                'maximum'           => 100,
+                'sanitize_callback' => 'absint',
+                'validate_callback' => 'rest_validate_request_arg',
+            ),
+            'orderby' => array(
+                'description'       => __( 'Ordina i risultati per campo.' ),
+                'type'              => 'string',
+                'default'           => 'title',
+                'enum'              => array( 'title', 'date', 'modified' ),
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => 'rest_validate_request_arg',
+            ),
+            'order' => array(
+                'description'       => __( 'Ordine di ordinamento (ascendente o discendente).' ),
+                'type'              => 'string',
+                'default'           => 'ASC',
+                'enum'              => array( 'ASC', 'DESC' ),
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => 'rest_validate_request_arg',
+            ),
         );
-        
-        $params['per_page'] = array(
-            'description'       => __( 'Numero massimo di elementi da restituire.' ),
-            'type'              => 'integer',
-            'default'           => 20,
-            'minimum'           => 1,
-            'maximum'           => 100,
-            'sanitize_callback' => 'absint',
-        );
-        
-        $params['orderby'] = array(
-            'description' => __( 'Ordina per campo.' ),
-            'type'        => 'string',
-            'default'     => 'title',
-            'enum'        => array( 'title', 'date', 'menu_order' ),
-        );
-        
-        $params['order'] = array(
-            'description' => __( 'Ordine di sorting.' ),
-            'type'        => 'string',
-            'default'     => 'ASC',
-            'enum'        => array( 'ASC', 'DESC' ),
-        );
-        
-        return $params;
     }
     
     /**
-     * Schema per l'item
+     * Controllo permessi per lettura
+     */
+    public function get_items_permissions_check( $request ) {
+        return true; // Pubblicamente accessibile
+    }
+    
+    /**
+     * Ottiene lo schema per l'item
+     *
+     * @return array
      */
     public function get_public_item_schema() {
         $schema = array(
             '$schema'    => 'http://json-schema.org/draft-04/schema#',
-            'title'      => 'place_autocomplete',
+            'title'      => 'place',
             'type'       => 'object',
             'properties' => array(
-                'label' => array(
-                    'description' => __( 'Titolo del place per visualizzazione.' ),
+                'id' => array(
+                    'description' => __( 'ID univoco del post.' ),
+                    'type'        => 'integer',
+                    'readonly'    => true,
+                ),
+                'title' => array(
+                    'description' => __( 'Titolo del place.' ),
+                    'type'        => 'string',
+                    'readonly'    => true,
+                ),
+                'place_id' => array(
+                    'description' => __( 'ID del place dall\'API.' ),
                     'type'        => 'string',
                     'readonly'    => true,
                 ),
@@ -358,6 +376,46 @@ register_rest_route($this->namespace, '/' . $this->rest_base . '/delete-all', ar
         );
         
         return $schema;
+    }
+
+    /**
+     * NUOVO: Ottiene tutti gli ID dei places esistenti nel database
+     * Ottimizzato per performance con query diretta
+     * 
+     * @param WP_REST_Request $request Request object
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure
+     */
+    public function get_existing_place_ids($request) {
+        try {
+            global $wpdb;
+            
+            // Query ottimizzata che prende solo i place_id dai metadati
+            $query = "
+                SELECT DISTINCT meta_value 
+                FROM {$wpdb->postmeta} pm
+                INNER JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+                WHERE p.post_type = 'places'
+                AND p.post_status IN ('publish', 'draft', 'private')
+                AND pm.meta_key = 'place_id'
+                AND pm.meta_value IS NOT NULL
+                AND pm.meta_value != ''
+            ";
+            
+            $place_ids = $wpdb->get_col($query);
+            
+            return new WP_REST_Response(array(
+                'success' => true,
+                'place_ids' => $place_ids,
+                'count' => count($place_ids)
+            ), 200);
+            
+        } catch (Exception $e) {
+            return new WP_Error(
+                'query_error',
+                'Errore nel recupero degli ID: ' . $e->getMessage(),
+                array('status' => 500)
+            );
+        }
     }
 
     /**

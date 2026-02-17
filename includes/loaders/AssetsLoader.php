@@ -77,7 +77,7 @@ class AssetsLoader{
             true
         );
 
-        if (is_singular('places')) {
+        //if (is_singular('places') || is_singular('instruments')) {
 
             wp_enqueue_script(
                 'canvasjs-core', 
@@ -149,7 +149,7 @@ class AssetsLoader{
                 array(),
                 '3.12.'
             );
-        }
+        //}
     }
 
     // Global data
@@ -192,6 +192,13 @@ class AssetsLoader{
         wp_enqueue_script(
             'ForecastSubtable-class-js',
             $this->plugin_dir_url . 'static/js/shortcodes/ForecastSubtable.js',
+            [],
+            null,
+            true
+        );
+        wp_enqueue_script(
+            'InstrumentsMap-class-js',
+            $this->plugin_dir_url . 'static/js/shortcodes/InstrumentsMap.js',
             [],
             null,
             true

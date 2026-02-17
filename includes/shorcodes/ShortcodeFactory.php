@@ -20,6 +20,8 @@ class ShortcodeFactory implements FactoryInterface{
         'open_data_shortcode' => OpenDataShortcode::class,
         'autocomplete_search_shortcode' => AutocompleteSearchShortcode::class,
         'url_rewriting_shortcode' => UrlRewritingShortcode::class,
+        'instrument_shortcode' => InstrumentShortcode::class,
+        'instrument_map_shortcode' => InstrumentMapShortcode::class,
         'weather_map_def_shortcode' => WeatherMapDefShortcode::class
     ];
     

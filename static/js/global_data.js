@@ -112,3 +112,96 @@ const forecastTableColumns = {
         }
     }
 };
+
+const instrumentsAvailableVariables = {
+    'environment.wind.speedTrue': {
+        label: 'Wind Speed',
+        unit: 'kn',
+        conversion: (val) => val * 1.94384,
+        chartType: 'bar',
+        color: 'rgb(54, 162, 235)'
+    },
+    'environment.wind.directionTrue': {
+        label: 'Wind Direction',
+        unit: '°N',
+        conversion: (val) => val * (180/Math.PI),
+        chartType: 'line',
+        color: 'rgb(255, 99, 132)',
+        min: 0,
+        max: 360
+    },
+    'environment.outside.temperature': {
+        label: 'Temperature',
+        unit: '°C',
+        conversion: (val) => val - 273.15,
+        chartType: 'line',
+        color: 'rgb(255, 159, 64)'
+    },
+    'environment.outside.relativeHumidity': {
+        label: 'Relative Humidity',
+        unit: '%',
+        conversion: (val) => val * 100,
+        chartType: 'line',
+        color: 'rgb(153, 102, 255)',
+        min: 0,
+        max: 100
+    },
+    'environment.outside.pressure': {
+        label: 'Pressure',
+        unit: 'hPa',
+        conversion: (val) => val / 100,
+        chartType: 'line',
+        color: 'rgb(75, 192, 192)'
+    },
+    'environment.outside.humidity': {
+        label: 'Humidity',
+        unit: '%',
+        conversion: (val) => val * 100,
+        chartType: 'line',
+        color: 'rgb(153, 102, 255)',
+        min: 0,
+        max: 100
+    },
+    'environment.rain.rate': {
+        label: 'Rain Rate',
+        unit: 'mm/h',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(100, 149, 237)',
+        min: 0
+    }
+}
+
+const instrumentsVariablesMaker = {
+    'speedTrue': 'environment.wind.speedTrue',
+    'directionTrue': 'environment.wind.directionTrue',
+    'temperature': 'environment.outside.temperature',
+    'relativeHumidity': 'environment.outside.relativeHumidity',
+    'pressure': 'environment.outside.pressure',
+    'humidity': 'environment.outside.humidity',
+    'rate': 'environment.rain.rate'
+}
+
+const instrumentsLatLon = {
+    'urn:mrn:signalk:fqdn:ws1_meteo_uniparthenope_it': {longitude: 14.2946362, latitude: 40.8564635},
+    'urn:mrn:signalk:fqdn:ws2_meteo_uniparthenope_it': {longitude: 14.1857291, latitude: 40.7916162},
+    'urn:mrn:signalk:fqdn:ws3_meteo_uniparthenope_it': {longitude: 14.1717236, latitude: 40.805184},
+    'urn:mrn:signalk:fqdn:ws4_meteo_uniparthenope_it': {longitude: 14.47455, latitude: 40.71688},
+    'urn:mrn:signalk:fqdn:ws5_meteo_uniparthenope_it': {longitude: 13.9843, latitude: 40.9723},
+    'urn:mrn:signalk:fqdn:ws6_meteo_uniparthenope_it': {longitude: 14.2533, latitude: 40.8371},
+    'urn:mrn:signalk:fqdn:ws7_meteo_uniparthenope_it': {longitude: 14.2154588, latitude: 40.823327},
+    'urn:mrn:signalk:fqdn:ws8_meteo_uniparthenope_it': {longitude: 14.3637172, latitude: 40.6056503},
+    'urn:mrn:signalk:fqdn:ws9_meteo_uniparthenope_it': {longitude: 14.2804091, latitude: 40.856508},
+}
+
+const instrumentsNames = {
+    'urn:mrn:signalk:fqdn:ws1_meteo_uniparthenope_it': "Centro Direzionale",
+    'urn:mrn:signalk:fqdn:ws2_meteo_uniparthenope_it': "Gaiola",
+    'urn:mrn:signalk:fqdn:ws3_meteo_uniparthenope_it': "Città della Scienza",
+    'urn:mrn:signalk:fqdn:ws4_meteo_uniparthenope_it': "Marina di Stabia",
+    'urn:mrn:signalk:fqdn:ws5_meteo_uniparthenope_it': "Castel Volturno",
+    'urn:mrn:signalk:fqdn:ws6_meteo_uniparthenope_it': "Via Acton",
+    'urn:mrn:signalk:fqdn:ws7_meteo_uniparthenope_it': "",
+    'urn:mrn:signalk:fqdn:ws8_meteo_uniparthenope_it': "Sant'Agata",
+    'urn:mrn:signalk:fqdn:ws9_meteo_uniparthenope_it': "",
+}
