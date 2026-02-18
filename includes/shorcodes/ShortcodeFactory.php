@@ -22,6 +22,7 @@ class ShortcodeFactory implements FactoryInterface{
         'url_rewriting_shortcode' => UrlRewritingShortcode::class,
         'instrument_shortcode' => InstrumentShortcode::class,
         'instrument_map_shortcode' => InstrumentMapShortcode::class,
+        'instruments_live_preview_shortcode' => InstrumentLivePreviewShortcode::class,
         'weather_map_def_shortcode' => WeatherMapDefShortcode::class
     ];
     

@@ -147,11 +147,22 @@ class AdminLoader{
             );
 
             // CORRETTO: Fornisce dati REST API al JavaScript
+            /*
             wp_localize_script('admin-utility-page-js', 'wpApiSettings', array(
                 'root' => esc_url_raw(rest_url()),
                 'nonce' => wp_create_nonce('wp_rest'),
                 'ajaxurl' => admin_url('admin-ajax.php') // Per compatibilità
             ));
+            */
+            $api_settings = array(
+                'root' => esc_url_raw(rest_url()),
+                'nonce' => wp_create_nonce('wp_rest'),
+                'ajaxurl' => admin_url('admin-ajax.php')
+            );
+
+            wp_localize_script('admin-utility-page-js', 'wpApiSettings', $api_settings);
+            wp_localize_script('massive-import-places-js', 'wpApiSettings', $api_settings);
+            wp_localize_script('massive-import-instruments-js', 'wpApiSettings', $api_settings);
         }
     }
 }

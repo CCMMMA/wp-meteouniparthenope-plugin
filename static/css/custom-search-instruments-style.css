@@ -1,0 +1,190 @@
+.custom-search-results {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px;
+}
+
+.search-results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Stile per risultati Place */
+.instruments-result {
+    display: flex;
+    border: 2px solid #2196F3;
+    border-radius: 8px;
+    padding: 10px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.instruments-result .instruments-info {
+    flex: 2;
+}
+
+.instruments-result h2 {
+    color: #1976D2;
+    margin-bottom: 10px;
+}
+
+/* Ottimizzazione per il container weather-preview - si adatta all'immagine */
+.weather-preview {
+    flex: 1;
+    padding: 0;
+    background: rgba(255,255,255,0.8);
+    border-radius: 6px;
+    margin-left: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-self: flex-start; /* Il box si adatta all'altezza del contenuto */
+}
+
+/* Container del plot - si adatta all'immagine */
+.weather-preview > div,
+.weather-preview .plot-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    line-height: 0; /* Rimuove spazio extra sotto l'immagine */
+}
+
+/* Immagini del plot - dimensioni naturali */
+.weather-preview img {
+    width: 100%;
+    height: auto; /* Mantiene le proporzioni naturali */
+    max-width: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* Stile per risultati standard */
+.standard-result {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.standard-result h2 {
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.result-meta {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.result-meta span {
+    margin-right: 15px;
+}
+
+/* Tabelle forecast preview - Stile e scroll orizzontale */
+.forecast-preview-table, 
+.forecast-preview-th, 
+.forecast-preview-tr, 
+.forecast-preview-td {
+    border: 1px solid #1976D2 !important;
+}
+
+.forecast-preview-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.forecast-preview-table th,
+.forecast-preview-table td {
+    padding: 8px;
+    text-align: center;
+    white-space: nowrap; /* evita che il testo vada a capo */
+}
+
+/* Container con scroll orizzontale per le tabelle forecast preview */
+.forecast-preview-container,
+.weather-preview .forecast-table-container,
+.weather-preview .forecast-preview-container {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    position: relative !important;
+    margin-top: 10px;
+    border: 1px solid #ddd; /* Bordo di debug per vedere se il container viene creato */
+}
+
+/* Forza lo scroll anche sulla classe generale */
+.instruments-result .forecast-table-container {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    position: relative !important;
+}
+
+/* Assicura che la tabella non si comprima */
+.forecast-preview-table,
+.weather-preview .forecast-table {
+    min-width: 600px !important; /* Forza una larghezza minima per attivare lo scroll */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Stile per le immagini nelle tabelle preview */
+.weather-preview .forecast-image {
+    max-height: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    min-width: 40px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .instruments-result {
+        flex-direction: column;
+    }
+    
+    .weather-preview {
+        margin-left: 0;
+        margin-top: 15px;
+    }
+
+    /* Riduco le dimensioni delle immagini forecast su mobile */
+    .weather-preview .forecast-image {
+        max-width: 35px;
+        max-height: 35px;
+        min-width: 35px;
+        min-height: 35px;
+    }
+
+    /* Riduco font size nelle tabelle preview su mobile */
+    .weather-preview .forecast-preview-table th,
+    .weather-preview .forecast-preview-table td {
+        font-size: 0.8rem;
+        padding: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Ulteriore riduzione per schermi molto piccoli */
+    .weather-preview .forecast-image {
+        max-width: 45px;
+        max-height: 45px;
+        min-width: 45px;
+        min-height: 45px;
+    }
+
+    .weather-preview .forecast-preview-table th,
+    .weather-preview .forecast-preview-table td {
+        font-size: 0.75rem;
+        padding: 3px;
+    }
+}

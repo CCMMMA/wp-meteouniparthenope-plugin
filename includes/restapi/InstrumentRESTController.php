@@ -95,7 +95,8 @@ class InstrumentRESTController extends WP_REST_Controller{
             array(
                 'methods'             => WP_REST_Server::READABLE, // GET
                 'callback'            => array($this, 'count_instruments'),
-                'permission_callback' => array($this, 'delete_items_permissions_check'),
+                //'permission_callback' => array($this, 'delete_items_permissions_check'),
+                'permission_callback' => array($this, 'get_items_permissions_check'),
             ),
         ));
 
@@ -535,6 +536,7 @@ class InstrumentRESTController extends WP_REST_Controller{
      */
     public function count_instruments($request) {
         try {
+
             $count = wp_count_posts('instruments');
             $total = $count->publish + $count->draft + $count->private + $count->trash;
             
