@@ -48,30 +48,43 @@ class InstrumentsMap {
      * Con più marker, adatta i bounds per mostrarli tutti.
      *
      * @param {string} instrument_id - ID univoco dello strumento
-     * @param {number} lat           - Latitudine
-     * @param {number} lng           - Longitudine
+     * @param {number|string} lat    - Latitudine (verrà convertita a numero)
+     * @param {number|string} lng    - Longitudine (verrà convertita a numero)
      * @param {string} label         - Nome da mostrare nel popup
      */
     addMarker(instrument_id, lat, lng, label) {
+        // CORREZIONE: Converti esplicitamente a numero
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lng);
+        
+        // Valida le coordinate
+        if (isNaN(latitude) || isNaN(longitude)) {
+            console.error(`Invalid coordinates for ${instrument_id}: lat=${lat}, lng=${lng}`);
+            return;
+        }
+        
         // Se esiste già un marker per questo strumento, rimuovilo prima di ricrearlo
         if (this.markers[instrument_id]) {
             this.mapInstance.removeLayer(this.markers[instrument_id]);
         }
 
-        const marker = L.marker([lat, lng]).addTo(this.mapInstance);
-        marker.bindPopup(`<b>${label}</b><br>Lat: ${lat.toFixed(6)}<br>Lon: ${lng.toFixed(6)}`);
+        const marker = L.marker([latitude, longitude]).addTo(this.mapInstance);
+        marker.bindPopup(`<b>${label}</b><br>Lat: ${latitude.toFixed(6)}<br>Lon: ${longitude.toFixed(6)}`);
         this.markers[instrument_id] = marker;
 
         const allMarkers = Object.values(this.markers);
         if (allMarkers.length === 1) {
             // Un solo marker: centra su di esso e apri il popup
-            this.mapInstance.setView([lat, lng], 13);
+            this.mapInstance.setView([latitude, longitude], 13);
             marker.openPopup();
         } else {
             // Più marker: adatta i bounds per mostrarli tutti
             const group = L.featureGroup(allMarkers);
             this.mapInstance.fitBounds(group.getBounds().pad(0.2));
         }
+       
+        console.log(this.markers[instrument_id]);
+        
     }
 
     /**

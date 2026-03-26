@@ -2,7 +2,7 @@ class InstrumentLiveChart {
     static get defaults() {
         return {
             shortcode_id: 0,
-            instrument_id: "urn:mrn:signalk:fqdn:ws1_meteo_uniparthenope_it",
+            instrument_id: "it_uniparthenope_meteo_ws1",
             long_name: "Centro Direzionale",
             lat: 40.8564635,
             long: 14.2946362,
@@ -17,10 +17,8 @@ class InstrumentLiveChart {
         this.shortcode_id = options.shortcode_id || InstrumentLiveChart.defaults.shortcode_id;
         this.instrument_id = options.instrument_id || InstrumentLiveChart.defaults.instrument_id;
         this.long_name = options.long_name || InstrumentLiveChart.defaults.long_name;
-        //this.lat = options.lat || InstrumentLiveChart.defaults.lat;
-        //this.long = options.long || InstrumentLiveChart.defaults.long;
-        this.lat = instrumentsLatLon[this.instrument_id].latitude;
-        this.long = instrumentsLatLon[this.instrument_id].longitude;
+        this.lat = options.lat || InstrumentLiveChart.defaults.lat;
+        this.long = options.long || InstrumentLiveChart.defaults.long;
         this.variablesName = options.variablesName || InstrumentLiveChart.defaults.variablesName;
         this.variablesDescription = options.variablesDescription || InstrumentLiveChart.defaults.variablesDescription;
         this.defaultVariables = options.defaultVariables || InstrumentLiveChart.defaults.defaultVariables;
@@ -35,14 +33,22 @@ class InstrumentLiveChart {
             for(var key in instrumentsAvailableVariables){
                 this.VARIABLES_PATHS.push(key);
             }
+            this.lat = instrumentsLatLon[this.instrument_id]['latitude'];
+            this.long = instrumentsLatLon[this.instrument_id]['longitude'];
         }
         else{
             var self = this;
+            console.log("variablesName:");
+            console.log(this.variablesName);
+            
             this.variablesName.forEach(function(value,index){
-                var varLongName = instrumentsVariablesMaker[value];
-                self.VARIABLES_PATHS.push(varLongName);
-                self.AVAILABLE_VARIABLES[varLongName] = instrumentsAvailableVariables[varLongName];
+                self.VARIABLES_PATHS.push(value);
+                self.AVAILABLE_VARIABLES[value] = instrumentsAvailableVariables[value];
             });
+            console.log("VARIABLES_PATHS:");
+            console.log(this.VARIABLES_PATHS);
+            console.log("AVAILABLE_VARIABLES:");
+            console.log(this.AVAILABLE_VARIABLES);
         }
 
         // Costanti
@@ -60,13 +66,13 @@ class InstrumentLiveChart {
         this.ws = null;
         this.mapInstance = null;
 
-        console.log(this);
+        //console.log(this);
 
         this.createChart();
         this.createMap();
     }
 
-    registerEvent() {
+    registerEvent() {instrumentsAvailableVariables
         // Event delegation per le checkbox
         jQuery(document).on('change', `.variable-checkbox-${this.shortcode_id}`, (event) => {
             this.handleVariableToggle(event.target);
@@ -296,6 +302,7 @@ class InstrumentLiveChart {
 
     createChart() {
         let contextUrl = `meteo.${this.instrument_id}`;
+        //let contextUrl = this.instrument_id;
 
         // Crea container principale
         let $rootContainer = jQuery(`#${this.shortcode_id}`);

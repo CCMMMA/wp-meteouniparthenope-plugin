@@ -8,44 +8,116 @@ use InvalidArgumentException;
 class InstrumentParser implements JSONParser {
 
     /**
-     * Parsa un singolo instrument dal JSON GeoJSON Feature
+     * Estrae ricorsivamente tutti i path in dot notation che contengono un campo 'value'
      * 
-     * @param array $feature Feature GeoJSON
+     * @param array $data Array dei dati
+     * @param string $prefix Prefisso del path corrente
+     * @return array Array di path in dot notation
+     */
+    private function extractVariablePaths(array $data, string $prefix = ''): array {
+        $paths = [];
+        
+        foreach ($data as $key => $value) {
+            // Salta chiavi speciali che non fanno parte del path
+            if ($key === '$source' || $key === 'meta' || $key === 'timestamp' || $key === 'value') {
+                continue;
+            }
+            
+            $currentPath = $prefix === '' ? $key : $prefix . '.' . $key;
+            
+            if (is_array($value)) {
+                // Se questo nodo ha un campo 'value', è una variabile
+                if (isset($value['value'])) {
+                    $paths[] = $currentPath;
+                }
+                
+                // Continua a esplorare ricorsivamente
+                $subPaths = $this->extractVariablePaths($value, $currentPath);
+                $paths = array_merge($paths, $subPaths);
+            }
+        }
+        
+        return $paths;
+    }
+
+    /**
+     * Parsa un singolo instrument dal JSON
+     * 
+     * @param string $instrumentId ID della weather station (chiave dell'array)
+     * @param array $instrumentData Dati dell'instrument
      * @return Instrument
      */
-    private function parseFeature(array $instrument): Instrument {
-        /*
-        // Estrai i dati dalle properties
-        $properties = $feature['properties'] ?? [];
-        $geometry = $feature['geometry'] ?? [];
-        $coordinates = $geometry['coordinates'] ?? [0, 0, 0];
-
-        // Estrai i campi necessari
-        $id = $properties['id'] ?? '';
-        $organization = $properties['organization'] ?? '';
-        $type = $properties['type'] ?? '';
+    private function parseFeature(string $instrumentId, array $instrumentData): Instrument {
+        // Estrai il nome della stazione
+        $longName = $instrumentData['name']['value'] ?? '';
         
-        // Estrai le coordinate (long, lat, alt nel formato GeoJSON)
-        $longitude = floatval($coordinates[0]);
-        $latitude = floatval($coordinates[1]);
-
-        // Estrai i nomi delle variabili
-        $variablesData = $properties['variables'] ?? [];
-        $variableNames = array_keys($variablesData);
-        */
-
-        $id = $instrument['uuid'] ?? '';
-        $long_name = $instrument['name']['value'] ?? '';
-        //$long_name = $id;
-        $latitude = $instrument['navigation']['position']['value']['latitude'] ?? 0.0;
-        $longitude = $instrument['navigation']['position']['value']['longitude'] ?? 0.0;
-        $variableNames = ["relativeHumidity","temperature","rate","directionTrue","speedTrue"];
-        $variableDescriptions = ["Relative humidity","Outside air temperature","Rainfall sensor","The wind direction relative to true north","True wind speed"];
+        // Estrai le coordinate
+        $latitude = $instrumentData['navigation']['position']['value']['latitude'] ?? 0.0;
+        $longitude = $instrumentData['navigation']['position']['value']['longitude'] ?? 0.0;
+        
+        // Estrai dinamicamente tutti i path delle variabili disponibili
+        $variablePaths = $this->extractVariablePaths($instrumentData);
+        
+        // Filtra i path per escludere quelli che non sono variabili meteo rilevanti
+        // (opzionale: puoi rimuovere questo filtro se vuoi TUTTI i path)
+        $relevantPaths = array_filter($variablePaths, function($path) {
+            // Escludi alcuni path non rilevanti
+            $excludePatterns = [
+                'name',
+                'navigation.position',
+                'url',
+                'electrical.batteries',
+                'sun.rise',
+                'sun.set',
+                'weather.forecast.icon',
+                'weather.forecast.ruleNumber'
+            ];
+            
+            foreach ($excludePatterns as $pattern) {
+                if (strpos($path, $pattern) === 0) {
+                    return false;
+                }
+            }
+            
+            return true;
+        });
+        
+        // Riordina gli indici dell'array
+        $variableNames = array_values($relevantPaths);
+        
+        // Per le descrizioni, usa i displayName o description dai meta, altrimenti il path stesso
+        $variableDescriptions = array_map(function($path) use ($instrumentData) {
+            $parts = explode('.', $path);
+            $current = $instrumentData;
+            
+            // Naviga attraverso il path per trovare i meta
+            foreach ($parts as $part) {
+                if (isset($current[$part])) {
+                    $current = $current[$part];
+                } else {
+                    return $path; // Fallback al path stesso
+                }
+            }
+            
+            // Cerca displayName o description nei meta
+            if (isset($current['meta']['displayName'])) {
+                return $current['meta']['displayName'];
+            } elseif (isset($current['meta']['description'])) {
+                return $current['meta']['description'];
+            }
+            
+            return $path; // Fallback al path stesso
+        }, $variableNames);
+        
+        // Log per debug
+        error_log("Instrument ID: {$instrumentId}");
+        error_log("Found " . count($variableNames) . " variables");
+        error_log("Variables: " . implode(', ', array_slice($variableNames, 0, 5)) . (count($variableNames) > 5 ? '...' : ''));
 
         // Crea e restituisce l'oggetto Instrument
         return new Instrument(
-            $id,
-            $long_name,
+            $instrumentId,
+            $longName,
             $latitude,
             $longitude,
             $variableNames,
@@ -63,7 +135,6 @@ class InstrumentParser implements JSONParser {
         // Se è una stringa, decodifica
         if (is_string($json)) {
             $data = json_decode($json, true);
-            
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new InvalidArgumentException('JSON non valido: ' . json_last_error_msg());
             }
@@ -75,44 +146,24 @@ class InstrumentParser implements JSONParser {
 
         $instruments = [];
 
-        // Se è una FeatureCollection
-        /*
-        if (isset($data['type']) && $data['type'] === 'FeatureCollection') {
-            $features = $data['features'] ?? [];
-            foreach ($features as $feature) {
-                try {
-                    $instrument = $this->parseFeature($feature);
-                    $instruments[] = $instrument;
-                } catch (\Exception $e) {
-                    // Log dell'errore ma continua con gli altri
-                    error_log('Errore parsing instrument: ' . $e->getMessage());
-                }
-            }
-        }
-        */
-
-        
-        foreach ($data as $uuid){
-            try{
-                $instrument = $this->parseFeature($uuid);
-                error_log("STRUMENTO: ");
-                error_log($instrument->getIDInstrument());
-                error_log($instrument->getLat());
-                error_log($instrument->getLong());
-                error_log($instrument->getLongName());
-                error_log($instrument->getWordpressID());
-                /*
-                if($instrument->getLongName() != ''){
-                    $instruments[] = $instrument;
-                }
-                */
+        // Itera su ogni weather station usando CHIAVE => VALORE
+        foreach ($data as $instrumentId => $instrumentData) {
+            try {
+                // Passa sia l'ID che i dati al parser
+                $instrument = $this->parseFeature($instrumentId, $instrumentData);
+                
+                // Log per debug
+                error_log("Parsed instrument: ID={$instrument->getIDInstrument()}, Name={$instrument->getLongName()}, Lat={$instrument->getLat()}, Lng={$instrument->getLong()}");
+                
+                // Aggiungi l'instrument alla lista
                 $instruments[] = $instrument;
-            } catch(\Exception $e){
-                error_log('Errore parsing instrument: ' . $e->getMessage());
+                
+            } catch (\Exception $e) {
+                error_log("Errore parsing instrument ID '{$instrumentId}': " . $e->getMessage());
             }
         }
 
-        error_log("SEMBRA SIA ANDATO TUTTO BENE in InstrumentParser");
+        error_log("InstrumentParser: Parsed " . count($instruments) . " instruments successfully");
 
         return $instruments;
     }
@@ -137,21 +188,17 @@ class InstrumentParser implements JSONParser {
             throw new InvalidArgumentException('Il parametro deve essere una stringa JSON o un array');
         }
 
-        // Se è una FeatureCollection, prendi il primo elemento
-        if (isset($data['type']) && $data['type'] === 'FeatureCollection') {
-            $features = $data['features'] ?? [];
-            if (empty($features)) {
-                return null;
-            }
-            return $this->parseFeature($features[0]);
+        // Prendi il primo elemento
+        if (empty($data)) {
+            return null;
         }
 
-        // Se è un singolo Feature
-        if (isset($data['type']) && $data['type'] === 'Feature') {
-            return $this->parseFeature($data);
-        }
+        // Ottieni la prima chiave e il primo valore
+        reset($data);
+        $instrumentId = key($data);
+        $instrumentData = current($data);
 
-        return null;
+        return $this->parseFeature($instrumentId, $instrumentData);
     }
 }
 

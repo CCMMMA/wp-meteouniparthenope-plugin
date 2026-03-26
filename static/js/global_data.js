@@ -115,14 +115,14 @@ const forecastTableColumns = {
 
 const instrumentsAvailableVariables = {
     'environment.wind.speedTrue': {
-        label: 'Wind Speed',
+        label: 'Wind Speed True',
         unit: 'kn',
         conversion: (val) => val * 1.94384,
         chartType: 'bar',
         color: 'rgb(54, 162, 235)'
     },
     'environment.wind.directionTrue': {
-        label: 'Wind Direction',
+        label: 'Wind Direction True',
         unit: '°N',
         conversion: (val) => val * (180/Math.PI),
         chartType: 'line',
@@ -131,14 +131,14 @@ const instrumentsAvailableVariables = {
         max: 360
     },
     'environment.outside.temperature': {
-        label: 'Temperature',
+        label: 'Outside Temperature',
         unit: '°C',
         conversion: (val) => val - 273.15,
         chartType: 'line',
         color: 'rgb(255, 159, 64)'
     },
     'environment.outside.relativeHumidity': {
-        label: 'Relative Humidity',
+        label: 'Outside Relative Humidity',
         unit: '%',
         conversion: (val) => val * 100,
         chartType: 'line',
@@ -147,14 +147,14 @@ const instrumentsAvailableVariables = {
         max: 100
     },
     'environment.outside.pressure': {
-        label: 'Pressure',
+        label: 'Outside Pressure',
         unit: 'hPa',
         conversion: (val) => val / 100,
         chartType: 'line',
         color: 'rgb(75, 192, 192)'
     },
     'environment.outside.humidity': {
-        label: 'Humidity',
+        label: 'Outside Humidity',
         unit: '%',
         conversion: (val) => val * 100,
         chartType: 'line',
@@ -168,6 +168,165 @@ const instrumentsAvailableVariables = {
         conversion: (val) => val,
         chartType: 'bar',
         color: 'rgb(100, 149, 237)',
+        min: 0
+    },
+
+    // ── Nuove entries ──────────────────────────────────────────────
+
+    'environment.UV': {
+        label: 'UV Index',
+        unit: 'index',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(238, 130, 238)',
+        min: 0
+    },
+    'environment.inside.relativeHumidity': {
+        label: 'Inside Relative Humidity',
+        unit: '%',
+        conversion: (val) => val * 100,
+        chartType: 'line',
+        color: 'rgb(179, 102, 255)',
+        min: 0,
+        max: 100
+    },
+    'environment.inside.temperature': {
+        label: 'Inside Temperature',
+        unit: '°C',
+        conversion: (val) => val - 273.15,
+        chartType: 'line',
+        color: 'rgb(255, 205, 86)'
+    },
+    'environment.outside.evapoTranspiration.day': {
+        label: 'Evapotranspiration Day',
+        unit: 'mm',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(60, 179, 113)',
+        min: 0
+    },
+    'environment.outside.evapoTranspiration.month': {
+        label: 'Evapotranspiration Month',
+        unit: 'mm',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(46, 139, 87)',
+        min: 0
+    },
+    'environment.outside.evapoTranspiration.year': {
+        label: 'Evapotranspiration Year',
+        unit: 'mm',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(34, 100, 60)',
+        min: 0
+    },
+    'environment.outside.pressureTrend': {
+        label: 'Pressure Trend',
+        unit: 'hPa/h',
+        conversion: (val) => val / 100,
+        chartType: 'line',
+        color: 'rgb(95, 192, 192)'
+    },
+    'environment.precipitation.rate': {
+        label: 'Precipitation Rate',
+        unit: 'mm/h',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(70, 130, 180)',
+        min: 0
+    },
+    'environment.rain.day': {
+        label: 'Rain Day',
+        unit: 'mm',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(100, 160, 237)',
+        min: 0
+    },
+    'environment.rain.month': {
+        label: 'Rain Month',
+        unit: 'mm',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(80, 140, 210)',
+        min: 0
+    },
+    'environment.rain.storm.total': {
+        label: 'Rain Storm Total',
+        unit: 'mm',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(60, 110, 190)',
+        min: 0
+    },
+    'environment.rain.year': {
+        label: 'Rain Year',
+        unit: 'mm',
+        conversion: (val) => val,
+        chartType: 'bar',
+        color: 'rgb(40, 90, 170)',
+        min: 0
+    },
+    'environment.solar.radiation': {
+        label: 'Solar Radiation',
+        unit: 'W/m²',
+        conversion: (val) => val,
+        chartType: 'line',
+        color: 'rgb(255, 215, 0)',
+        min: 0
+    },
+    'environment.sun.rise': {
+        label: 'Sunrise',
+        unit: 'time',
+        conversion: (val) => val,
+        chartType: 'line',
+        color: 'rgb(255, 180, 50)'
+    },
+    'environment.sun.set': {
+        label: 'Sunset',
+        unit: 'time',
+        conversion: (val) => val,
+        chartType: 'line',
+        color: 'rgb(255, 120, 50)'
+    },
+    'environment.weather.forecast.icon': {
+        label: 'Weather Forecast Icon',
+        unit: '',
+        conversion: (val) => val,
+        chartType: 'line',
+        color: 'rgb(135, 206, 235)'
+    },
+    'environment.weather.forecast.ruleNumber': {
+        label: 'Weather Forecast Rule Number',
+        unit: '',
+        conversion: (val) => val,
+        chartType: 'line',
+        color: 'rgb(100, 180, 220)'
+    },
+    'environment.wind.angleApparent': {
+        label: 'Wind Angle Apparent',
+        unit: '°',
+        conversion: (val) => val * (180/Math.PI),
+        chartType: 'line',
+        color: 'rgb(255, 80, 120)',
+        min: 0,
+        max: 360
+    },
+    'environment.wind.speedApparent': {
+        label: 'Wind Speed Apparent',
+        unit: 'kn',
+        conversion: (val) => val * 1.94384,
+        chartType: 'bar',
+        color: 'rgb(54, 130, 200)',
+        min: 0
+    },
+    'environment.wind.speedAverage': {
+        label: 'Wind Speed Average',
+        unit: 'kn',
+        conversion: (val) => val * 1.94384,
+        chartType: 'bar',
+        color: 'rgb(54, 100, 180)',
         min: 0
     }
 }
@@ -183,25 +342,25 @@ const instrumentsVariablesMaker = {
 }
 
 const instrumentsLatLon = {
-    'urn:mrn:signalk:fqdn:ws1_meteo_uniparthenope_it': {longitude: 14.2946362, latitude: 40.8564635},
-    'urn:mrn:signalk:fqdn:ws2_meteo_uniparthenope_it': {longitude: 14.1857291, latitude: 40.7916162},
-    'urn:mrn:signalk:fqdn:ws3_meteo_uniparthenope_it': {longitude: 14.1717236, latitude: 40.805184},
-    'urn:mrn:signalk:fqdn:ws4_meteo_uniparthenope_it': {longitude: 14.47455, latitude: 40.71688},
-    'urn:mrn:signalk:fqdn:ws5_meteo_uniparthenope_it': {longitude: 13.9843, latitude: 40.9723},
-    'urn:mrn:signalk:fqdn:ws6_meteo_uniparthenope_it': {longitude: 14.2533, latitude: 40.8371},
-    'urn:mrn:signalk:fqdn:ws7_meteo_uniparthenope_it': {longitude: 14.2154588, latitude: 40.823327},
-    'urn:mrn:signalk:fqdn:ws8_meteo_uniparthenope_it': {longitude: 14.3637172, latitude: 40.6056503},
-    'urn:mrn:signalk:fqdn:ws9_meteo_uniparthenope_it': {longitude: 14.2804091, latitude: 40.856508},
+    'it_uniparthenope_meteo_ws1': {longitude: 14.2946362, latitude: 40.8564635},
+    'it_uniparthenope_meteo_ws2': {longitude: 14.1857291, latitude: 40.7916162},
+    'it_uniparthenope_meteo_ws3': {longitude: 14.1717236, latitude: 40.805184},
+    'it_uniparthenope_meteo_ws4': {longitude: 14.47455, latitude: 40.71688},
+    'it_uniparthenope_meteo_ws5': {longitude: 13.9843, latitude: 40.9723},
+    'it_uniparthenope_meteo_ws6': {longitude: 14.2533, latitude: 40.8371},
+    //'urn:mrn:signalk:fqdn:ws7_meteo_uniparthenope_it': {longitude: 14.2154588, latitude: 40.823327},
+    'it_uniparthenope_meteo_ws8': {longitude: 14.3637172, latitude: 40.6056503}
+    //'urn:mrn:signalk:fqdn:ws9_meteo_uniparthenope_it': {longitude: 14.2804091, latitude: 40.856508},
 }
 
 const instrumentsNames = {
-    'urn:mrn:signalk:fqdn:ws1_meteo_uniparthenope_it': "Centro Direzionale",
-    'urn:mrn:signalk:fqdn:ws2_meteo_uniparthenope_it': "Gaiola",
-    'urn:mrn:signalk:fqdn:ws3_meteo_uniparthenope_it': "Città della Scienza",
-    'urn:mrn:signalk:fqdn:ws4_meteo_uniparthenope_it': "Marina di Stabia",
-    'urn:mrn:signalk:fqdn:ws5_meteo_uniparthenope_it': "Castel Volturno",
-    'urn:mrn:signalk:fqdn:ws6_meteo_uniparthenope_it': "Via Acton",
-    'urn:mrn:signalk:fqdn:ws7_meteo_uniparthenope_it': "",
-    'urn:mrn:signalk:fqdn:ws8_meteo_uniparthenope_it': "Sant'Agata",
-    'urn:mrn:signalk:fqdn:ws9_meteo_uniparthenope_it': "",
+    'it_uniparthenope_meteo_ws1': "Centro Direzionale",
+    'it_uniparthenope_meteo_ws2': "Gaiola",
+    'it_uniparthenope_meteo_ws3': "Città della Scienza",
+    'it_uniparthenope_meteo_ws4': "Marina di Stabia",
+    'it_uniparthenope_meteo_ws5': "Castel Volturno",
+    'it_uniparthenope_meteo_ws6': "Via Acton",
+    //'urn:mrn:signalk:fqdn:ws7_meteo_uniparthenope_it': "",
+    'it_uniparthenope_meteo_ws8': "Sant'Agata dei Due Golfi",
+    //'urn:mrn:signalk:fqdn:ws9_meteo_uniparthenope_it': "",
 }

@@ -4,7 +4,7 @@ get_header();
 
 <div class="wrap">
     <main id="primary" class="site-main">
-        <article id="post-<?php the_ID(); ?>" <?php post_class('place-single'); ?>>
+        <article id="post-<?php the_ID(); ?>" <?php post_class('instrument-single'); ?>>
             <header class="entry-header">
                 <h1 class="entry-title"><?php the_title(); ?></h1>
             </header>
