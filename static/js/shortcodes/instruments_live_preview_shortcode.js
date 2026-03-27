@@ -1,7 +1,7 @@
 class InstrumentLivePreview {
     static get defaults() {
         return {
-            instrument_id: "urn:mrn:signalk:fqdn:ws1_meteo_uniparthenope_it",
+            instrument_id: "it_uniparthenope_meteo_ws1",
             container_id: -1,
             apiBaseURL: apiBaseUrl,
             loadingGifPath: METEOUNIP_PLUGIN_LOADING_DIR + "/loading_gif.gif"
@@ -35,13 +35,23 @@ class InstrumentLivePreview {
                     $responsiveContainer.addClass('forecast-responsive-container');
     
                     // Extract values
-                    let relativeHumidity = instrumentData['environment']['outside']['relativeHumidity']['value'];
-                    let temperature = instrumentData['environment']['outside']['temperature']['value'];
-                    let rainRate = instrumentData['environment']['rain']['rate']['value'];
-                    let windDirectionTrue = instrumentData['environment']['wind']['directionTrue']['value'];
-                    let windSpeedTrue = instrumentData['environment']['wind']['speedTrue']['value'];
                     let stationName = instrumentData['name']['value'];
-                    let timestamp = instrumentData['environment']['outside']['temperature']['timestamp'];
+
+                    let relativeHumidity = instrumentData['environment']['outside']['relativeHumidity']['value'];
+
+                    let temperature = instrumentData['environment']['outside']['temperature']['value'];
+
+                    //let rainRate = instrumentData['environment']['rain']['rate']['value'];
+                    let rainRate = instrumentData['environment']['rain']['day']['value'];
+
+                    //let windDirectionTrue = instrumentData['environment']['wind']['directionTrue']['value'];
+                    let windDirectionTrue = instrumentData['environment']['wind']['angleApparent']['value'];
+
+                    //let windSpeedTrue = instrumentData['environment']['wind']['speedTrue']['value'];
+                    let windSpeedTrue = instrumentData['environment']['wind']['speedApparent']['value'];
+
+                    //let timestamp = instrumentData['environment']['outside']['temperature']['timestamp'];
+                    let timestamp = instrumentData['environment']['outside']['temperature']['value'];
     
                     // Unit conversions
                     let temperatureCelsius = (temperature - 273.15).toFixed(1);           // K → °C
