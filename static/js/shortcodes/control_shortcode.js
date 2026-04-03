@@ -264,12 +264,16 @@
             urlParams.set('prod',newProduct);
             setOutput('gen');
             urlParams.set('output','gen');
+            
+            MeteoUniParthenopeCookies.trackCurrentPage(urlParams.toString());
             //$('#control-select-output').trigger('change');
         });
 
         $('#control-select-output').on('change',function(){
             var newOutput = $(this).val();
             urlParams.set('output',newOutput);
+
+            MeteoUniParthenopeCookies.trackCurrentPage(urlParams.toString());
         });
 
         $('#control-select-date, #control-select-time').on('change',function(){

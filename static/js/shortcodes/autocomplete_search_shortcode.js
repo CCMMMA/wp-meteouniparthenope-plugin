@@ -84,7 +84,8 @@ document.head.appendChild(autocompleteStyle);
                 event.preventDefault();
                 return false;
             }
-            
+            console.log("UI:");
+            console.log(ui);
             console.log("EVENT PROP:");
             console.log(event.originalEvent);
             console.log("SELECTED FROM SEARCH: ");

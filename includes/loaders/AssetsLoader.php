@@ -150,6 +150,12 @@ class AssetsLoader{
                 '3.12.'
             );
         //}
+        wp_enqueue_script(
+            'js-cookie',
+            'https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js',
+            array(),
+            '3.0.5'
+        );
     }
 
     // Global data
@@ -203,6 +209,19 @@ class AssetsLoader{
             null,
             true
         );
+
+        wp_enqueue_script(
+            'meteo-unip-recent',
+            $this->plugin_dir_url . 'static/js/cookies.js',
+            [],
+            '1.0.0',
+            true
+        );
+        wp_localize_script('meteo-unip-recent', 'MeteoUnipCookieData', [
+            'restUrl'      => esc_url_raw(rest_url('meteounip/v1')),
+            'nonce'        => wp_create_nonce('wp_rest'), // nonce standard REST API di WP
+            'currentPlace' => is_singular('places') ? get_post_meta(get_the_ID(), 'place_id', true) : null,
+        ]);
     }
 }
 

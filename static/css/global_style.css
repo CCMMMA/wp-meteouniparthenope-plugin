@@ -146,3 +146,100 @@ button:disabled {
         margin-bottom: 0;
     }
 }
+
+
+
+
+
+
+
+
+/* Places recenti cookies */
+.recent-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.recent-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 180px;
+  max-width: 220px;
+  border: 2px solid #2196F3;
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.recent-card:hover {
+  box-shadow: 0 6px 16px rgba(33,150,243,0.18);
+  transform: translateY(-2px);
+}
+.recent-card__image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: rgba(255,255,255,0.8);
+  overflow: hidden;
+  position: relative;
+}
+.recent-card__image img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.recent-card__image-skeleton {
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, #e0e8f0 25%, #f0f4f8 50%, #e0e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+.recent-card__image-error {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  color: #90aac8;
+}
+.recent-card__body {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.recent-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1976D2;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recent-card__meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.recent-card__badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.badge-prod {
+  background: #e8f0fe;
+  color: #1a56a0;
+}
+.badge-output {
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (max-width: 600px) {
+  .recent-card { flex: 1 1 140px; max-width: 160px; }
+}

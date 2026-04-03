@@ -32,12 +32,54 @@
         
         //product
         if(!urlParams.has('prod')){
-            urlParams.append('prod',METEOUNIP_PLUGIN_DEFAULT_PRODUCT);
+            console.log("NON C'È IL PARAMETRO DI prod");
+            console.log("CONTROLLO IL COOKIE");
+            const last = MeteoUniParthenopeCookies.getLastProdOut();
+            if(!last){
+                urlParams.append('prod',METEOUNIP_PLUGIN_DEFAULT_PRODUCT);
+            }
+            else{
+                if(last['prod']){
+                    urlParams.set('prod',last['prod']);
+                }
+            }
+        }
+        else{
+            const last = MeteoUniParthenopeCookies.getLastProdOut();
+            if(!last){
+                urlParams.append('prod',METEOUNIP_PLUGIN_DEFAULT_PRODUCT);
+            }
+            else{
+                if(last['prod']){
+                    urlParams.set('prod',last['prod']);
+                }
+            }
         }
 
         //output
-        if(!urlParams.has('output')){
-            urlParams.append('output',METEOUNIP_PLUGIN_DEFAULT_OUTPUT);
+       if(!urlParams.has('output')){
+            console.log("NON C'È IL PARAMETRO DI output");
+            console.log("CONTROLLO IL COOKIE");
+            const last = MeteoUniParthenopeCookies.getLastProdOut();
+            if(!last){
+                urlParams.append('output',METEOUNIP_PLUGIN_DEFAULT_PRODUCT);
+            }
+            else{
+                if(last['output']){
+                    urlParams.set('output',last['output']);
+                }
+            }
+        }
+        else{
+            const last = MeteoUniParthenopeCookies.getLastProdOut();
+            if(!last){
+                urlParams.append('output',METEOUNIP_PLUGIN_DEFAULT_PRODUCT);
+            }
+            else{
+                if(last['output']){
+                    urlParams.set('output',last['output']);
+                }
+            }
         }
 
         //hours
