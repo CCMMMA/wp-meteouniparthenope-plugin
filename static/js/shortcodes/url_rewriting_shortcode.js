@@ -25,9 +25,38 @@
         }
 
         //date parameter
+        /*
         if(!urlParams.has('date')){
             var newDateTime = DateFormatter.formatFromDateUTCObjToAPI(new Date());
             urlParams.append('date',newDateTime);
+        }
+        */
+        if(!urlParams.has('date')){
+            console.log("NON C'È IL PARAMETRO DI date");
+            console.log("CONTROLLO IL COOKIE");
+            const last = MeteoUniParthenopeCookies.getLastProdOut();
+            if(!last){
+                //default date, the current
+                var newDateTime = DateFormatter.formatFromDateUTCObjToAPI(new Date());
+                urlParams.append('date',newDateTime);
+            }
+            else{
+                if(last['date']){
+                    urlParams.set('date',last['date']);
+                }
+            }
+        }
+        else{
+            const last = MeteoUniParthenopeCookies.getLastProdOut();
+            if(!last){
+                var newDateTime = DateFormatter.formatFromDateUTCObjToAPI(new Date());
+                urlParams.append('date',newDateTime);
+            }
+            else{
+                if(last['date']){
+                    urlParams.set('date',last['date']);
+                }
+            }
         }
         
         //product
@@ -62,7 +91,7 @@
             console.log("CONTROLLO IL COOKIE");
             const last = MeteoUniParthenopeCookies.getLastProdOut();
             if(!last){
-                urlParams.append('output',METEOUNIP_PLUGIN_DEFAULT_PRODUCT);
+                urlParams.append('output',METEOUNIP_PLUGIN_DEFAULT_OUTPUT);
             }
             else{
                 if(last['output']){

@@ -654,6 +654,52 @@ class PlaceRESTController extends WP_REST_Controller{
         }
     }
 
+    /**
+     * Recupera prod_label e output_label dall'API meteo esterna.
+     * Endpoint: /products/{prod}/forecast/{place}/plot/alt?output={output}
+     * Risposta attesa: "Hours HH:MM UTC of day DD-MM-YYYY, <place_label>, <prod_label>, <output_label>"
+     *
+     * @param string $place_id  ID del place (es. "ca001")
+     * @param string $prod      Prodotto (es. "wrf5")
+     * @param string $output    Output (es. "gen")
+     * @return array            ['prod_label' => string, 'output_label' => string]
+     */
+    private function fetch_labels( string $place_id, string $prod, string $output ): array {
+        $url = "https://api.meteo.uniparthenope.it/products/{$prod}/forecast/{$place_id}/plot/alt?output={$output}";
+
+        $response = wp_remote_get( $url, [
+            'timeout'   => 5,
+            'sslverify' => true,
+        ]);
+
+        // Fallback silenzioso: se l'API non risponde usiamo i codici grezzi
+        if ( is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200 ) {
+            return [
+                'prod_label'   => $prod,
+                'output_label' => $output,
+            ];
+        }
+
+        $body = trim( wp_remote_retrieve_body($response) );
+
+        // Parsing: split per virgola, trim di ogni segmento
+        // Formato atteso: "Hours HH:MM UTC of day DD-MM-YYYY, <place>, <prod_label>, <output_label>"
+        $parts = array_map( 'trim', explode( ',', $body ) );
+
+        // Ci aspettiamo almeno 4 segmenti; prod_label = indice 2, output_label = indice 3
+        if ( count($parts) < 4 ) {
+            return [
+                'prod_label'   => $prod,
+                'output_label' => $output,
+            ];
+        }
+
+        return [
+            'prod_label'   => $parts[2],
+            'output_label' => trim($parts[3], '"'),
+        ];
+    }
+
     public function resolve_recent_places( WP_REST_Request $request ) {
         $entries = $request->get_param('entries');
 
@@ -683,15 +729,19 @@ class PlaceRESTController extends WP_REST_Controller{
             $post_id = $this->getPlacePostIDByPlaceID($place_id);
             if ( ! $post_id ) continue;
 
+            $labels = $this->fetch_labels( $place_id, $prod, $output );
+
             $results[] = [
-                'place_id'   => $place_id,
-                'prod'       => $prod,
-                'output'     => $output,
-                'title'      => get_the_title($post_id),
-                'permalink'  => add_query_arg(
-                                    ['prod' => $prod, 'output' => $output],
-                                    get_permalink($post_id)
-                                ),
+                'place_id'     => $place_id,
+                'prod'         => $prod,
+                'output'       => $output,
+                'prod_label'   => $labels['prod_label'],
+                'output_label' => $labels['output_label'],
+                'title'        => get_the_title($post_id),
+                'permalink'    => add_query_arg(
+                                      ['prod' => $prod, 'output' => $output],
+                                      get_permalink($post_id)
+                                  ),
             ];
         }
 

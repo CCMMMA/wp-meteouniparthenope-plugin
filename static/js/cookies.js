@@ -4,7 +4,7 @@ const MeteoUniParthenopeCookies = (() => {
 
     const COOKIE_NAME          = 'meteo_unip_recent_places';
     const LAST_PROD_OUT_COOKIE = 'meteo_unip_last_prod_out';
-    const MAX_ENTRIES          = 5;
+    const MAX_ENTRIES          = 6;
     const COOKIE_DAYS          = 30;
     const API_BASE             = MeteoUnipCookieData.restUrl;
     const NONCE                = MeteoUnipCookieData.nonce;
@@ -21,6 +21,7 @@ const MeteoUniParthenopeCookies = (() => {
     function setCookie(name, value, days) {
         const expires = new Date(Date.now() + days * 864e5).toUTCString();
         document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
+        //document.cookie = `${name}=${value}; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; SameSite=Lax`;
     }
 
     // ── API pubblica generica ───────────────────────────────────────
@@ -43,20 +44,22 @@ const MeteoUniParthenopeCookies = (() => {
         catch(e) { return []; }
     }
 
-    function saveEntry(place, prod, output) {
-        let entries = getEntries().filter(e => e.place !== place);
-        entries.unshift({ place, prod, output });
+    function saveEntry(place, prod, output, date) {
+        let entries = getEntries().filter(
+            e => !(e.place === place && e.prod === prod && e.output === output)
+        );
+        entries.unshift({ place, prod, output, date });
         entries = entries.slice(0, MAX_ENTRIES);
         GLOBAL_LAST_PLACES['prod']   = prod;
         GLOBAL_LAST_PLACES['output'] = output;
         setCookie(COOKIE_NAME, encodeURIComponent(JSON.stringify(entries)), COOKIE_DAYS);
-        saveLastProdOut(prod, output);
+        saveLastProdOut(prod, output, date);
     }
 
     // ── Last prod/output ────────────────────────────────────────────
 
-    function saveLastProdOut(prod, output) {
-        setCookie(LAST_PROD_OUT_COOKIE, encodeURIComponent(JSON.stringify({ prod, output })), COOKIE_DAYS);
+    function saveLastProdOut(prod, output, date) {
+        setCookie(LAST_PROD_OUT_COOKIE, encodeURIComponent(JSON.stringify({ prod, output, date })), COOKIE_DAYS);
     }
 
     function getLastProdOut() {
@@ -79,14 +82,16 @@ const MeteoUniParthenopeCookies = (() => {
 
     function trackCurrentPage(url = window.location.search) {
         if (!MeteoUnipCookieData.currentPlace) return;
+        console.log("SONO NEL PLACE!");
 
         const params = new URLSearchParams(url);
         const place  = params.get('place')  || MeteoUnipCookieData.currentPlace;
         const prod   = params.get('prod')   || '';
         const output = params.get('output') || '';
+        const date = params.get('date') || '';
 
-        if (place && prod && output) {
-            saveEntry(place, prod, output);
+        if (place && prod && output && date) {
+            saveEntry(place, prod, output, date);
         }
     }
 
@@ -99,6 +104,8 @@ const MeteoUniParthenopeCookies = (() => {
         if (!container) return;
 
         const entries = getEntries();
+        console.log("ENTRIES:");
+        console.log(entries);
         if (!entries.length) return;
 
         container.innerHTML = Array(entries.length).fill(`
@@ -152,11 +159,10 @@ const MeteoUniParthenopeCookies = (() => {
                         <div class="recent-card__body">
                             <p class="recent-card__title">${item.title}</p>
                             <div class="recent-card__meta">
-                                <span class="recent-card__badge badge-prod">${item.prod}</span>
-                                <span class="recent-card__badge badge-output">${item.output}</span>
+                                <span class="recent-card__badge badge-prod">${item.prod_label}</span>
+                                <span class="recent-card__badge badge-output">${item.output_label}</span>
                             </div>
                         </div>
-                        <div class="recent-card__arrow">›</div>
                     </a>
                 `;
             }).join('');
@@ -176,6 +182,7 @@ const MeteoUniParthenopeCookies = (() => {
 
     function init() {
         // TODO: ripristinare il controllo consenso CookieYes prima del deploy in produzione
+        //document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
         trackCurrentPage();
         renderRecentPlaces();
     }

@@ -279,6 +279,7 @@
         $('#control-select-date, #control-select-time').on('change',function(){
             var newDateString = DateFormatter.formatFromDateToAPI($('#control-select-date').val(),$('#control-select-time').val());
             urlParams.set('date',newDateString);
+            MeteoUniParthenopeCookies.trackCurrentPage(urlParams.toString());
         });
 
         $('#control-select-hours').on('change',function(){
