@@ -4,7 +4,7 @@ const MeteoUniParthenopeCookies = (() => {
 
     const COOKIE_NAME          = 'meteo_unip_recent_places';
     const LAST_PROD_OUT_COOKIE = 'meteo_unip_last_prod_out';
-    const MAX_ENTRIES          = 6;
+    const MAX_ENTRIES          = 5;
     const COOKIE_DAYS          = 30;
     const API_BASE             = MeteoUnipCookieData.restUrl;
     const NONCE                = MeteoUnipCookieData.nonce;
