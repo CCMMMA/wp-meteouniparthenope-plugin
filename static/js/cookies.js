@@ -4,7 +4,7 @@ const MeteoUniParthenopeCookies = (() => {
 
     const COOKIE_NAME          = 'meteo_unip_recent_places';
     const LAST_PROD_OUT_COOKIE = 'meteo_unip_last_prod_out';
-    const MAX_ENTRIES          = 5;
+    const MAX_ENTRIES          = 6;
     const COOKIE_DAYS          = 30;
     const API_BASE             = MeteoUnipCookieData.restUrl;
     const NONCE                = MeteoUnipCookieData.nonce;
@@ -98,10 +98,19 @@ const MeteoUniParthenopeCookies = (() => {
     // ── Rendering card in homepage ──────────────────────────────────
 
     async function renderRecentPlaces() {
-        var container = document.getElementById('meteo-recent-places');
-        var tmp = jQuery(container).append("<div style='padding: 1rem 0;'><div id='meteo-recent-list' class='recent-list'>");
-        var container = document.getElementById('meteo-recent-list');
+        const outer = document.getElementById('meteo-recent-places');
+        if (!outer) return;
+        console.log("NON LO SUPERO");
+
+        const list = document.createElement('div');
+        list.style.padding = '1rem 0';
+        list.innerHTML = "<div id='meteo-recent-list' class='recent-list'></div>";
+        outer.appendChild(list);
+
+        const container = list.querySelector('#meteo-recent-list');
         if (!container) return;
+
+        // ... resto del codice invariato
 
         const entries = getEntries();
         console.log("ENTRIES:");

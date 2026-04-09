@@ -35,6 +35,11 @@ class PlaceRESTController extends WP_REST_Controller{
     private $apiBaseUrl = 'https://api.meteo.uniparthenope.it/places';
 
     /**
+     * Maximum number of recent places
+     */
+    private $MAX_RECENT_PLACES = 6;
+
+    /**
      * Registra le route
      */
     public function register_routes() {
@@ -129,7 +134,12 @@ class PlaceRESTController extends WP_REST_Controller{
                         'type'              => 'array',
                         'description'       => 'Array di {place, prod, output} dal cookie',
                         'validate_callback' => function($param) {
-                            return is_array($param) && count($param) <= 5;
+                            // Accetta sia array già deserializzato che stringa JSON
+                            if ( is_string($param) ) {
+                                $decoded = json_decode($param, true);
+                                return is_array($decoded) && count($decoded) <= $this->MAX_RECENT_PLACES;
+                            }
+                            return is_array($param) && count($param) <= $this->MAX_RECENT_PLACES;
                         },
                     ),
                 ),
@@ -703,6 +713,15 @@ class PlaceRESTController extends WP_REST_Controller{
     public function resolve_recent_places( WP_REST_Request $request ) {
         $entries = $request->get_param('entries');
 
+        // Gestisce il caso in cui entries arrivi come stringa JSON
+        if ( is_string($entries) ) {
+            $entries = json_decode($entries, true);
+        }
+
+        if ( ! is_array($entries) ) {
+            return new WP_Error('invalid_entries', 'Entries non valide', ['status' => 400]);
+        }
+
         // Allowed values per prod e output — adattale ai valori reali del tuo sistema
         $allowed_prods   = ['wrf5', 'aiq3', 'rms3', 'wcm3', 'ww33']; // esempio
         $allowed_outputs = ['gen','crd','crh','gp5','gp8','mcape','rh2','tsp','uh','wn1','wn2','wn4', //wrf5
@@ -714,7 +733,7 @@ class PlaceRESTController extends WP_REST_Controller{
 
         $results = [];
 
-        foreach ( array_slice($entries, 0, 5) as $entry ) {
+        foreach ( array_slice($entries, 0, $this->MAX_RECENT_PLACES) as $entry ) {
             // Sanitizzazione
             $place_id = isset($entry['place'])  ? sanitize_text_field($entry['place'])  : '';
             $prod     = isset($entry['prod'])   ? sanitize_text_field($entry['prod'])   : '';
