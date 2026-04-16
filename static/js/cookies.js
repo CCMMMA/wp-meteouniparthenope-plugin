@@ -4,6 +4,7 @@ const MeteoUniParthenopeCookies = (() => {
 
     const COOKIE_NAME          = 'meteo_unip_recent_places';
     const LAST_PROD_OUT_COOKIE = 'meteo_unip_last_prod_out';
+    const FAVORITES_COOKIE     = 'meteo_unip_favorites';
     const MAX_ENTRIES          = 6;
     const COOKIE_DAYS          = 30;
     const API_BASE             = MeteoUnipCookieData.restUrl;
@@ -67,6 +68,35 @@ const MeteoUniParthenopeCookies = (() => {
         try { return raw ? JSON.parse(decodeURIComponent(raw)) : null; }
         catch(e) { return null; }
     }
+
+    // -- Favorites -------------------------------------------------
+
+    function getFavorites() {
+        const raw = getCookie(FAVORITES_COOKIE);
+        try { return raw ? JSON.parse(decodeURIComponent(raw)) : []; }
+        catch(e) { return []; }
+    }
+
+    function isFavorite(place, prod, output) {
+        return getFavorites().some(
+            e => e.place === place && e.prod === prod && e.output === output
+        );
+    }
+
+    function saveFavorite(place, prod, output) {
+        if (isFavorite(place, prod, output)) return;
+        const favorites = getFavorites();
+        favorites.unshift({ place, prod, output });
+        setCookie(FAVORITES_COOKIE, encodeURIComponent(JSON.stringify(favorites)), COOKIE_DAYS);
+    }
+
+    function removeFavorite(place, prod, output) {
+        const favorites = getFavorites().filter(
+            e => !(e.place === place && e.prod === prod && e.output === output)
+        );
+        setCookie(FAVORITES_COOKIE, encodeURIComponent(JSON.stringify(favorites)), COOKIE_DAYS);
+    }
+
 
     // ── Helper data ─────────────────────────────────────────────────
 
@@ -203,6 +233,10 @@ const MeteoUniParthenopeCookies = (() => {
         trackCurrentPage,
         saveLastProdOut,
         getLastProdOut,
+        getFavorites,
+        isFavorite,
+        saveFavorite,
+        removeFavorite,
         setCookie: setCookiePublic,
         getCookie: getCookiePublic,
     };
@@ -218,4 +252,3 @@ const MeteoUniParthenopeCookies = (() => {
         MeteoUniParthenopeCookies.init();
     });
 })(jQuery);
-

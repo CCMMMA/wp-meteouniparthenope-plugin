@@ -94,6 +94,7 @@ get_header();
                         <!--
                         <button type="button" class="btn btn-outline-primary" id="generate-button">Generate plot</button>
                         -->
+                        <?php echo do_shortcode('[add_favorites_shortcode]'); ?>
                     </div>
                 </div>
 

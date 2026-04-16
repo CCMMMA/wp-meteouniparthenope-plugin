@@ -243,3 +243,48 @@ button:disabled {
 @media (max-width: 600px) {
   .recent-card { flex: 1 1 140px; max-width: 160px; }
 }
+
+
+
+
+
+
+
+
+
+/* ── Favorite button ──────────────────────────────────── */
+.meteo-favorite-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 2px solid #2196F3;
+    border-radius: 8px;
+    background: #fff;
+    color: #1976D2;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.meteo-favorite-btn:hover {
+    background: #e8f0fe;
+    box-shadow: 0 2px 8px rgba(33,150,243,0.15);
+}
+
+.meteo-favorite-btn--saved {
+    background: #2196F3;
+    color: #fff;
+}
+
+.meteo-favorite-btn--saved:hover {
+    background: #1976D2;
+    box-shadow: 0 2px 8px rgba(33,150,243,0.25);
+}
+
+.meteo-favorites-empty {
+    font-size: 14px;
+    color: #666;
+    padding: 1rem 0;
+}
