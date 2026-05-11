@@ -3,8 +3,8 @@
     const BTN_ID      = 'meteo-add-favorite-btn';
     const ROOT_ID     = 'add_favorites_shortcode-root';
 
-    const LABEL_ADD   = '&#9825; Aggiungi ai preferiti';
-    const LABEL_SAVED = '&#9829; Salvato nei preferiti';
+    const LABEL_ADD   = '&#9825; Add to favorites';
+    const LABEL_SAVED = '&#9829; Saved to favorites';
     const CLASS_BASE  = 'meteo-favorite-btn';
     const CLASS_SAVED = 'meteo-favorite-btn--saved';
 

@@ -25,6 +25,7 @@ class ShortcodeFactory implements FactoryInterface{
         'instruments_live_preview_shortcode' => InstrumentLivePreviewShortcode::class,
         'weather_map_def_shortcode' => WeatherMapDefShortcode::class,
         'meteo_recent_places_shortcode' => MeteoRecentPlacesShortcode::class,
+        'meteo_map_shortcode' => MeteoMapShortcode::class,
         'add_favorites_shortcode' => AddFavoritesShortcode::class,
         'show_favorites_shortcode' => ShowFavoritesShortcode::class
     ];

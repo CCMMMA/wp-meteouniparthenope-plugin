@@ -348,7 +348,7 @@ const instrumentsLatLon = {
     'it_uniparthenope_meteo_ws4': {longitude: 14.47455, latitude: 40.71688},
     'it_uniparthenope_meteo_ws5': {longitude: 13.9843, latitude: 40.9723},
     'it_uniparthenope_meteo_ws6': {longitude: 14.2533, latitude: 40.8371},
-    //'urn:mrn:signalk:fqdn:ws7_meteo_uniparthenope_it': {longitude: 14.2154588, latitude: 40.823327},
+    'it_uniparthenope_meteo_ws7': {longitude: 14.2154588, latitude: 40.823327},
     'it_uniparthenope_meteo_ws8': {longitude: 14.3637172, latitude: 40.6056503}
     //'urn:mrn:signalk:fqdn:ws9_meteo_uniparthenope_it': {longitude: 14.2804091, latitude: 40.856508},
 }

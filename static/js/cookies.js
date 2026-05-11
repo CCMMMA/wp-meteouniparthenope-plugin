@@ -140,12 +140,13 @@ const MeteoUniParthenopeCookies = (() => {
         const container = list.querySelector('#meteo-recent-list');
         if (!container) return;
 
-        // ... resto del codice invariato
-
         const entries = getEntries();
         console.log("ENTRIES:");
         console.log(entries);
-        if (!entries.length) return;
+        if (!entries.length){
+            container.innerHTML = '<p class="meteo-favorites-empty">No places recently visited.</p>'
+            return;   
+        }
 
         container.innerHTML = Array(entries.length).fill(`
             <div class="recent-card">
@@ -208,7 +209,7 @@ const MeteoUniParthenopeCookies = (() => {
 
         } catch(e) {
             container.innerHTML = '';
-            console.warn('MeteoUnip: impossibile caricare i places recenti', e);
+            console.warn('MeteoUnip: Unable to load recent places', e);
         }
     }
 

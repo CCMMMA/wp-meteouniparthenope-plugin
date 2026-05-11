@@ -19,7 +19,7 @@
 
         const entries = MeteoUniParthenopeCookies.getFavorites();
         if (!entries.length) {
-            root.innerHTML = '<p class="meteo-favorites-empty">Nessun luogo nei preferiti.</p>';
+            root.innerHTML = '<p class="meteo-favorites-empty">No places in favorites.</p>';
             return;
         }
 
@@ -58,7 +58,7 @@
             const json = await res.json();
 
             if (!json.success || !json.data.length) {
-                container.innerHTML = '<p class="meteo-favorites-empty">Nessun luogo nei preferiti.</p>';
+                container.innerHTML = '<p class="meteo-favorites-empty">No places in favorites.</p>';
                 return;
             }
 
@@ -94,7 +94,7 @@
 
         } catch(e) {
             container.innerHTML = '';
-            console.warn('MeteoUnip: impossibile caricare i preferiti', e);
+            console.warn('MeteoUnip: Unable to load favorite places', e);
         }
     }
 

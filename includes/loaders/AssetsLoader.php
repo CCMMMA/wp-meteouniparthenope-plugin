@@ -13,6 +13,9 @@ class AssetsLoader{
 
         //JS data structures
         add_action('wp_enqueue_scripts',[$this,'meteounipplugin_enqueue_global_data']);
+        
+        // Leaflet plugins per mappa meteo (ORDINE CRITICO!)
+        add_action('wp_enqueue_scripts', [$this,'meteounipplugin_enqueue_leaflet_plugins']);
     }
 
     
@@ -157,6 +160,106 @@ class AssetsLoader{
             '3.0.5'
         );
     }
+    
+    // Leaflet plugins necessari per la mappa meteo
+    // ORDINE CRITICO: questi devono essere caricati PRIMA di meteo_map_shortcode.js
+    function meteounipplugin_enqueue_leaflet_plugins(){
+        
+        // ========================================
+        // CSS per i plugin Leaflet
+        // ========================================
+        
+        // Leaflet Velocity (vento)
+        wp_enqueue_style(
+            'leaflet-velocity-css',
+            $this->plugin_dir_url . 'static/css/leaflet-plugins/leaflet-velocity.min.css',
+            array('leaflet-css'),
+            '1.0.0'
+        );
+        
+        // Control Loading
+        wp_enqueue_style(
+            'leaflet-control-loading-css',
+            $this->plugin_dir_url . 'static/css/leaflet-plugins/Control.Loading.css',
+            array('leaflet-css'),
+            '1.0.0'
+        );
+        
+        // ========================================
+        // JavaScript plugin Leaflet
+        // ORDINE IMPORTANTISSIMO!
+        // ========================================
+        
+        // 1. Spin.js (per il loading spinner)
+        wp_enqueue_script(
+            'spin-js',
+            $this->plugin_dir_url . 'static/js/leaflet-plugins/spin.js',
+            array(),
+            '2.3.2',
+            true
+        );
+        
+        // 2. Control.Loading (dipende da spin.js e leaflet)
+        wp_enqueue_script(
+            'leaflet-control-loading-js',
+            $this->plugin_dir_url . 'static/js/leaflet-plugins/Control.Loading.js',
+            array('leaflet-js', 'spin-js'),
+            '1.0.0',
+            true
+        );
+        
+        // 3. Leaflet Velocity (visualizzazione vento)
+        wp_enqueue_script(
+            'leaflet-velocity-js',
+            $this->plugin_dir_url . 'static/js/leaflet-plugins/leaflet-velocity.min.js',
+            array('leaflet-js'),
+            '1.0.0',
+            true
+        );
+        
+        // 4. GeoJSON Tile Layer (CRUCIALE! - deve essere caricato PRIMA di geojson-layer)
+        wp_enqueue_script(
+            'leaflet-geojson-tile-layer-js',
+            $this->plugin_dir_url . 'static/js/leaflet-plugins/geojson-tile-layer.js',
+            array('leaflet-js'),
+            '1.0.0',
+            true
+        );
+        
+        // 5. GeoJSON Layer (per le tile meteo - dipende da geojson-tile-layer)
+        wp_enqueue_script(
+            'leaflet-geojson-layer-js',
+            $this->plugin_dir_url . 'static/js/leaflet-plugins/geojson-layer.js',
+            array('leaflet-js', 'leaflet-geojson-tile-layer-js'),
+            '1.0.0',
+            true
+        );
+        
+        // 6. Grouped Layer Control
+        wp_enqueue_script(
+            'leaflet-grouped-layer-control-js',
+            $this->plugin_dir_url . 'static/js/leaflet-plugins/leaflet.groupedlayercontrol.js',
+            array('leaflet-js'),
+            '1.0.0',
+            true
+        );
+        
+        // Navionics Web API (per mappe nautiche - opzionale)
+        wp_enqueue_style(
+            'navionics-css',
+            'https://webapiv2.navionics.com/dist/webapi/webapi.min.css',
+            array(),
+            '2.0.0'
+        );
+        
+        wp_enqueue_script(
+            'navionics-js',
+            'https://webapiv2.navionics.com/dist/webapi/webapi.min.no-dep.js',
+            array('leaflet-js'),
+            '2.0.0',
+            true
+        );
+    }
 
     // Global data
     function meteounipplugin_enqueue_global_data(){
@@ -170,7 +273,10 @@ class AssetsLoader{
         
         $data = [
             "PLUGIN_DIR" => $this->plugin_dir_url,
-            "LOADING_DIR" => $this->plugin_dir_url."static/resources/images"
+            "LOADING_DIR" => $this->plugin_dir_url."static/resources/images",
+            // AGGIUNGO API_BASE_URL GLOBALE
+            "API_BASE_URL" => "https://api.meteo.uniparthenope.it",
+            "WEATHER_ICON_URL" => "https://api.meteo.uniparthenope.it/static/img/weather/"
         ];
         wp_localize_script('global-data-js', 'globalData', $data);
         
