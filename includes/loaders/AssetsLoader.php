@@ -15,7 +15,8 @@ class AssetsLoader{
         add_action('wp_enqueue_scripts',[$this,'meteounipplugin_enqueue_global_data']);
         
         // Leaflet plugins per mappa meteo (ORDINE CRITICO!)
-        add_action('wp_enqueue_scripts', [$this,'meteounipplugin_enqueue_leaflet_plugins']);
+        //Aggiungere, se si aggiunge l'header diventa blu
+        //add_action('wp_enqueue_scripts', [$this,'meteounipplugin_enqueue_leaflet_plugins']);
     }
 
     

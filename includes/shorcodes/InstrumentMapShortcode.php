@@ -72,8 +72,8 @@ class InstrumentMapShortcode extends BaseShortcode {
         wp_add_inline_script('instrument-map-shortcode-js', $inlineScript);
         return '<div id="' . $data['id'] . '"></div>';
         */
-        if(!$this->mapRender){
-            $this->mapRender = true;
+        if(!self::$mapRender){
+            self::$mapRender = true;
             return '<div id="instrument_shortcode-map-root"></div>';
         }
     }
