@@ -20,6 +20,7 @@ class InstrumentLivePreview {
     createTable() {
         var self = this;
         var previewUrl = `${self.apiBaseURL}/instruments/${self.instrument_id}`;
+        console.log("Preview url: " + previewUrl);
 
         jQuery.ajax({
             url: previewUrl,
@@ -50,8 +51,8 @@ class InstrumentLivePreview {
                     //let windSpeedTrue = instrumentData['environment']['wind']['speedTrue']['value'];
                     let windSpeedTrue = instrumentData['environment']['wind']['speedApparent']['value'];
 
-                    //let timestamp = instrumentData['environment']['outside']['temperature']['timestamp'];
-                    let timestamp = instrumentData['environment']['outside']['temperature']['value'];
+                    let timestamp = instrumentData['environment']['outside']['temperature']['timestamp'];
+                    //let timestamp = instrumentData['environment']['outside']['temperature']['value'];
     
                     // Unit conversions
                     let temperatureCelsius = (temperature - 273.15).toFixed(1);           // K → °C
