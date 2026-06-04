@@ -288,3 +288,23 @@ button:disabled {
     color: #666;
     padding: 1rem 0;
 }
+
+
+
+/*clear recent and favorites button*/
+.meteo-clear-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 2px solid #2196F3;
+    border-radius: 8px;
+    background: #fff;
+    color: #1976D2;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+
+    margin-bottom: 8px;
+}

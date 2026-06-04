@@ -99,6 +99,18 @@ const MeteoUniParthenopeCookies = (() => {
         setCookie(FAVORITES_COOKIE, encodeURIComponent(JSON.stringify(favorites)), COOKIE_DAYS);
     }
 
+    function clearRecentPlaces() {
+        if (!window.confirm('Do you really want to clear your recently visited list?')) return;
+        setCookie(COOKIE_NAME, encodeURIComponent(JSON.stringify([])), COOKIE_DAYS);
+        GLOBAL_LAST_PLACES = {};
+        const container = document.getElementById('meteo-recent-list');
+        if (container) {
+            container.innerHTML = '<p class="meteo-favorites-empty">No places recently visited.</p>';
+        }
+        const btn = document.getElementById('meteo-clear-recent-btn');
+        if (btn) btn.style.display = 'none';
+    }
+
 
     // ── Helper data ─────────────────────────────────────────────────
 
@@ -136,7 +148,17 @@ const MeteoUniParthenopeCookies = (() => {
 
         const list = document.createElement('div');
         list.style.padding = '1rem 0';
-        list.innerHTML = "<div id='meteo-recent-list' class='recent-list'></div>";
+        list.innerHTML = `
+            <div class="meteo-section-header">
+                <button id="meteo-clear-recent-btn" class="meteo-clear-btn" style="display:none" onclick="MeteoUniParthenopeCookies.clearRecentPlaces()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+                    </svg>
+                    Clear recents
+                </button>
+                <div id="meteo-recent-list" class="recent-list"></div>
+            </div>
+        `;
         outer.appendChild(list);
 
         const container = list.querySelector('#meteo-recent-list');
@@ -146,8 +168,8 @@ const MeteoUniParthenopeCookies = (() => {
         console.log("ENTRIES:");
         console.log(entries);
         if (!entries.length){
-            container.innerHTML = '<p class="meteo-favorites-empty">No places recently visited.</p>'
-            return;   
+            container.innerHTML = '<p class="meteo-favorites-empty">No places recently visited.</p>';
+            return;
         }
 
         container.innerHTML = Array(entries.length).fill(`
@@ -209,6 +231,9 @@ const MeteoUniParthenopeCookies = (() => {
                 `;
             }).join('');
 
+            const clearBtn = document.getElementById('meteo-clear-recent-btn');
+            if (clearBtn) clearBtn.style.display = 'inline-flex';
+
         } catch(e) {
             container.innerHTML = '';
             console.warn('MeteoUnip: Unable to load recent places', e);
@@ -240,6 +265,7 @@ const MeteoUniParthenopeCookies = (() => {
         isFavorite,
         saveFavorite,
         removeFavorite,
+        clearRecentPlaces,
         setCookie: setCookiePublic,
         getCookie: getCookiePublic,
     };

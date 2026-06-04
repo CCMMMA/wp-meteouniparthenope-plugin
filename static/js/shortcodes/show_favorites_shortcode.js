@@ -13,6 +13,14 @@
         return `${yyyy}${mm}${dd}Z1200`;
     }
 
+    function clearFavorites() {
+        if (!window.confirm('Do you really want to clear your favorites list?')) return;
+        MeteoUniParthenopeCookies.setCookie('meteo_unip_favorites', [], 30);
+        const root = document.getElementById(ROOT_ID);
+        if (!root) return;
+        root.innerHTML = '<p class="meteo-favorites-empty">No places in favorites.</p>';
+    }
+
     async function renderFavorites() {
         const root = document.getElementById(ROOT_ID);
         if (!root) return;
@@ -23,11 +31,24 @@
             return;
         }
 
-        // Wrapper con padding
+        // Wrapper con padding e header per il pulsante
         const wrapper = document.createElement('div');
         wrapper.style.padding = '1rem 0';
-        wrapper.innerHTML = "<div id='meteo-favorites-list' class='recent-list'></div>";
+        wrapper.innerHTML = `
+            <div class="meteo-section-header">
+                <button id="meteo-clear-favorites-btn" class="meteo-clear-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+                    </svg>
+                    Clear favorites
+                </button>
+                <div id="meteo-favorites-list" class="recent-list"></div>
+            </div>
+        `;
         root.appendChild(wrapper);
+
+        const clearBtn = wrapper.querySelector('#meteo-clear-favorites-btn');
+        if (clearBtn) clearBtn.addEventListener('click', clearFavorites);
 
         const container = wrapper.querySelector('#meteo-favorites-list');
         if (!container) return;

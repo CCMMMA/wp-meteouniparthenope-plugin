@@ -12,7 +12,7 @@ class ShowFavoritesShortcode extends BaseShortcode{
         wp_enqueue_script(
             'show-favorites-shortcode-js',
             $this->plugin_dir_url . 'static/js/shortcodes/show_favorites_shortcode.js',
-            [],
+            ['meteo-unip-recent'],
             null,
             true
         );
