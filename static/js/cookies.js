@@ -73,7 +73,9 @@ const MeteoUniParthenopeCookies = (() => {
 
     function getFavorites() {
         const raw = getCookie(FAVORITES_COOKIE);
-        try { return raw ? JSON.parse(decodeURIComponent(raw)) : []; }
+        try { 
+            return raw ? JSON.parse(decodeURIComponent(raw)) : []; 
+        }
         catch(e) { return []; }
     }
 

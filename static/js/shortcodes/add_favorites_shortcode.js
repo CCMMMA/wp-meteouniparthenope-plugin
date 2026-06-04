@@ -14,6 +14,7 @@
      */
     function getCurrentParams() {
         const params = new URLSearchParams(window.location.search);
+        console.log("TAKING PARAMS");
         const place  = params.get('place')  || '';
         const prod   = params.get('prod')   || '';
         const output = params.get('output') || '';
@@ -57,6 +58,14 @@
                 MeteoUniParthenopeCookies.saveFavorite(place, prod, output);
             }
             syncButton(btn, place, prod, output);
+        });
+        document.getElementById('control-select-product').addEventListener('change',function(){
+            const current = getCurrentParams();
+            syncButton(btn, current['place'], current['prod'], current['output']);
+        });
+        document.getElementById('control-select-output').addEventListener('change',function(){
+            const current = getCurrentParams();
+            syncButton(btn, current['place'], current['prod'], current['output']);
         });
 
         root.appendChild(btn);
