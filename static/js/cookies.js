@@ -45,22 +45,22 @@ const MeteoUniParthenopeCookies = (() => {
         catch(e) { return []; }
     }
 
-    function saveEntry(place, prod, output, date) {
+    function saveEntry(place, prod, output) {
         let entries = getEntries().filter(
             e => !(e.place === place && e.prod === prod && e.output === output)
         );
-        entries.unshift({ place, prod, output, date });
+        entries.unshift({ place, prod, output});
         entries = entries.slice(0, MAX_ENTRIES);
         GLOBAL_LAST_PLACES['prod']   = prod;
         GLOBAL_LAST_PLACES['output'] = output;
         setCookie(COOKIE_NAME, encodeURIComponent(JSON.stringify(entries)), COOKIE_DAYS);
-        saveLastProdOut(prod, output, date);
+        saveLastProdOut(prod, output);
     }
 
     // ── Last prod/output ────────────────────────────────────────────
 
-    function saveLastProdOut(prod, output, date) {
-        setCookie(LAST_PROD_OUT_COOKIE, encodeURIComponent(JSON.stringify({ prod, output, date })), COOKIE_DAYS);
+    function saveLastProdOut(prod, output) {
+        setCookie(LAST_PROD_OUT_COOKIE, encodeURIComponent(JSON.stringify({ prod, output })), COOKIE_DAYS);
     }
 
     function getLastProdOut() {
@@ -132,10 +132,9 @@ const MeteoUniParthenopeCookies = (() => {
         const place  = params.get('place')  || MeteoUnipCookieData.currentPlace;
         const prod   = params.get('prod')   || '';
         const output = params.get('output') || '';
-        const date = params.get('date') || '';
 
-        if (place && prod && output && date) {
-            saveEntry(place, prod, output, date);
+        if (place && prod && output) {
+            saveEntry(place, prod, output);
         }
     }
 
