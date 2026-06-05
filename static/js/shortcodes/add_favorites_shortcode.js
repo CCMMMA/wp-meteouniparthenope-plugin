@@ -52,12 +52,13 @@
         syncButton(btn, place, prod, output);
 
         btn.addEventListener('click', function() {
-            if (MeteoUniParthenopeCookies.isFavorite(place, prod, output)) {
-                MeteoUniParthenopeCookies.removeFavorite(place, prod, output);
+            const current = getCurrentParams();
+            if (MeteoUniParthenopeCookies.isFavorite(current['place'], current['prod'], current['output'])) {
+                MeteoUniParthenopeCookies.removeFavorite(current['place'], current['prod'], current['output']);
             } else {
-                MeteoUniParthenopeCookies.saveFavorite(place, prod, output);
+                MeteoUniParthenopeCookies.saveFavorite(current['place'], current['prod'], current['output']);
             }
-            syncButton(btn, place, prod, output);
+            syncButton(btn, current['place'], current['prod'], current['output']);
         });
         document.getElementById('control-select-product').addEventListener('change',function(){
             const current = getCurrentParams();
